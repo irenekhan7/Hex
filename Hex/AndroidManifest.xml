@@ -54,7 +54,7 @@
              name of the class within your package that implements this
              activity.
         -->
-        <activity android:name="com.example.android.skeletonapp.SchemeLibraryActivity" >
+        <activity android:name="com.example.android.skeletonapp.MainActivity" >
 
             <!--
                  An IntentFilter tells the system when it should use your
@@ -73,6 +73,8 @@
                 <!-- This places this activity into the main app list. -->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.example.android.skeletonapp.SchemeLibraryActivity" >
         </activity>
         <activity
             android:name="com.example.android.skeletonapp.SchemeInfo"

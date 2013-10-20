@@ -65,17 +65,23 @@ containing a value of this type.
         public static final int violet=0x7f020000;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f090000;
-        public static final int action_settings=0x7f090004;
-        public static final int name=0x7f090002;
-        public static final int schemeList=0x7f090003;
-        public static final int schemeView1=0x7f090001;
+        public static final int RelativeLayout1=0x7f090005;
+        public static final int action_settings=0x7f090009;
+        public static final int button_analyze=0x7f090001;
+        public static final int button_capture=0x7f090003;
+        public static final int button_import=0x7f090004;
+        public static final int button_open_library=0x7f090002;
+        public static final int camera_preview=0x7f090000;
+        public static final int name=0x7f090007;
+        public static final int schemeList=0x7f090008;
+        public static final int schemeView1=0x7f090006;
     }
     public static final class layout {
-        public static final int activity_scheme_info=0x7f030000;
-        public static final int listcolor=0x7f030001;
-        public static final int sample_scheme_view=0x7f030002;
-        public static final int scheme_list_activity=0x7f030003;
+        public static final int activity_main=0x7f030000;
+        public static final int activity_scheme_info=0x7f030001;
+        public static final int listcolor=0x7f030002;
+        public static final int sample_scheme_view=0x7f030003;
+        public static final int scheme_list_activity=0x7f030004;
     }
     public static final class menu {
         public static final int scheme_info=0x7f080000;
@@ -130,7 +136,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.android.skeletonapp:exampleColor
+          @attr name android:exampleColor
         */
         public static final int SchemeView_exampleColor = 2;
         /**
@@ -146,7 +152,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.android.skeletonapp:exampleDimension
+          @attr name android:exampleDimension
         */
         public static final int SchemeView_exampleDimension = 1;
         /**
@@ -158,7 +164,7 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          @attr name com.example.android.skeletonapp:exampleDrawable
+          @attr name android:exampleDrawable
         */
         public static final int SchemeView_exampleDrawable = 3;
         /**
@@ -172,7 +178,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.android.skeletonapp:exampleString
+          @attr name android:exampleString
         */
         public static final int SchemeView_exampleString = 0;
     };
