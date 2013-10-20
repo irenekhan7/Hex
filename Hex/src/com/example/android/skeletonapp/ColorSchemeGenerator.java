@@ -4,19 +4,10 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 
-public class AlgorithmActivity extends Activity {
-	private ImageView mImageView;
-	private Bitmap mImageBitmap;
-	private ImageView[] colorBars;
+public class ColorSchemeGenerator {
 
 	
 	/********************************************************************************************
@@ -110,11 +101,11 @@ public class AlgorithmActivity extends Activity {
 	 *******************************************************************************************/
 	
 	
-	
+	/*
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		/*
+		
 		setContentView(R.layout.activity_algorithm);
 		
 		DisplayMetrics display = this.getResources().getDisplayMetrics();
@@ -149,6 +140,8 @@ public class AlgorithmActivity extends Activity {
 			colorBars[i].setMinimumHeight(100000);
 			colorBars[i].setColorFilter(colors[i]);
 		}
-		*/
+		
 	}
+	
+	*/
 }
