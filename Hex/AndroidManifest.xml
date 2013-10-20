@@ -74,7 +74,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.android.skeletonapp.SchemeLibraryActivit" >
+        <activity android:name="com.example.android.skeletonapp.SchemeLibraryActivity" >
         </activity>
         <activity
             android:name="com.example.android.skeletonapp.SchemeInfo"
