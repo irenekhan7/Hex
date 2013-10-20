@@ -44,7 +44,7 @@ public class SchemeLibraryActivity extends Activity {
     
     public SchemeLibraryActivity() {
     }
-
+    
     /** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,4 +116,10 @@ public class SchemeLibraryActivity extends Activity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SchemeLibraryActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
