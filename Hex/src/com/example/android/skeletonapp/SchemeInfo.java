@@ -38,7 +38,6 @@ public class SchemeInfo extends Activity {
 	
 	@Override
 	public void onBackPressed(){
-		  //Your code here
 		
 		  finish();
 		  super.onBackPressed();
