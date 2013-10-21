@@ -70,11 +70,11 @@ public class PaletteRecord implements Serializable {
 	// Adds
 	public void addColor(ColorRecord color) { colors.add(color); }
 	public void addColor(Integer num) { colors.add(new ColorRecord(num)); }
-	public void addColor(ColorRecord[] adders) {
+	public void addColors(ColorRecord[] adders) {
 		for(int i = 0, len = adders.length; i < len; ++i)
 			colors.add(adders[i]);
 	}
-	public void addColor(Integer[] adders) {
+	public void addColors(Integer[] adders) {
 		for(int i = 0, len = adders.length; i < len; ++i)
 			colors.add(new ColorRecord(adders[i]));
 	}
