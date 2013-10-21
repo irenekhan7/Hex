@@ -75,11 +75,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.android.skeletonapp.SchemeLibraryActivity" >
+        <activity android:name="com.example.android.skeletonapp.PaletteLibraryActivity" >
         </activity>
         <activity
-            android:name="com.example.android.skeletonapp.SchemeInfo"
-            android:label="@string/title_activity_scheme_info" >
+            android:name="com.example.android.skeletonapp.PaletteInfo"
+            android:label="@string/title_activity_palette_info" >
         </activity>
     </application>
 

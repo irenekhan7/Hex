@@ -9,25 +9,25 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
  
-public class ColorListAdapter extends ArrayAdapter<Scheme> {
+public class ColorListAdapter extends ArrayAdapter<Palette> {
  
     Context context;
  
     public ColorListAdapter(Context context, int resourceId,
-            Scheme[] items) {
+            Palette[] items) {
         super(context, resourceId, items);
         this.context = context;
     }
  
     /*private view holder class*/
     private class ViewHolder {
-        SchemeView schemeView;
+        PaletteView paletteView;
         TextView txtDesc;
     }
  
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        Scheme rowItem = getItem(position);
+        Palette rowItem = getItem(position);
  
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -35,15 +35,15 @@ public class ColorListAdapter extends ArrayAdapter<Scheme> {
             convertView = mInflater.inflate(R.layout.listcolor, null);
             holder = new ViewHolder();
             holder.txtDesc = (TextView) convertView.findViewById(R.id.name);
-            holder.schemeView = (SchemeView) convertView.findViewById(R.id.schemeView1);
+            holder.paletteView = (PaletteView) convertView.findViewById(R.id.paletteView1);
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
  
         holder.txtDesc.setText(rowItem.getName());
-        holder.schemeView.setColorScheme(rowItem);
-       // holder.schemeView.addColor(Color.BLUE);
-       // holder.schemeView.addColor(Color.YELLOW);
+        holder.paletteView.setColorPalette(rowItem);
+       // holder.paletteView.addColor(Color.BLUE);
+       // holder.paletteView.addColor(Color.YELLOW);
  
         return convertView;
     }

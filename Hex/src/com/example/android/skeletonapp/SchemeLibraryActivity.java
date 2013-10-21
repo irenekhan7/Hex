@@ -34,7 +34,7 @@ import android.graphics.Color;
  * activity. Inside of its window, it places a single view: an EditText that
  * displays and edits some internal text.
  */
-public class SchemeLibraryActivity extends Activity {
+public class PaletteLibraryActivity extends Activity {
     
     //static final private int BACK_ID = Menu.FIRST;
   //  static final private int CLEAR_ID = Menu.FIRST + 1;
@@ -42,7 +42,7 @@ public class SchemeLibraryActivity extends Activity {
   //  private EditText mEditor;
    // private Camera camera;
     
-    public SchemeLibraryActivity() {
+    public PaletteLibraryActivity() {
     }
     
     /** Called with the activity is first created. */
@@ -51,19 +51,19 @@ public class SchemeLibraryActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // Inflate our UI from its XML layout description.
-        setContentView(R.layout.scheme_list_activity);
+        setContentView(R.layout.palette_list_activity);
 
         
         Random rnd = new Random();
         
        
-        Scheme[] myColorArray = new Scheme[10]; 
+        Palette[] myColorArray = new Palette[10]; 
         
-        ///////TEST myColorArray is filled with set names and randomly generated test colors. Should instead be loaded in from saved user schemes.
+        ///////TEST myColorArray is filled with set names and randomly generated test colors. Should instead be loaded in from saved user palettes.
         String[] myStringArray = new String[]{"Red", "Blue", "Skyline", "Garden", "Living Room", "Vacation", "Olympics", "Sunset1"
 		,"Shades of Magenta", "Buildings in Troy", "Tree Outside"};
         for(int i = 0; i < 10; i++){
-        	myColorArray[i] = new Scheme();
+        	myColorArray[i] = new Palette();
         	myColorArray[i].setName(myStringArray[i]);
         	for(int j = 0; j < 5; j++){
         		myColorArray[i].addColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
@@ -73,15 +73,15 @@ public class SchemeLibraryActivity extends Activity {
         
         ColorListAdapter adapter = new ColorListAdapter(this,
                 R.layout.listcolor, myColorArray);
-        ListView listView = (ListView) findViewById(R.id.schemeList);
+        ListView listView = (ListView) findViewById(R.id.paletteList);
         listView.setAdapter(adapter);
         
      // Create a message handling object as an anonymous class.
         OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-            	SchemeView s = (SchemeView) v.findViewById(R.id.schemeView1);
-                Intent i = new Intent(SchemeLibraryActivity.this, SchemeInfo.class);
-                i.putExtra("scheme", s.getColorScheme());
+            	PaletteView s = (PaletteView) v.findViewById(R.id.paletteView1);
+                Intent i = new Intent(PaletteLibraryActivity.this, PaletteInfo.class);
+                i.putExtra("palette", s.getColorPalette());
                 startActivity(i);
             }
         };
@@ -118,7 +118,7 @@ public class SchemeLibraryActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SchemeLibraryActivity.this, MainActivity.class);
+        Intent intent = new Intent(PaletteLibraryActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }

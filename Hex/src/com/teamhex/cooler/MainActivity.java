@@ -1,15 +1,12 @@
-package com.example.android.skeletonapp;
+package com.teamhex.cooler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -23,20 +20,25 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import com.teamhex.cooler.R;
+import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
 
 public class MainActivity extends Activity {
 
 	private Camera mCamera;
 	private CameraPreview mPreview;
-	private Bitmap mBitmap = null;
 	private static final String TAG = "ACTIVITY";
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	
+	private ColorPaletteGenerator paletteGenerator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        //Creates the object that holds the color palette algorithms
+        paletteGenerator = new ColorPaletteGenerator();
         
         //Camera instance
         mCamera = getCameraInstance();
@@ -66,15 +68,7 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     //Analyze image
-                	if (mBitmap != null)
-                	{
-                		int[] colors = ColorPaletteGenerator.colorAlgorithm(mBitmap, 5);
-                    	System.out.println("ANALYZE");
-                    	for (int i = 0; i < 5; i++)
-                    	{
-                    		System.out.println("Color #" + i + ": R(" + Color.red(colors[i]) + ") G(" + Color.green(colors[i]) + ") B(" + Color.blue(colors[i]) + ")");
-                    	}
-                	}
+                	System.out.println("ANALYZE");
                 }
             }
         );
@@ -151,13 +145,6 @@ public class MainActivity extends Activity {
             } catch (IOException e) {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
-            
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            
-    		bmOptions.inSampleSize = 4;
-    		bmOptions.inPurgeable = true;
-    		
-            mBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), bmOptions);
         }
         
         

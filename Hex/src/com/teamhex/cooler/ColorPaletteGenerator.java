@@ -1,4 +1,4 @@
-package com.example.android.skeletonapp;
+package com.teamhex.cooler;
 
 import java.util.Collections;
 import java.util.Map;
@@ -14,7 +14,7 @@ public class ColorPaletteGenerator {
 	 * Begin Color Algorithm Code
 	 *******************************************************************************************/
 	
-	private static int threshold = 5000;		//Similarity threshold. Colors whose squared difference
+	private int threshold = 5000;		//Similarity threshold. Colors whose squared difference
 										//with another color in the swatch is less than or equal
 										//to this value are not included in the swatch. Currently
 										//a fixed value, but should ideally be based on the mean
@@ -32,7 +32,7 @@ public class ColorPaletteGenerator {
 	 * 		An int array of size <n> that contains the colors in the swatch. The number of colors
 	 *      in the swatch is not necessarily <n>, however (see below).
 	 */
-	public static int[] colorAlgorithm(Bitmap bitmap, int n)
+	public int[] colorAlgorithm(Bitmap bitmap, int n)
 	{
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
@@ -74,24 +74,21 @@ public class ColorPaletteGenerator {
 		for (int i = 0; i < n; i++)
 		{
 			Map.Entry<Integer, Integer> e = reverse.firstEntry();
-			if (e != null)
+			colorPalette[i] = e.getValue();
+			
+			reverse.remove(e.getKey());
+			
+			for (int j = 0; j < i; j++)
 			{
-				colorPalette[i] = e.getValue();
-			
-				reverse.remove(e.getKey());
-			
-				for (int j = 0; j < i; j++)
-				{
-					int r = Color.red(colorPalette[i]) - Color.red(colorPalette[j]);
-					int g = Color.green(colorPalette[i]) - Color.green(colorPalette[j]);
-					int b = Color.blue(colorPalette[i]) - Color.blue(colorPalette[j]);
+				int r = Color.red(colorPalette[i]) - Color.red(colorPalette[j]);
+				int g = Color.green(colorPalette[i]) - Color.green(colorPalette[j]);
+				int b = Color.blue(colorPalette[i]) - Color.blue(colorPalette[j]);
 				
-					if ((r * r + g * g + b * b) < threshold)
-					{
-						colorPalette[i] = 0;
-						i--;
-						break;
-					}
+				if ((r * r + g * g + b * b) < threshold)
+				{
+					colorPalette[i] = 0;
+					i--;
+					break;
 				}
 			}
 		}

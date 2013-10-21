@@ -1,4 +1,4 @@
-package com.teamhex.cooler;
+package com.teamhex.cooler.Storage.Classes;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+
 import android.content.Context;
 import android.util.Log;
 
@@ -22,6 +23,8 @@ public class StorageManager {
 	// Constructor
 	// Required: String filename, Context context
 	// The initial list of PaletteRecords is loaded using the index file
+	// Sample usage: 
+	// 		new StorageManager(getApplicationContext());
 	public StorageManager() { Log.w("TeamHex", "A StorageManager is being created without a file name or context!"); }
 	public StorageManager(Context _context) { this(_context, "RecordsIndex"); }
 	public StorageManager(Context _context, String _filename) {
@@ -40,28 +43,24 @@ public class StorageManager {
 		// data > data > com.teamhex.cooler > files
 		
 		// 1. Check if the file exists, and make it if it doesn't
-		// try {
-			Log.i("TeamHex", "   Checking if file " + _filename + " exists...");
-			File checker = new File(_filename);
-			if(!checker.exists()) {
-				/*
+		Log.i("TeamHex", "   Checking if file " + _filename + " exists...");
+		File checker = context.getFileStreamPath(_filename);
+		if(!checker.exists()) {
+			try {
 				Log.i("TeamHex", "      File " + _filename + " does not yet exist, attempting to create...");
 				OutputStreamWriter osw = getFileWriter(_filename);
 				osw.write("");
 				osw.close();
 				Log.i("TeamHex", "      File " + _filename + " successfully created.");
-				*/
-				Log.w("TeamHex", "      File " + _filename + " not found, but it might already exist! :(");
 			}
-			else {
-				Log.i("TeamHex", "      File " + _filename + " successfully found.");
+			catch (IOException e1) {
+				Log.e("TeamHex", "      File " + _filename + " could not be created!");
+				return;
 			}
-		// }
-		/*
-		catch (IOException e) {
-			Log.e("TeamHex", "   Could not create file " + _filename + ": " + e.toString());
 		}
-		*/
+		else {
+			Log.i("TeamHex", "      File " + _filename + " successfully found.");
+		}
 		Log.i("TeamHex", "   File checks on file " + _filename + " complete.");
 		
 		// 2. Get a reader to the index file
@@ -94,7 +93,7 @@ public class StorageManager {
 		
 		// 4. X11 name generation is lazily loaded in the X11Helper
 		Log.i("TeamHex", "4. Making the X11Helper - not loading by default.");
-		X11_names = new X11Helper();
+		// X11_names = new X11Helper();
 		
 		Log.i("TeamHex", "Finished making a StorageManager using file index " + _filename);
 	}
@@ -106,6 +105,7 @@ public class StorageManager {
 			BufferedReader br = getFileReader(name + ".txt");
 			records.put(name, new PaletteRecord(name, br));
 			br.close();
+			num_loaded += 1;
 		}
 		catch (IOException e1) {
 			Log.e("TeamHex", "Record file " + name + " could not be read: " + e1.toString());
@@ -113,11 +113,15 @@ public class StorageManager {
 		}
 	}
 	
-	// Loads the next Num records
+	// Loads them all!
+	// To do: actually use math..
+	public void RecordLoadAll() { RecordLoadNum(9001); }
+	
+	// Loads the next Num records, limited to max
 	public void RecordLoadNum(int num) {
-		Log.i("TeamHex", "Attempting to load the next " + Integer.toString(num) + " record" + (num == 1 ? "" : "s") + ".");
 		int i = num_loaded,
 			max = Math.min(record_names.size(), num_loaded + num);
+		Log.i("TeamHex", "Attempting to load the next " + Integer.toString(num) + " record" + (num == 1 ? "" : "s") + " (out of " + max + ")");
 		while(i < max) {
 			Log.i("TeamHex", "   Record load " + Integer.toString(i) + ": " + record_names.get(i));
 			RecordLoad(record_names.get(i));
@@ -174,13 +178,24 @@ public class StorageManager {
     // getColorName
     // Pipe to the X11Helper's getColorName
     public String getColorName(String hex) {
-    	return X11Helper.getColorName(hex);
+    	// return X11Helper.getColorName(hex);
+    	return "NotYet";
     }
     
     
 	// Gets
 	public Context getContext()      { return context; }
 	public String getFileIndexName() { return fileIndexName; }
+	// Note that this will only get the ones that are loaded
+	public PaletteRecord[] getPalettesArray() {
+		PaletteRecord[] returner = new PaletteRecord[num_loaded];
+		int i = 0;
+		for(Entry<String, PaletteRecord> e : records.entrySet()) {
+			returner[i] = e.getValue();
+			++i;
+		}
+		return returner;
+	}
 	
 	// Sets
 	public void setContext(Context context)            { this.context = context; }
@@ -192,5 +207,6 @@ public class StorageManager {
 	private int num_loaded; 					// How many records have been loaded so far
 	private ArrayList<String> record_names; 	// The ordered list of record names
 	private Map<String, PaletteRecord> records; // The stored records, keyed by name
-	private X11Helper X11_names; 				// Used for color name analysis
+	// @SuppressWarnings("unused")
+	// private X11Helper X11_names; 				// Used for color name analysis
 }

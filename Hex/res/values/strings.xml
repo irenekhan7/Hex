@@ -30,7 +30,7 @@
 
     <!-- This is a complex string containing style runs. -->
     <string name="main_label">Hello <u>th<ignore>e</ignore>re</u>, <i>you</i><b>Activity</b>!</string>
-    <string name="title_activity_scheme_info">SchemeInfo</string>
+    <string name="title_activity_palette_info">PaletteInfo</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 

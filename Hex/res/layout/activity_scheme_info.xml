@@ -8,10 +8,10 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context=".SchemeInfo" >
+    tools:context=".PaletteInfo" >
 
-    <com.example.android.skeletonapp.SchemeView
-        android:id="@+id/schemeView1"
+    <com.example.android.skeletonapp.PaletteView
+        android:id="@+id/paletteView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

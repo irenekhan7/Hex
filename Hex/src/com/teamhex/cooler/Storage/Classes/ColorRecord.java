@@ -1,6 +1,8 @@
-package com.teamhex.cooler;
+package com.teamhex.cooler.Storage.Classes;
 
-public class ColorRecord {
+import java.io.Serializable;
+
+public class ColorRecord implements Serializable {
 	// Constructor
 	// Required: String name, String hex, Float percentage
 	public ColorRecord(String _name, String _hex, float _percentage) {

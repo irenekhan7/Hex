@@ -1,7 +1,10 @@
-package com.example.android.skeletonapp;
+package com.teamhex.cooler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.teamhex.cooler.Storage.Classes.ColorRecord;
+import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +17,7 @@ import android.view.View;
 public class PaletteView extends View {
     Paint paint = new Paint();
 
-    Palette colorPalette;
+    PaletteRecord palette;
     
     public PaletteView(Context context) {
         super(context);
@@ -26,14 +29,14 @@ public class PaletteView extends View {
         super(context, attrs);
     }
     
-    public void setColorPalette(Palette setting)
+    public void setColorPalette(PaletteRecord setting)
     {
-    	colorPalette = setting;
+    	palette = setting;
     }
     
-    public Palette getColorPalette()
+    public PaletteRecord getColorPalette()
     {
-    	return colorPalette;
+    	return palette;
     }
     
     int viewWidth = 0;
@@ -50,10 +53,11 @@ public class PaletteView extends View {
     @Override
     public void onDraw(Canvas canvas) {
     	
-    	if(colorPalette == null){
+    	if(palette == null){
     		return;
     	}
-    	List<Integer> colors = colorPalette.getColors();
+    	
+    	ArrayList<ColorRecord> colors = palette.getColors();
     	
     	int width = 0;
     	if(colors != null && colors.size() != 0 )
@@ -62,7 +66,7 @@ public class PaletteView extends View {
 	    	
 	    	for(int i = 0; i < colors.size(); i++)
 	    	{
-	    		paint.setColor(colors.get(i));
+	    		paint.setColor(Color.parseColor(colors.get(i).getHex()));
 	    		canvas.drawRect(i * width, 0, i*width+width, viewHeight, paint);
 	    	}
     	}

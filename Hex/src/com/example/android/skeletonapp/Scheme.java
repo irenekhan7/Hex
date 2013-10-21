@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scheme implements Serializable{
+public class Palette implements Serializable{
 
 	//I wonder if serializing a list can cause performance problems?
 	private List<Integer> colors;
 	private String name;
 	
-	public Scheme()
+	public Palette()
 	{
 		colors = new ArrayList<Integer>();
 	}

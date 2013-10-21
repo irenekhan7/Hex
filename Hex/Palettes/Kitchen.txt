@@ -1,0 +1,5 @@
+A super comfy cozy color palette!
+Brown #964b00 49.0
+Red #ff0000 35.0
+White #ffffff 14.0
+Gold #ffcc00 2.0

@@ -1,8 +1,8 @@
-package com.teamhex.cooler;
+package com.teamhex.cooler.Storage.Classes;
 
 /* PaletteRecord class
  * 
- * Stores the name, description, and list of colors for a color scheme.
+ * Stores the name, description, and list of colors for a color palette.
  * 
  * Data is stored in a .txt file using the following format:
  * """
@@ -16,11 +16,13 @@ package com.teamhex.cooler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+
 
 import android.util.Log;
 
-public class PaletteRecord {
+public class PaletteRecord implements Serializable {
 	// Constructor
 	// Required: String name, BufferedReader br
 	public PaletteRecord() { Log.w("TeamHex", "A PaletteRecord is being created without a name or BufferedReader!"); }

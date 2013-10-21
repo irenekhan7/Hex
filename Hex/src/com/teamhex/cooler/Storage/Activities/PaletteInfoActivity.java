@@ -1,4 +1,4 @@
-package com.example.android.skeletonapp;
+package com.teamhex.cooler.Storage.Activities;
 
 import java.util.Random;
 
@@ -7,7 +7,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 
-public class PaletteInfo extends Activity {
+import com.teamhex.cooler.PaletteView;
+import com.teamhex.cooler.R;
+import com.teamhex.cooler.R.id;
+import com.teamhex.cooler.R.layout;
+import com.teamhex.cooler.R.menu;
+import com.teamhex.cooler.Storage.Classes.PaletteRecord;
+
+public class PaletteInfoActivity extends Activity {
 
 	PaletteView paletteView;
 	@Override
@@ -18,15 +25,15 @@ public class PaletteInfo extends Activity {
 		paletteView = (PaletteView) findViewById(R.id.paletteView1);
 		
 		Intent i = getIntent();
-        Palette palette = (Palette)i.getSerializableExtra("palette");
-        setColorPalette(palette);
+        PaletteRecord palette = (PaletteRecord)i.getSerializableExtra("palette");
+        setPaletteRecord(palette);
 	}
 	
-	Palette colorPalette;
-	public void setColorPalette(Palette setting)
+	PaletteRecord paletteRecord;
+	public void setPaletteRecord(PaletteRecord setting)
 	{
-		colorPalette = setting;
-		paletteView.setColorPalette(colorPalette);
+		paletteRecord = setting;
+		paletteView.setColorPalette(paletteRecord);
 	}
 
 	@Override
