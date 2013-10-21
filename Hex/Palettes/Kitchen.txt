@@ -1,4 +1,4 @@
-A super comfy cozy color palette!
+A super comfy cozy color scheme!
 Brown #964b00 49.0
 Red #ff0000 35.0
 White #ffffff 14.0

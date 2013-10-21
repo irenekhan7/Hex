@@ -20,9 +20,9 @@ public class PaletteInfoActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_palette_info);
+		setContentView(R.layout.activity_scheme_info);
 		
-		paletteView = (PaletteView) findViewById(R.id.paletteView1);
+		paletteView = (PaletteView) findViewById(R.id.schemeView1);
 		
 		Intent i = getIntent();
         PaletteRecord palette = (PaletteRecord)i.getSerializableExtra("palette");
@@ -33,13 +33,13 @@ public class PaletteInfoActivity extends Activity {
 	public void setPaletteRecord(PaletteRecord setting)
 	{
 		paletteRecord = setting;
-		paletteView.setColorPalette(paletteRecord);
+		paletteView.setColorScheme(paletteRecord);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.palette_info, menu);
+		getMenuInflater().inflate(R.menu.scheme_info, menu);
 		return true;
 	}
 	

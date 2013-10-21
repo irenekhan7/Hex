@@ -62,7 +62,7 @@ public class PaletteLibraryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.palette_list_activity);
+		setContentView(R.layout.scheme_list_activity);
 		
 		// Create the initial storage manager
 		storage = new StorageManager(getApplicationContext());
@@ -89,7 +89,7 @@ public class PaletteLibraryActivity extends Activity {
 		
 		// The container listView holds the mini-Views from the adapter
 		Log.i("TeamHex", "1. Creating the listView container...");
-		container = (ListView) findViewById(R.id.paletteList);
+		container = (ListView) findViewById(R.id.schemeList);
 		
 		// Make the adapter to generate the mini-Views
 		Log.i("TeamHex", "2. Creating adapter...");
@@ -112,9 +112,9 @@ public class PaletteLibraryActivity extends Activity {
 		// Create a message handling object as an anonymous class.
         OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-            	PaletteView s = (PaletteView) v.findViewById(R.id.paletteView1);
+            	PaletteView s = (PaletteView) v.findViewById(R.id.schemeView1);
                 Intent i = new Intent(PaletteLibraryActivity.this, PaletteInfoActivity.class);
-                i.putExtra("palette", s.getColorPalette());
+                i.putExtra("palette", s.getColorScheme());
                 startActivity(i);
             }
         };

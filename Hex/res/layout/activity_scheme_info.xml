@@ -8,10 +8,10 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context=".PaletteInfo" >
+    tools:context=".PaletteInfoActivity" >
 
-    <com.example.android.skeletonapp.PaletteView
-        android:id="@+id/paletteView1"
+    <com.teamhex.cooler.PaletteView
+        android:id="@+id/schemeView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

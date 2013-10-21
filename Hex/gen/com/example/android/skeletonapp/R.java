@@ -73,18 +73,18 @@ containing a value of this type.
         public static final int button_open_library=0x7f090002;
         public static final int camera_preview=0x7f090000;
         public static final int name=0x7f090007;
-        public static final int paletteList=0x7f090008;
-        public static final int paletteView1=0x7f090006;
+        public static final int schemeList=0x7f090008;
+        public static final int schemeView1=0x7f090006;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int activity_palette_info=0x7f030001;
+        public static final int activity_scheme_info=0x7f030001;
         public static final int listcolor=0x7f030002;
-        public static final int sample_palette_view=0x7f030003;
-        public static final int palette_list_activity=0x7f030004;
+        public static final int sample_scheme_view=0x7f030003;
+        public static final int scheme_list_activity=0x7f030004;
     }
     public static final class menu {
-        public static final int palette_info=0x7f080000;
+        public static final int scheme_info=0x7f080000;
     }
     public static final class string {
         public static final int action_settings=0x7f060005;
@@ -97,7 +97,7 @@ containing a value of this type.
         /**  Simple strings. 
          */
         public static final int skeleton_app=0x7f060000;
-        public static final int title_activity_palette_info=0x7f060004;
+        public static final int title_activity_scheme_info=0x7f060004;
     }
     public static final class style {
         public static final int ActionButton=0x7f070000;
@@ -105,28 +105,28 @@ containing a value of this type.
         public static final int TextAppearance_ActionButton=0x7f070002;
     }
     public static final class styleable {
-        /** Attributes that can be used with a PaletteView.
+        /** Attributes that can be used with a SchemeView.
            <p>Includes the following attributes:</p>
            <table>
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #PaletteView_exampleColor com.example.android.skeletonapp:exampleColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #PaletteView_exampleDimension com.example.android.skeletonapp:exampleDimension}</code></td><td></td></tr>
-           <tr><td><code>{@link #PaletteView_exampleDrawable com.example.android.skeletonapp:exampleDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #PaletteView_exampleString com.example.android.skeletonapp:exampleString}</code></td><td></td></tr>
+           <tr><td><code>{@link #SchemeView_exampleColor com.example.android.skeletonapp:exampleColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #SchemeView_exampleDimension com.example.android.skeletonapp:exampleDimension}</code></td><td></td></tr>
+           <tr><td><code>{@link #SchemeView_exampleDrawable com.example.android.skeletonapp:exampleDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #SchemeView_exampleString com.example.android.skeletonapp:exampleString}</code></td><td></td></tr>
            </table>
-           @see #PaletteView_exampleColor
-           @see #PaletteView_exampleDimension
-           @see #PaletteView_exampleDrawable
-           @see #PaletteView_exampleString
+           @see #SchemeView_exampleColor
+           @see #SchemeView_exampleDimension
+           @see #SchemeView_exampleDrawable
+           @see #SchemeView_exampleString
          */
-        public static final int[] PaletteView = {
+        public static final int[] SchemeView = {
             0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003
         };
         /**
           <p>This symbol is the offset where the {@link com.example.android.skeletonapp.R.attr#exampleColor}
-          attribute's value can be found in the {@link #PaletteView} array.
+          attribute's value can be found in the {@link #SchemeView} array.
 
 
           <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
@@ -138,10 +138,10 @@ theme attribute (in the form
 containing a value of this type.
           @attr name com.example.android.skeletonapp:exampleColor
         */
-        public static final int PaletteView_exampleColor = 2;
+        public static final int SchemeView_exampleColor = 2;
         /**
           <p>This symbol is the offset where the {@link com.example.android.skeletonapp.R.attr#exampleDimension}
-          attribute's value can be found in the {@link #PaletteView} array.
+          attribute's value can be found in the {@link #SchemeView} array.
 
 
           <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
@@ -154,10 +154,10 @@ theme attribute (in the form
 containing a value of this type.
           @attr name com.example.android.skeletonapp:exampleDimension
         */
-        public static final int PaletteView_exampleDimension = 1;
+        public static final int SchemeView_exampleDimension = 1;
         /**
           <p>This symbol is the offset where the {@link com.example.android.skeletonapp.R.attr#exampleDrawable}
-          attribute's value can be found in the {@link #PaletteView} array.
+          attribute's value can be found in the {@link #SchemeView} array.
 
 
           <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
@@ -166,10 +166,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
           @attr name com.example.android.skeletonapp:exampleDrawable
         */
-        public static final int PaletteView_exampleDrawable = 3;
+        public static final int SchemeView_exampleDrawable = 3;
         /**
           <p>This symbol is the offset where the {@link com.example.android.skeletonapp.R.attr#exampleString}
-          attribute's value can be found in the {@link #PaletteView} array.
+          attribute's value can be found in the {@link #SchemeView} array.
 
 
           <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
@@ -180,6 +180,6 @@ theme attribute (in the form
 containing a value of this type.
           @attr name com.example.android.skeletonapp:exampleString
         */
-        public static final int PaletteView_exampleString = 0;
+        public static final int SchemeView_exampleString = 0;
     };
 }

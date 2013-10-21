@@ -37,7 +37,7 @@ public class ColorPaletteGenerator {
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
 		
-		int[] colorPalette = new int[n];
+		int[] colorScheme = new int[n];
 		
 		//Construct a TreeMap that represents a histogram of the number of times that each color
 		//appears in the bitmap.
@@ -74,26 +74,26 @@ public class ColorPaletteGenerator {
 		for (int i = 0; i < n; i++)
 		{
 			Map.Entry<Integer, Integer> e = reverse.firstEntry();
-			colorPalette[i] = e.getValue();
+			colorScheme[i] = e.getValue();
 			
 			reverse.remove(e.getKey());
 			
 			for (int j = 0; j < i; j++)
 			{
-				int r = Color.red(colorPalette[i]) - Color.red(colorPalette[j]);
-				int g = Color.green(colorPalette[i]) - Color.green(colorPalette[j]);
-				int b = Color.blue(colorPalette[i]) - Color.blue(colorPalette[j]);
+				int r = Color.red(colorScheme[i]) - Color.red(colorScheme[j]);
+				int g = Color.green(colorScheme[i]) - Color.green(colorScheme[j]);
+				int b = Color.blue(colorScheme[i]) - Color.blue(colorScheme[j]);
 				
 				if ((r * r + g * g + b * b) < threshold)
 				{
-					colorPalette[i] = 0;
+					colorScheme[i] = 0;
 					i--;
 					break;
 				}
 			}
 		}
 		
-		return colorPalette;
+		return colorScheme;
 	}
 	
 	/********************************************************************************************

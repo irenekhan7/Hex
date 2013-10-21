@@ -31,14 +31,14 @@ public class MainActivity extends Activity {
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	
-	private ColorPaletteGenerator paletteGenerator;
+	private ColorPaletteGenerator schemeGenerator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        //Creates the object that holds the color palette algorithms
-        paletteGenerator = new ColorPaletteGenerator();
+        //Creates the object that holds the color scheme algorithms
+        schemeGenerator = new ColorPaletteGenerator();
         
         //Camera instance
         mCamera = getCameraInstance();

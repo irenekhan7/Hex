@@ -29,12 +29,12 @@ public class PaletteView extends View {
         super(context, attrs);
     }
     
-    public void setColorPalette(PaletteRecord setting)
+    public void setColorScheme(PaletteRecord setting)
     {
     	palette = setting;
     }
     
-    public PaletteRecord getColorPalette()
+    public PaletteRecord getColorScheme()
     {
     	return palette;
     }

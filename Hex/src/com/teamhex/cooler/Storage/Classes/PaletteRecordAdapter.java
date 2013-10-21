@@ -29,7 +29,7 @@ public class PaletteRecordAdapter extends ArrayAdapter<PaletteRecord> {
 	
 	/*private view holder class*/
     private class ViewHolder {
-        PaletteView paletteView;
+        PaletteView schemeView;
         TextView txtDesc;
     }
     
@@ -51,16 +51,16 @@ public class PaletteRecordAdapter extends ArrayAdapter<PaletteRecord> {
 	            holder.txtDesc = (TextView) convertView.findViewById(R.id.name);
 	            
 	            // Color visuals
-	            holder.paletteView = (PaletteView) convertView.findViewById(R.id.paletteView1);
+	            holder.schemeView = (PaletteView) convertView.findViewById(R.id.schemeView1);
 	            
 	            convertView.setTag(holder);
 	        } else
 	            holder = (ViewHolder) convertView.getTag();
 	 
 	        holder.txtDesc.setText(rowItem.getName());
-	        holder.paletteView.setColorPalette(rowItem);
-	       // holder.paletteView.addColor(Color.BLUE);
-	       // holder.paletteView.addColor(Color.YELLOW);
+	        holder.schemeView.setColorScheme(rowItem);
+	       // holder.schemeView.addColor(Color.BLUE);
+	       // holder.schemeView.addColor(Color.YELLOW);
 	 
 	        return convertView;
 	}

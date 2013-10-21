@@ -2,7 +2,7 @@ package com.teamhex.cooler.Storage.Classes;
 
 /* PaletteRecord class
  * 
- * Stores the name, description, and list of colors for a color palette.
+ * Stores the name, description, and list of colors for a color scheme.
  * 
  * Data is stored in a .txt file using the following format:
  * """
