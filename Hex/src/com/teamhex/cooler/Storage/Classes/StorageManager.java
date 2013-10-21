@@ -44,8 +44,7 @@ public class StorageManager {
 		
 		// 1. Check if the file exists, and make it if it doesn't
 		Log.i("TeamHex", "   Checking if file " + _filename + " exists...");
-		File checker = context.getFileStreamPath(_filename);
-		if(!checker.exists()) {
+		if(!fileExists(_filename)) {
 			try {
 				Log.i("TeamHex", "      File " + _filename + " does not yet exist, attempting to create...");
 				OutputStreamWriter osw = getFileWriter(_filename);
@@ -100,6 +99,9 @@ public class StorageManager {
 	
 	// Loads the file for the given record 
 	public void RecordLoad(String name) {
+		// Remember whether the index file should be updated
+		Boolean existed = fileExists(name + ".txt");
+		
 		// Attempt to load the file into the PaletteRecord
 		try {
 			BufferedReader br = getFileReader(name + ".txt");
@@ -111,6 +113,9 @@ public class StorageManager {
 			Log.e("TeamHex", "Record file " + name + " could not be read: " + e1.toString());
 			return;
 		}
+		
+		// Recreate the index file if need be
+		if(!existed) remakeFileIndex();
 	}
 	
 	// Loads them all!
@@ -158,6 +163,12 @@ public class StorageManager {
      * Utility functions 
      */
 
+	// fileExists
+	// Simply checks whether a file exists
+	public Boolean fileExists(String filename) {
+		return context.getFileStreamPath(filename).exists();
+	}
+	
     // getFileReader
     // Simply creates a new BufferedReader
     public BufferedReader getFileReader(String filename) throws FileNotFoundException {
@@ -182,6 +193,21 @@ public class StorageManager {
     	return "NotYet";
     }
     
+    // remakeFileIndex
+    // Outputs the names of each PaletteRecord
+    public void remakeFileIndex() {
+    	// Attempt to remake the file index
+    	try {
+			OutputStreamWriter osw = getFileWriter(fileIndexName + ".txt");
+			for(int i = 0, len = record_names.size(); i < len; ++i)
+				osw.write(record_names.get(i) + "\n");
+			osw.close();
+		}
+    	// If it fails, who knows?
+    	catch(IOException e) {
+			e.printStackTrace();
+		}
+    }
     
 	// Gets
 	public Context getContext()      { return context; }
