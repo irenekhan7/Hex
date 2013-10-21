@@ -11,6 +11,8 @@ import java.util.Date;
 import com.teamhex.cooler.CameraPreview;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
+import com.teamhex.cooler.Storage.Activities.PaletteSaveActivity;
+import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 import com.teamhex.cooler.R.id;
 import com.teamhex.cooler.R.layout;
 
@@ -22,6 +24,7 @@ import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.storage.StorageManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
@@ -38,6 +41,8 @@ public class MainActivity extends Activity {
 	private static final String TAG = "ACTIVITY";
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
+	
+	private StorageManager storage;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +81,15 @@ public class MainActivity extends Activity {
                 	{
                 		int[] colors = ColorPaletteGenerator.colorAlgorithm(mBitmap, 5);
                     	System.out.println("ANALYZE");
+                    	PaletteRecord palette = new PaletteRecord();
+                    	palette.setName("A really random color scheme");
                     	for (int i = 0; i < 5; i++)
                     	{
-                    		System.out.println("Color #" + i + ": R(" + Color.red(colors[i]) + ") G(" + Color.green(colors[i]) + ") B(" + Color.blue(colors[i]) + ")");
+                    		palette.addColor(colors[i]);
                     	}
+                    	Intent i = new Intent(MainActivity.this, PaletteSaveActivity.class);
+                    	i.putExtra("palette", palette);
+                    	startActivity(i);
                 	}
                 }
             }
