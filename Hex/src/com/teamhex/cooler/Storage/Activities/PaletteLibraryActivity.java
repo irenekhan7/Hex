@@ -36,6 +36,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import android.graphics.Color;
+
+import com.teamhex.cooler.MainActivity;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.R.id;
 import com.teamhex.cooler.R.layout;
@@ -128,5 +130,14 @@ public class PaletteLibraryActivity extends Activity {
 	
 	// PaletteRecordAdapter creates the mini-Views
 	private PaletteRecordAdapter adapter;
+	
+	 
+	@Override
+	    public void onBackPressed() {
+	        Intent intent = new Intent(PaletteLibraryActivity.this, MainActivity.class);
+	        startActivity(intent);
+	        finish();
+	    }
+
 
 }
