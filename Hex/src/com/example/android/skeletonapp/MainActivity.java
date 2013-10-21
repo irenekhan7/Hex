@@ -152,7 +152,12 @@ public class MainActivity extends Activity {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
             
-            mBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            
+    		bmOptions.inSampleSize = 4;
+    		bmOptions.inPurgeable = true;
+    		
+            mBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), bmOptions);
         }
         
         

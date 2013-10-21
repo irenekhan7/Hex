@@ -74,21 +74,24 @@ public class ColorSchemeGenerator {
 		for (int i = 0; i < n; i++)
 		{
 			Map.Entry<Integer, Integer> e = reverse.firstEntry();
-			colorScheme[i] = e.getValue();
-			
-			reverse.remove(e.getKey());
-			
-			for (int j = 0; j < i; j++)
+			if (e != null)
 			{
-				int r = Color.red(colorScheme[i]) - Color.red(colorScheme[j]);
-				int g = Color.green(colorScheme[i]) - Color.green(colorScheme[j]);
-				int b = Color.blue(colorScheme[i]) - Color.blue(colorScheme[j]);
-				
-				if ((r * r + g * g + b * b) < threshold)
+				colorScheme[i] = e.getValue();
+			
+				reverse.remove(e.getKey());
+			
+				for (int j = 0; j < i; j++)
 				{
-					colorScheme[i] = 0;
-					i--;
-					break;
+					int r = Color.red(colorScheme[i]) - Color.red(colorScheme[j]);
+					int g = Color.green(colorScheme[i]) - Color.green(colorScheme[j]);
+					int b = Color.blue(colorScheme[i]) - Color.blue(colorScheme[j]);
+				
+					if ((r * r + g * g + b * b) < threshold)
+					{
+						colorScheme[i] = 0;
+						i--;
+						break;
+					}
 				}
 			}
 		}
