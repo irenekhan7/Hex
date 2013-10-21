@@ -23,9 +23,14 @@ import java.util.ArrayList;
 import android.util.Log;
 
 public class PaletteRecord implements Serializable {
-	// Constructor
+	// Default Constructor
+	public PaletteRecord() { 
+		// Everything is initially blank
+		name = "No Name";
+		description = "";
+		colors = new ArrayList<ColorRecord>();
+	}
 	// Required: String name, BufferedReader br
-	public PaletteRecord() { Log.w("TeamHex", "A PaletteRecord is being created without a name or BufferedReader!"); }
 	public PaletteRecord(String _name, BufferedReader br) throws IOException {
 		// Name and description are easy
 		name = _name;
