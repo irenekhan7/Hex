@@ -100,9 +100,7 @@ public class PaletteLibraryActivity extends Activity {
 		Log.i("TeamHex", "   Adapter created.");
 		
 		// Give the adapter to the container
-		Log.i("TeamHex", "3. Unifying the two...");
-		//container.getAlpha();
-		Log.i("TeamHex", "Container is not null");
+		Log.i("TeamHex", "3. Unifying the container and adapter...");
 		container.setAdapter(adapter);
 		Log.i("TeamHex", "   Container has received the adapter.");
 		

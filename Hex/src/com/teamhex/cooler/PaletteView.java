@@ -15,29 +15,17 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class PaletteView extends View {
+	// Initial variables
     Paint paint = new Paint();
-
     PaletteRecord palette;
     
-    public PaletteView(Context context) {
-        super(context);
-        
-    }
+    // PaletteView Constructors
+    public PaletteView(Context context) { super(context); }
+    public PaletteView(Context context, AttributeSet attrs) { super(context, attrs); }
     
-    public PaletteView(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
-    
-    public void setColorScheme(PaletteRecord setting)
-    {
-    	palette = setting;
-    }
-    
-    public PaletteRecord getColorScheme()
-    {
-    	return palette;
-    }
+    // Get & Set for ColorScheme
+    public void setColorScheme(PaletteRecord setting) { palette = setting; }
+    public PaletteRecord getColorScheme() { return palette; }
     
     int viewWidth = 0;
     int viewHeight = 0;
@@ -52,26 +40,30 @@ public class PaletteView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-    	
-    	if(palette == null){
+    	// Don't draw on a blank palette
+    	if(palette == null)
     		return;
-    	}
     	
     	ArrayList<ColorRecord> colors = palette.getColors();
     	
-    	int width = 0;
-    	if(colors != null && colors.size() != 0 )
-    	{
+    	// If there actually are colors, draw each of them
+    	if(colors != null && colors.size() != 0 ) {
+        	int width = 0;
+        	ColorRecord current;
 	    	width = viewWidth / colors.size();
-	    	
-	    	for(int i = 0; i < colors.size(); i++)
-	    	{
+    		
+	    	for(int i = 0; i < colors.size(); i++) {
+	    		// Each color width is its percentage (rather than an even division)
+	    		current = colors.get(i);
+	    		// width = (int) ( viewWidth / (current.getPercentage() / 100) );
+	    		
+	    		// Draw the actual color using Android.graphics.Paint
 	    		paint.setColor(Color.parseColor(colors.get(i).getHex()));
-	    		canvas.drawRect(i * width, 0, i*width+width, viewHeight, paint);
+	    		canvas.drawRect(i * width, 0, i * width + width, viewHeight, paint);
 	    	}
     	}
-    	else
-    	{
+    	// Otherwise just draw plain white
+    	else {
     		paint.setColor(Color.WHITE);
     		canvas.drawRect(0, 0, viewWidth, viewHeight, paint);
     	}
