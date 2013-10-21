@@ -78,6 +78,8 @@
         </activity>
         <activity android:name="com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity" >
         </activity>
+        <activity android:name="com.teamhex.cooler.Storage.Activities.PaletteSaveActivity" >
+        </activity>
         <activity
             android:name="com.teamhex.cooler.Storage.Activities.PaletteInfoActivity"
             android:label="@string/title_activity_scheme_info" >
