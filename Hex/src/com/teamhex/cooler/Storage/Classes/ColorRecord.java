@@ -2,12 +2,25 @@ package com.teamhex.cooler.Storage.Classes;
 
 import java.io.Serializable;
 
+import android.graphics.Color;
+
 public class ColorRecord implements Serializable {
 	// Constructor
 	// Required: String name, String hex, Float percentage
 	public ColorRecord(String _name, String _hex, float _percentage) {
 		name       = _name;
 		hex        = _hex;
+		percentage = _percentage;
+	}
+	
+	public ColorRecord(String _name, int _value, float _percentage) {
+		name       = _name;
+		
+		int r = Color.red(_value);
+		int g = Color.green(_value);
+		int b = Color.blue(_value);
+		
+		hex        = String.format("#%2o%2o%2o", r, g, b);
 		percentage = _percentage;
 	}
 	
