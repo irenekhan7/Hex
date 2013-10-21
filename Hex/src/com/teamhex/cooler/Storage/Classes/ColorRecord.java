@@ -13,9 +13,10 @@ public class ColorRecord implements Serializable {
 		percentage = 0;
 	}
 	// Required: Integer hex
-	public ColorRecord(Integer _value) {
+	public ColorRecord(Integer _value) 
+	{
 		name      = "No_Name";
-		
+
 		int r = Color.red(_value);
 		int g = Color.green(_value);
 		int b = Color.blue(_value);

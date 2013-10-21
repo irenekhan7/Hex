@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 public class PaletteView extends View {
@@ -48,18 +49,24 @@ public class PaletteView extends View {
     	
     	// If there actually are colors, draw each of them
     	if(colors != null && colors.size() != 0 ) {
-        	int width = 0;
+			// Each paint starts at the rightmost part of the previous
+        	int offset = 0,
+        		width;
         	ColorRecord current;
-	    	width = viewWidth / colors.size();
-    		
+        	
+        	// For each color:
 	    	for(int i = 0; i < colors.size(); i++) {
-	    		// Each color width is its percentage (rather than an even division)
 	    		current = colors.get(i);
-	    		// width = (int) ( viewWidth / (current.getPercentage() / 100) );
+	    		
+	    		// The paint width is its percentage of the whole
+	    		width = (int) ( ( (Float) Math.max(1, current.getPercentage()) / 100 ) * viewWidth );
 	    		
 	    		// Draw the actual color using Android.graphics.Paint
 	    		paint.setColor(Color.parseColor(colors.get(i).getHex()));
-	    		canvas.drawRect(i * width, 0, i * width + width, viewHeight, paint);
+	    		canvas.drawRect(offset, 0, offset + width, viewHeight, paint);
+	    		
+	    		// Increase the offset (because width isn't constant)
+	    		offset += width;
 	    	}
     	}
     	// Otherwise just draw plain white
