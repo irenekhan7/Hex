@@ -82,6 +82,9 @@
             android:name="com.teamhex.cooler.Storage.Activities.PaletteInfoActivity"
             android:label="@string/title_activity_scheme_info" >
         </activity>
+
     </application>
 
+    
+    
 </manifest>
