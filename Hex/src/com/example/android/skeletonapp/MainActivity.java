@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -25,18 +28,15 @@ public class MainActivity extends Activity {
 
 	private Camera mCamera;
 	private CameraPreview mPreview;
+	private Bitmap mBitmap = null;
 	private static final String TAG = "ACTIVITY";
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	
-	private ColorSchemeGenerator schemeGenerator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        //Creates the object that holds the color scheme algorithms
-        schemeGenerator = new ColorSchemeGenerator();
         
         //Camera instance
         mCamera = getCameraInstance();
@@ -66,7 +66,15 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     //Analyze image
-                	System.out.println("ANALYZE");
+                	if (mBitmap != null)
+                	{
+                		int[] colors = ColorSchemeGenerator.colorAlgorithm(mBitmap, 5);
+                    	System.out.println("ANALYZE");
+                    	for (int i = 0; i < 5; i++)
+                    	{
+                    		System.out.println("Color #" + i + ": " + colors[i]);
+                    	}
+                	}
                 }
             }
         );
@@ -143,6 +151,8 @@ public class MainActivity extends Activity {
             } catch (IOException e) {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
+            
+            mBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
         }
         
         

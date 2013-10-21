@@ -14,7 +14,7 @@ public class ColorSchemeGenerator {
 	 * Begin Color Algorithm Code
 	 *******************************************************************************************/
 	
-	private int threshold = 5000;		//Similarity threshold. Colors whose squared difference
+	private static int threshold = 5000;		//Similarity threshold. Colors whose squared difference
 										//with another color in the swatch is less than or equal
 										//to this value are not included in the swatch. Currently
 										//a fixed value, but should ideally be based on the mean
@@ -32,7 +32,7 @@ public class ColorSchemeGenerator {
 	 * 		An int array of size <n> that contains the colors in the swatch. The number of colors
 	 *      in the swatch is not necessarily <n>, however (see below).
 	 */
-	public int[] colorAlgorithm(Bitmap bitmap, int n)
+	public static int[] colorAlgorithm(Bitmap bitmap, int n)
 	{
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
