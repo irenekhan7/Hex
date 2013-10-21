@@ -44,19 +44,20 @@ public class MainActivity extends Activity {
 	
 	private StorageManager storage;
 	
+	FrameLayout preview;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        //Camera instance
-        mCamera = getCameraInstance();
+
+        //Camera is now acquired in onResume
         
         //Create preview and set as content of activity
         mPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(mPreview);
-        
+        preview = (FrameLayout) findViewById(R.id.camera_preview);
+
         //Capture button
         Button captureButton = (Button) findViewById(R.id.button_capture);
         captureButton.setOnClickListener(
@@ -69,6 +70,8 @@ public class MainActivity extends Activity {
                 }
             }
         );
+        
+       
         
       //Analyze button
         Button analyzeButton = (Button) findViewById(R.id.button_analyze);
@@ -120,6 +123,31 @@ public class MainActivity extends Activity {
                 }
             }
         );
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause(); 
+        preview.removeView(mPreview); //Remove the preview from the view to prevent crash
+        releaseCamera();              // release the camera immediately on pause event
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();   
+        mCamera = getCameraInstance();
+        mPreview.setCamera(mCamera);
+        if(mCamera != null)
+        {
+        	preview.addView(mPreview); //Add the preview back into the view
+        }
+    }
+
+    private void releaseCamera(){
+        if (mCamera != null){
+            mCamera.release();        // release the camera for other applications
+            mCamera = null;
+        }
     }
 
 
@@ -189,6 +217,7 @@ public class MainActivity extends Activity {
         private File getOutputMediaFile(int type){
         	File mediaFile = null;
 
+        	String status = Environment.getExternalStorageState();
         	//Check if SD card is mounted
         	if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
         	{

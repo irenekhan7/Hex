@@ -29,6 +29,16 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
+    public void setCamera(Camera camera)
+    {
+    	mCamera = camera;
+    }
+    
+    public Camera getCamera()
+    {
+    	return mCamera;
+    }
+    
     public void surfaceCreated(SurfaceHolder holder) {
         try {
             // This case can actually happen if the user opens and closes the camera too frequently.

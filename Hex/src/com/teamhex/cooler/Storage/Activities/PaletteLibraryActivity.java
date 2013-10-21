@@ -131,13 +131,13 @@ public class PaletteLibraryActivity extends Activity {
 	// PaletteRecordAdapter creates the mini-Views
 	private PaletteRecordAdapter adapter;
 	
-	 
+	 /*
 	@Override
 	    public void onBackPressed() {
 	        Intent intent = new Intent(PaletteLibraryActivity.this, MainActivity.class);
 	        startActivity(intent);
 	        finish();
-	    }
+	    }*/
 
 
 }
