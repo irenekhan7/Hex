@@ -66,6 +66,18 @@ public class PaletteRecord implements Serializable {
 	public void setName(String name) 			         { this.name = name; }
 	public void setDescription(String description)  	 { this.description = description; }
 	public void setColors(ArrayList<ColorRecord> colors) { this.colors = colors; }
+	
+	// Adds
+	public void addColor(ColorRecord color) { colors.add(color); }
+	public void addColor(Integer num) { colors.add(new ColorRecord(num)); }
+	public void addColor(ColorRecord[] adders) {
+		for(int i = 0, len = adders.length; i < len; ++i)
+			colors.add(adders[i]);
+	}
+	public void addColor(Integer[] adders) {
+		for(int i = 0, len = adders.length; i < len; ++i)
+			colors.add(new ColorRecord(adders[i]));
+	}
 
 	private String name;
 	private String description;
