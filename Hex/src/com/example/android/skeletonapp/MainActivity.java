@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
                     	System.out.println("ANALYZE");
                     	for (int i = 0; i < 5; i++)
                     	{
-                    		System.out.println("Color #" + i + ": " + colors[i]);
+                    		System.out.println("Color #" + i + ": R(" + Color.red(colors[i]) + ") G(" + Color.green(colors[i]) + ") B(" + Color.blue(colors[i]) + ")");
                     	}
                 	}
                 }
