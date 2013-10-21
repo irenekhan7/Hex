@@ -1,4 +1,4 @@
-package com.example.android.skeletonapp;
+package com.teamhex.cooler;
 
 import java.util.Collections;
 import java.util.Map;
@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-public class ColorSchemeGenerator {
+public class ColorPaletteGenerator {
 
 	
 	/********************************************************************************************

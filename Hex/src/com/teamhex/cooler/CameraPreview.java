@@ -1,4 +1,4 @@
-package com.example.android.skeletonapp;
+package com.teamhex.cooler;
 
 import java.io.IOException;
 

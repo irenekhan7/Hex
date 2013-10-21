@@ -1,4 +1,4 @@
-package com.example.android.skeletonapp;
+package com.teamhex.cooler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.teamhex.cooler.CameraPreview;
+import com.teamhex.cooler.R;
+import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
+import com.teamhex.cooler.R.id;
+import com.teamhex.cooler.R.layout;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -68,7 +74,7 @@ public class MainActivity extends Activity {
                     //Analyze image
                 	if (mBitmap != null)
                 	{
-                		int[] colors = ColorSchemeGenerator.colorAlgorithm(mBitmap, 5);
+                		int[] colors = ColorPaletteGenerator.colorAlgorithm(mBitmap, 5);
                     	System.out.println("ANALYZE");
                     	for (int i = 0; i < 5; i++)
                     	{
@@ -99,7 +105,7 @@ public class MainActivity extends Activity {
                 public void onClick(View v) {
                     //Open library 
                 	//System.out.println("OPEN LIBRARY");
-                	Intent i = new Intent(MainActivity.this, SchemeLibraryActivity.class);
+                	Intent i = new Intent(MainActivity.this, PaletteLibraryActivity.class);
                     startActivity(i);
                 }
             }

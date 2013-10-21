@@ -31,7 +31,7 @@
      to come from a domain that you own or have control over.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.skeletonapp" >
+    package="com.teamhex.cooler" >
 
     <!--
          This package contains an application...  The 'label' is the name
@@ -40,6 +40,7 @@
          reference to one of our string resources.
     -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -47,7 +48,7 @@
 
     <uses-sdk android:minSdkVersion="9" />
 
-    <application android:label="@string/skeleton_app" >
+    <application android:label="@string/app_name" >
 
         <!--
              An Activity in the application - this is something the user
@@ -55,7 +56,7 @@
              name of the class within your package that implements this
              activity.
         -->
-        <activity android:name="com.example.android.skeletonapp.MainActivity" >
+        <activity android:name="com.teamhex.cooler.MainActivity" >
 
             <!--
                  An IntentFilter tells the system when it should use your
@@ -75,10 +76,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.android.skeletonapp.SchemeLibraryActivity" >
+        <activity android:name="com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity" >
         </activity>
         <activity
-            android:name="com.example.android.skeletonapp.SchemeInfo"
+            android:name="com.teamhex.cooler.Storage.Activities.PaletteInfoActivity"
             android:label="@string/title_activity_scheme_info" >
         </activity>
     </application>

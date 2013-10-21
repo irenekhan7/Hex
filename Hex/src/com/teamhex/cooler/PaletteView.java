@@ -1,7 +1,10 @@
-package com.example.android.skeletonapp;
+package com.teamhex.cooler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.teamhex.cooler.Storage.Classes.ColorRecord;
+import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,29 +14,29 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class SchemeView extends View {
+public class PaletteView extends View {
     Paint paint = new Paint();
 
-    Scheme colorScheme;
+    PaletteRecord palette;
     
-    public SchemeView(Context context) {
+    public PaletteView(Context context) {
         super(context);
         
     }
     
-    public SchemeView(Context context, AttributeSet attrs)
+    public PaletteView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
     
-    public void setColorScheme(Scheme setting)
+    public void setColorScheme(PaletteRecord setting)
     {
-    	colorScheme = setting;
+    	palette = setting;
     }
     
-    public Scheme getColorScheme()
+    public PaletteRecord getColorScheme()
     {
-    	return colorScheme;
+    	return palette;
     }
     
     int viewWidth = 0;
@@ -50,10 +53,11 @@ public class SchemeView extends View {
     @Override
     public void onDraw(Canvas canvas) {
     	
-    	if(colorScheme == null){
+    	if(palette == null){
     		return;
     	}
-    	List<Integer> colors = colorScheme.getColors();
+    	
+    	ArrayList<ColorRecord> colors = palette.getColors();
     	
     	int width = 0;
     	if(colors != null && colors.size() != 0 )
@@ -62,7 +66,7 @@ public class SchemeView extends View {
 	    	
 	    	for(int i = 0; i < colors.size(); i++)
 	    	{
-	    		paint.setColor(colors.get(i));
+	    		paint.setColor(Color.parseColor(colors.get(i).getHex()));
 	    		canvas.drawRect(i * width, 0, i*width+width, viewHeight, paint);
 	    	}
     	}
