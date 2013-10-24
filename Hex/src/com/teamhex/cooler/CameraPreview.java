@@ -1,7 +1,5 @@
 package com.teamhex.cooler;
 
-import java.io.IOException;
-
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
@@ -16,8 +14,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Camera mCamera;
     private static final String TAG = "ACTIVITY";
 
-    @SuppressWarnings("deprecation")
-	public CameraPreview(Context context, Camera camera) {
+    public CameraPreview(Context context, Camera camera) {
         super(context);
         mCamera = camera;
 

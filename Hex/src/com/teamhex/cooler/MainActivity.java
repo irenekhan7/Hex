@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,18 +12,12 @@ import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
 import com.teamhex.cooler.Storage.Activities.PaletteSaveActivity;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
-import com.teamhex.cooler.R.id;
-import com.teamhex.cooler.R.layout;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.storage.StorageManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
@@ -41,8 +34,6 @@ public class MainActivity extends Activity {
 	private static final String TAG = "ACTIVITY";
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
-	
-	private StorageManager storage;
 	
 	FrameLayout preview;
 	
@@ -208,16 +199,10 @@ public class MainActivity extends Activity {
         public static final int MEDIA_TYPE_IMAGE = 1;
         public static final int MEDIA_TYPE_VIDEO = 2;
 
-        /** Create a file Uri for saving an image or video */
-        private Uri getOutputMediaFileUri(int type){
-              return Uri.fromFile(getOutputMediaFile(type));
-        }
-
         /** Create a File for saving an image or video */
         private File getOutputMediaFile(int type){
         	File mediaFile = null;
 
-        	String status = Environment.getExternalStorageState();
         	//Check if SD card is mounted
         	if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
         	{
@@ -234,7 +219,7 @@ public class MainActivity extends Activity {
             }
 
             // Create a media file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.getDefault()).format(new Date());
             //File mediaFile;
             if (type == MEDIA_TYPE_IMAGE){
                 mediaFile = new File(mediaStorageDir.getPath() + File.separator +

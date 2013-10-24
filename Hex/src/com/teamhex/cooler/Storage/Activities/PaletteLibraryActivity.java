@@ -17,9 +17,6 @@
 package com.teamhex.cooler.Storage.Activities;
 
 
-import java.util.Random;
-
-
 import com.teamhex.cooler.PaletteView;
 //import com.teamhex.cooler.Menu;
 //import com.teamhex.cooler.Override;
@@ -35,12 +32,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import android.graphics.Color;
-
-import com.teamhex.cooler.MainActivity;
-import com.teamhex.cooler.R;
-import com.teamhex.cooler.R.id;
-import com.teamhex.cooler.R.layout;
 import com.teamhex.cooler.Storage.Classes.PaletteRecordAdapter;
 import com.teamhex.cooler.Storage.Classes.StorageManager;
 
@@ -111,7 +102,7 @@ public class PaletteLibraryActivity extends Activity {
 		
 		// Create a message handling object as an anonymous class.
         OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             	PaletteView s = (PaletteView) v.findViewById(R.id.schemeView1);
                 Intent i = new Intent(PaletteLibraryActivity.this, PaletteInfoActivity.class);
                 i.putExtra("palette", s.getColorScheme());

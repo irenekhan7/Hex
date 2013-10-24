@@ -1,7 +1,5 @@
 package com.teamhex.cooler.Storage.Activities;
 
-import java.util.Random;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -9,9 +7,6 @@ import android.view.Menu;
 
 import com.teamhex.cooler.PaletteView;
 import com.teamhex.cooler.R;
-import com.teamhex.cooler.R.id;
-import com.teamhex.cooler.R.layout;
-import com.teamhex.cooler.R.menu;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 public class PaletteInfoActivity extends Activity {

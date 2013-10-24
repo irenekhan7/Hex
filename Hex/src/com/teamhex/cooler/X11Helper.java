@@ -1,10 +1,7 @@
 package com.teamhex.cooler;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map.Entry;
-
 import android.util.Log;
 
 public class X11Helper {
@@ -19,7 +16,9 @@ public class X11Helper {
 	// Manually load the names
 	public void Load() {
 		cache = new HashMap<String, String>();
-    	names = new HashMap<String, String>() {{
+    	names = new HashMap<String, String>() {
+    		private static final long serialVersionUID = 1L; // so ADT stops complaining
+		{
     		put("#FFB6C1", "LightPink");
     		put("#FFC0CB", "Pink");
     		put("#DC143C", "Crimson");
