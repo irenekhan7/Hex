@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import android.util.Log;
 
 public class PaletteRecord implements Serializable {
+	// Serial ID to stop ADT from complaining
+	private static final long serialVersionUID = -8073525651268285421L;
+	
 	// Default Constructor
 	public PaletteRecord() { 
 		// Everything is initially blank

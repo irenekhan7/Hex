@@ -5,6 +5,9 @@ import java.io.Serializable;
 import android.graphics.Color;
 
 public class ColorRecord implements Serializable {
+	// Serial ID to stop ADT from complaining
+	private static final long serialVersionUID = -7643562291502389977L;
+	
 	// Constructor
 	// Required: String hex
 	public ColorRecord(String _hex) {
