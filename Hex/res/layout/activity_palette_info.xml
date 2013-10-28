@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    tools:context=".PaletteInfoActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.94" >
+
+        <com.teamhex.cooler.PaletteView
+            android:id="@+id/paletteEditView"
+            android:layout_width="fill_parent"
+            android:layout_height="395dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1.94" />
+
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="Edit!" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/paletteName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name!"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</LinearLayout>

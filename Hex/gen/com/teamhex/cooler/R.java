@@ -65,26 +65,33 @@ containing a value of this type.
         public static final int violet=0x7f020000;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f090005;
-        public static final int action_settings=0x7f090009;
+        public static final int LinearLayout1=0x7f090008;
+        public static final int RelativeLayout1=0x7f09000b;
+        public static final int action_settings=0x7f09000e;
         public static final int button_analyze=0x7f090001;
         public static final int button_capture=0x7f090003;
+        public static final int button_edit=0x7f090009;
         public static final int button_import=0x7f090004;
         public static final int button_open_library=0x7f090002;
+        public static final int button_save=0x7f090006;
         public static final int camera_preview=0x7f090000;
-        public static final int name=0x7f090007;
-        public static final int schemeList=0x7f090008;
-        public static final int schemeView1=0x7f090006;
+        public static final int editName=0x7f090007;
+        public static final int name=0x7f09000c;
+        public static final int paletteEditView=0x7f090005;
+        public static final int paletteName=0x7f09000a;
+        public static final int schemeList=0x7f09000d;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int activity_scheme_info=0x7f030001;
-        public static final int listcolor=0x7f030002;
-        public static final int sample_scheme_view=0x7f030003;
-        public static final int scheme_list_activity=0x7f030004;
+        public static final int activity_palette_edit=0x7f030001;
+        public static final int activity_palette_info=0x7f030002;
+        public static final int listcolor=0x7f030003;
+        public static final int sample_scheme_view=0x7f030004;
+        public static final int scheme_list_activity=0x7f030005;
     }
     public static final class menu {
-        public static final int scheme_info=0x7f080000;
+        public static final int palette_edit=0x7f080000;
+        public static final int scheme_info=0x7f080001;
     }
     public static final class string {
         public static final int action_settings=0x7f060005;
@@ -98,6 +105,7 @@ containing a value of this type.
         /**  Simple strings. 
          */
         public static final int skeleton_app=0x7f060000;
+        public static final int title_activity_palette_edit=0x7f060008;
         public static final int title_activity_scheme_info=0x7f060004;
     }
     public static final class style {

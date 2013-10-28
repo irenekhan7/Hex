@@ -82,7 +82,13 @@
         </activity>
         <activity
             android:name="com.teamhex.cooler.Storage.Activities.PaletteInfoActivity"
-            android:label="@string/title_activity_scheme_info" >
+            android:label="@string/title_activity_scheme_info"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.teamhex.cooler.Storage.Activities.PaletteEditActivity"
+            android:label="@string/title_activity_palette_edit"
+            android:theme="@android:style/Theme.Black.NoTitleBar"  >
         </activity>
 
          <activity
@@ -94,3 +100,6 @@
     
     
 </manifest>
+
+
+

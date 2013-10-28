@@ -31,13 +31,14 @@ import android.widget.FrameLayout;
 
 public class MainActivity extends Activity {
 
+	private static final String TAG = "TeamHex";
+	public static final int MEDIA_TYPE_IMAGE = 1;
+	public static final int MEDIA_TYPE_VIDEO = 2;
+	
 	private Camera mCamera;
 	private DrawingView drawView;
 	private CameraPreview mPreview;
 	private Bitmap mBitmap = null;
-	private static final String TAG = "ACTIVITY";
-	public static final int MEDIA_TYPE_IMAGE = 1;
-	public static final int MEDIA_TYPE_VIDEO = 2;
 	
 	FrameLayout preview;
 	
@@ -46,34 +47,30 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-
-        //Camera is now acquired in onResume
-        
-        //Create preview and set as content of activity
+        // Create preview and set as content of activity
         mPreview = new CameraPreview(this, mCamera);
         preview = (FrameLayout) findViewById(R.id.camera_preview);
 
-        //Capture button
+        // Event listener: Capture button
         Button captureButton = (Button) findViewById(R.id.button_capture);
         captureButton.setOnClickListener(
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // get an image from the camera
-                	System.out.println("CAPTURE CLICKED\n");
+                	Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
                     mCamera.takePicture(null, null, mPicture);
                 }
             }
         );
         
-       
-        
-      //Analyze button
+       // Event listener: Analyze button
         Button analyzeButton = (Button) findViewById(R.id.button_analyze);
         analyzeButton.setOnClickListener(
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     //Analyze image
                 	if (mBitmap != null)
                 	{
@@ -82,27 +79,25 @@ public class MainActivity extends Activity {
                         mBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
                         d.putExtra("byteArray", bs.toByteArray());
                     	startActivityForResult(d, 1);
-                    	
                 	}
                 }
             }
         );
         
-    
-    
-    // Import button listener
+
+        // Event listener: Import button
         Button importButton = (Button) findViewById(R.id.button_import);
         importButton.setOnClickListener(
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //Import
-                	System.out.println("IMPORT AN IMAGE");
+                	Log.i("TeamHex", "Image importing not yet implemented!");
                 }
             }
         );
         
-    //Open library button listener
+        // Event listener: Library button
         Button libraryButton = (Button) findViewById(R.id.button_open_library);
         libraryButton.setOnClickListener(
             new View.OnClickListener() {
@@ -110,6 +105,7 @@ public class MainActivity extends Activity {
                 public void onClick(View v) {
                     //Open library 
                 	//System.out.println("OPEN LIBRARY");
+                	Log.i("TeamHex", "Opening the library activity");
                 	Intent i = new Intent(MainActivity.this, PaletteLibraryActivity.class);
                     startActivity(i);
                 }
@@ -142,7 +138,6 @@ public class MainActivity extends Activity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -151,7 +146,6 @@ public class MainActivity extends Activity {
         //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
     
     public static Camera getCameraInstance(){
         Camera c = null;
@@ -175,37 +169,46 @@ public class MainActivity extends Activity {
                             .getByteArrayExtra("subBitmap").length); 
         }
     	
+    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
 		int[] colors = ColorPaletteGenerator.colorAlgorithm(mBitmap, 5);
     	System.out.println("ANALYZE");
+    	
+    	// Store the output from colors[] into a new PaletteRecord
     	PaletteRecord palette = new PaletteRecord();
     	palette.setName("A really random color scheme");
     	for (int i = 0; i < 5; i++)
-    	{
     		palette.addColor(colors[i]);
-    	}
     	
     	System.out.println("ANALYZED");
     	
-    	Intent i = new Intent(MainActivity.this, PaletteSaveActivity.class);
-    	i.putExtra("palette", palette);
-    	startActivity(i);
+    	// Get auto-generated names for the palette
+    	Log.i("TeamHex", "Using the X11Helper to generate names for the palette");
+    	palette.setX11Names(mX11Helper);
+    	
+    	// Go to the PaletteSaveActivity to save the palette into the library
+    	Intent intent_save = new Intent(MainActivity.this, PaletteSaveActivity.class);
+    	intent_save.putExtra("palette", palette);
+    	startActivity(intent_save);
     	System.out.println("SAVED");
     }
     
-    //Handle media storage once picture is captured
+
+    // Handle media storage once picture is captured
     private PictureCallback mPicture = new PictureCallback() 
     {
  
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-
+    		// Grab the pitcure file from MEDIA_TYPE_IMAGE
             File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-            if (pictureFile == null){
-                Log.d(TAG, "Error creating media file, check storage permissions: " +
-                    "ERROR");
+            
+            // If it's null, complain and stop
+            if(pictureFile == null){
+                Log.d(TAG, "For whatever reason, the pictureFile is null.");
                 return;
             }
 
+            // Otherwise attempt to stream the data to an output file
             try {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
@@ -216,18 +219,13 @@ public class MainActivity extends Activity {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
             
+            // Decode the bitmap and store it into mBitmap
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            
     		bmOptions.inSampleSize = 4;
     		bmOptions.inPurgeable = true;
-    		
             mBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), bmOptions);
         }
         
-        
-        public static final int MEDIA_TYPE_IMAGE = 1;
-        public static final int MEDIA_TYPE_VIDEO = 2;
-
         /** Create a File for saving an image or video */
         private File getOutputMediaFile(int type){
         	File mediaFile = null;
@@ -264,4 +262,7 @@ public class MainActivity extends Activity {
         } 
         
     };
+
+    // Helps PaletteRecords generate names for their colors
+    private X11Helper mX11Helper = new X11Helper();
 }
