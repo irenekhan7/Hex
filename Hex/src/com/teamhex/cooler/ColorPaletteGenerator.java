@@ -14,11 +14,11 @@ public class ColorPaletteGenerator {
 	 * Begin Color Algorithm Code
 	 *******************************************************************************************/
 	
-	private static int threshold = 5000;		//Similarity threshold. Colors whose squared difference
-										//with another color in the swatch is less than or equal
-										//to this value are not included in the swatch. Currently
-										//a fixed value, but should ideally be based on the mean
-										//and standard deviation of the color values.
+	private static int threshold = 5000;	//Similarity threshold. Colors whose squared difference
+											//with another color in the swatch is less than or equal
+											//to this value are not included in the swatch. Currently
+											//a fixed value, but should ideally be based on the mean
+											//and standard deviation of the color values.
 	
 	
 	/*public int[] colorAlgorithm(Bitmap bitmap, int n):

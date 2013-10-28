@@ -19,13 +19,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.teamhex.cooler.X11Helper;
+
 
 import android.util.Log;
 
 public class PaletteRecord implements Serializable {
 	// Serial ID to stop ADT from complaining
 	private static final long serialVersionUID = -8073525651268285421L;
-	
 	// Default Constructor
 	public PaletteRecord() { 
 		// Everything is initially blank
@@ -58,6 +59,13 @@ public class PaletteRecord implements Serializable {
 			saver += "\n" + colors.get(i).getSaveString();
 		}
 		return saver;
+	}
+	
+	// Takes in an X11Helper and uses it to 'guess' the ColorRecord names
+	public void setX11Names(X11Helper helper) {
+		for(int i = 0, len = colors.size(); i < len; ++i) {
+			colors.get(i).setX11Name(helper);
+		}
 	}
 
 	// Gets
