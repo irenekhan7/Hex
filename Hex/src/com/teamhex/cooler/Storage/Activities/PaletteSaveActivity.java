@@ -34,11 +34,11 @@ public class PaletteSaveActivity extends Activity {
 		storage.RecordSave(palette);
 
 		Log.i("TeamHex", "The Palette has been saved.");
-		finish();
+		//finish();
 		
 		// Now that it's saved, go to the library activity
-    	//Intent intent_new = new Intent(PaletteSaveActivity.this, PaletteLibraryActivity.class);
-    	//startActivity(intent_new);
+    	Intent intent_new = new Intent(PaletteSaveActivity.this, PaletteLibraryActivity.class);
+    	startActivity(intent_new);
 	}
 
 }
