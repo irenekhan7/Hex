@@ -38,7 +38,7 @@ public class ColorListAdapter extends ArrayAdapter<PaletteRecord> {
             convertView = mInflater.inflate(R.layout.listcolor, null);
             holder = new ViewHolder();
             holder.txtDesc = (TextView) convertView.findViewById(R.id.name);
-            holder.paletteView = (PaletteView) convertView.findViewById(R.id.schemeView1);
+            holder.paletteView = (PaletteView) convertView.findViewById(R.id.paletteEditView);
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();

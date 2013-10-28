@@ -25,6 +25,7 @@ import com.teamhex.cooler.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 import com.teamhex.cooler.Storage.Classes.PaletteRecordAdapter;
 import com.teamhex.cooler.Storage.Classes.StorageManager;
 
@@ -86,10 +88,25 @@ public class PaletteLibraryActivity extends Activity {
 		
 		// Make the adapter to generate the mini-Views
 		Log.i("TeamHex", "2. Creating adapter...");
+		
+		
+		PaletteRecord[] palettes = storage.getPalettesArray();
+		if(palettes.length == 0)
+		{
+			palettes = new PaletteRecord[1];
+			PaletteRecord empty = new PaletteRecord();
+			empty.addColor(Color.RED);
+			empty.addColor(Color.WHITE);
+			empty.addColor(Color.BLUE);
+			empty.addColor(Color.GREEN);
+			empty.addColor(Color.MAGENTA);
+			empty.setName("America and Green and Magenta");
+			palettes[0] = empty;
+		}
 		adapter = new PaletteRecordAdapter(
 				this,
 				R.layout.listcolor,
-				storage.getPalettesArray());
+				palettes);
 		Log.i("TeamHex", "   Adapter created.");
 		
 		// Give the adapter to the container
@@ -103,7 +120,7 @@ public class PaletteLibraryActivity extends Activity {
 		// Create a message handling object as an anonymous class.
         OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            	PaletteView s = (PaletteView) v.findViewById(R.id.schemeView1);
+            	PaletteView s = (PaletteView) v.findViewById(R.id.paletteEditView);
                 Intent i = new Intent(PaletteLibraryActivity.this, PaletteInfoActivity.class);
                 i.putExtra("palette", s.getColorScheme());
                 startActivity(i);
