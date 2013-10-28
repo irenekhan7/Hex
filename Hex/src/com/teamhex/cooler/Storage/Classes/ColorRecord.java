@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.teamhex.cooler.X11Helper;
 
 import android.graphics.Color;
+import android.util.Log;
 
 public class ColorRecord implements Serializable {
 	// Serial ID to stop ADT from complaining
@@ -23,7 +24,7 @@ public class ColorRecord implements Serializable {
 		int r = Color.red(_value);
 		int g = Color.green(_value);
 		int b = Color.blue(_value);
-		hex        = String.format("#%2o%2o%2o", r, g, b);
+		hex        = String.format("#%02x%02x%02x", r, g, b);
 		
 		percentage = 0;
 	}
@@ -40,8 +41,8 @@ public class ColorRecord implements Serializable {
 		int r = Color.red(_value);
 		int g = Color.green(_value);
 		int b = Color.blue(_value);
-		hex        = String.format("#%2o%2o%2o", r, g, b);
-		
+		hex        = String.format("#%02x%02x%02x", r, g, b);
+
 		percentage = _percentage;
 	}
 	

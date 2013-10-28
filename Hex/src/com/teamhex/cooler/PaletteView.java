@@ -55,8 +55,10 @@ public class PaletteView extends View {
 	    		current = colors.get(i);
 	    		
 	    		// The paint width is its percentage of the whole
-	    		width = (int) ( ( (Float) Math.max(1, current.getPercentage()) / 100 ) * viewWidth );
+	    		//(Temporarily commented out as we aren't reporting that data)
+	    		//width = (int) ( ( (Float) Math.max(1, current.getPercentage()) / 100 ) * viewWidth );
 	    		
+	    		width = (int) (viewWidth / colors.size() );
 	    		// Draw the actual color using Android.graphics.Paint
 	    		paint.setColor(Color.parseColor(colors.get(i).getHex()));
 	    		canvas.drawRect(offset, 0, offset + width, viewHeight, paint);
