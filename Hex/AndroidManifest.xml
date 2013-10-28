@@ -85,6 +85,10 @@
             android:label="@string/title_activity_scheme_info" >
         </activity>
 
+         <activity
+            android:name="com.teamhex.cooler.DrawImageActivity">
+        </activity>
+        
     </application>
 
     

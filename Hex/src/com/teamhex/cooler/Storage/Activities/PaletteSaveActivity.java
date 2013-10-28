@@ -29,6 +29,7 @@ public class PaletteSaveActivity extends Activity {
 		
 		// Save the record
 		storage.RecordSave(palette);
+		finish();
 	}
 
 }

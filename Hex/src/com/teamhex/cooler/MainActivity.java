@@ -1,5 +1,6 @@
 package com.teamhex.cooler;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -7,7 +8,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.teamhex.cooler.DrawImageActivity;
 import com.teamhex.cooler.CameraPreview;
+import com.teamhex.cooler.DrawImageActivity.DrawingView;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
 import com.teamhex.cooler.Storage.Activities.PaletteSaveActivity;
@@ -29,6 +32,7 @@ import android.widget.FrameLayout;
 public class MainActivity extends Activity {
 
 	private Camera mCamera;
+	private DrawingView drawView;
 	private CameraPreview mPreview;
 	private Bitmap mBitmap = null;
 	private static final String TAG = "ACTIVITY";
@@ -73,22 +77,19 @@ public class MainActivity extends Activity {
                     //Analyze image
                 	if (mBitmap != null)
                 	{
-                		int[] colors = ColorPaletteGenerator.colorAlgorithm(mBitmap, 5);
-                    	System.out.println("ANALYZE");
-                    	PaletteRecord palette = new PaletteRecord();
-                    	palette.setName("A really random color scheme");
-                    	for (int i = 0; i < 5; i++)
-                    	{
-                    		palette.addColor(colors[i]);
-                    	}
-                    	Intent i = new Intent(MainActivity.this, PaletteSaveActivity.class);
-                    	i.putExtra("palette", palette);
-                    	startActivity(i);
+                		Intent d = new Intent(MainActivity.this, DrawImageActivity.class);
+                		ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                        mBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
+                        d.putExtra("byteArray", bs.toByteArray());
+                    	startActivityForResult(d, 1);
+                    	
                 	}
                 }
             }
         );
         
+    
+    
     // Import button listener
         Button importButton = (Button) findViewById(R.id.button_import);
         importButton.setOnClickListener(
@@ -161,6 +162,34 @@ public class MainActivity extends Activity {
             // Camera is not available (in use or does not exist)
         }
         return c; // returns null if camera is unavailable
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+
+    	if (getIntent().hasExtra("subBitmap")) {
+
+            mBitmap = BitmapFactory.decodeByteArray(
+                    getIntent().getByteArrayExtra("subBitmap"), 0, getIntent()
+                            .getByteArrayExtra("subBitmap").length); 
+        }
+    	
+		int[] colors = ColorPaletteGenerator.colorAlgorithm(mBitmap, 5);
+    	System.out.println("ANALYZE");
+    	PaletteRecord palette = new PaletteRecord();
+    	palette.setName("A really random color scheme");
+    	for (int i = 0; i < 5; i++)
+    	{
+    		palette.addColor(colors[i]);
+    	}
+    	
+    	System.out.println("ANALYZED");
+    	
+    	Intent i = new Intent(MainActivity.this, PaletteSaveActivity.class);
+    	i.putExtra("palette", palette);
+    	startActivity(i);
+    	System.out.println("SAVED");
     }
     
     //Handle media storage once picture is captured
