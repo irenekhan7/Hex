@@ -35,7 +35,7 @@ import android.widget.ListView;
 
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 import com.teamhex.cooler.Storage.Classes.PaletteRecordAdapter;
-import com.teamhex.cooler.Storage.Classes.StorageManager;
+import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 
 /**
  * This class provides a basic demonstration of how to write an Android
@@ -60,7 +60,7 @@ public class PaletteLibraryActivity extends Activity {
 		setContentView(R.layout.scheme_list_activity);
 		
 		// Create the initial storage manager
-		storage = new StorageManager(getApplicationContext());
+		storage = new HexStorageManager(getApplicationContext());
 		
 		// Load all the records
 		storage.RecordLoadAll();
@@ -79,7 +79,7 @@ public class PaletteLibraryActivity extends Activity {
 	
 	// Creates the Android UI stuff
 	//@SuppressLint("NewApi")
-	public void DisplayLibrary(StorageManager storage) {
+	public void DisplayLibrary(HexStorageManager storage) {
 		Log.i("TeamHex", "Starting to run DisplayLibrary.");
 		
 		// The container listView holds the mini-Views from the adapter
@@ -131,7 +131,7 @@ public class PaletteLibraryActivity extends Activity {
 	}
 	
 	// StorageManager keeps track of, and manipulates, the library of files
-	private StorageManager storage;
+	private HexStorageManager storage;
 	
 	// The ListView holds the mini-Views from the adapter
 	private ListView container;

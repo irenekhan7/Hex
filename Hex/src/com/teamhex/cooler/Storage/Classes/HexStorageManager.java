@@ -16,15 +16,15 @@ import java.util.Map.Entry;
 import android.content.Context;
 import android.util.Log;
 
-public class StorageManager {
+public class HexStorageManager {
 	// Constructor
 	// Required: String filename, Context context
 	// The initial list of PaletteRecords is loaded using the index file
 	// Sample usage: 
 	// 		new StorageManager(getApplicationContext());
-	public StorageManager() { Log.w("TeamHex", "A StorageManager is being created without a file name or context!"); }
-	public StorageManager(Context _context) { this(_context, "RecordsIndex"); }
-	public StorageManager(Context _context, String _filename) {
+	public HexStorageManager() { Log.w("TeamHex", "A StorageManager is being created without a file name or context!"); }
+	public HexStorageManager(Context _context) { this(_context, "RecordsIndex"); }
+	public HexStorageManager(Context _context, String _filename) {
 		_filename += ".txt";
 		context = _context;
 		fileIndexName = _filename;
