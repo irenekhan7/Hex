@@ -1,6 +1,7 @@
 package com.teamhex.cooler.Storage.Classes;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,15 +17,18 @@ import java.util.Map.Entry;
 import android.content.Context;
 import android.util.Log;
 
-public class StorageManager {
+public class HexStorageManager {
 	// Constructor
 	// Required: String filename, Context context
 	// The initial list of PaletteRecords is loaded using the index file
 	// Sample usage: 
 	// 		new StorageManager(getApplicationContext());
-	public StorageManager() { Log.w("TeamHex", "A StorageManager is being created without a file name or context!"); }
-	public StorageManager(Context _context) { this(_context, "RecordsIndex"); }
-	public StorageManager(Context _context, String _filename) {
+	public HexStorageManager() {
+		Log.w("TeamHex", "A StorageManager is being created without a file name or context!");
+		Log.w("TeamHex", "Sample usage: new Storagemanager(getApplicationContext());");
+	}
+	public HexStorageManager(Context _context) { this(_context, "RecordsIndex"); }
+	public HexStorageManager(Context _context, String _filename) {
 		_filename += ".txt";
 		context = _context;
 		fileIndexName = _filename;
@@ -166,6 +170,14 @@ public class StorageManager {
 		return context.getFileStreamPath(filename).exists();
 	}
 	
+	// fileRename
+	// Renames an old file to a new one
+	public void fileRename(String nameOld, String nameNew) {
+		File fileOld = new File(nameOld),
+			 fileNew = new File(nameNew);
+		fileOld.renameTo(fileNew);
+	}
+	
     // getFileReader
     // Simply creates a new BufferedReader
     public BufferedReader getFileReader(String filename) throws FileNotFoundException {
@@ -193,9 +205,10 @@ public class StorageManager {
     // remakeFileIndex
     // Outputs the names of each PaletteRecord
     public void remakeFileIndex() {
+    	Log.i("TeamHex", "Rebuilding the file index under name " + fileIndexName);
     	// Attempt to remake the file index
     	try {
-			OutputStreamWriter osw = getFileWriter(fileIndexName + ".txt");
+			OutputStreamWriter osw = getFileWriter(fileIndexName);
 			for(int i = 0, len = record_names.size(); i < len; ++i)
 				osw.write(record_names.get(i) + "\n");
 			osw.close();
