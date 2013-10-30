@@ -145,7 +145,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.teamhex.cooler:exampleColor
+          @attr name android:exampleColor
         */
         public static final int PaletteView_exampleColor = 2;
         /**
@@ -161,7 +161,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.teamhex.cooler:exampleDimension
+          @attr name android:exampleDimension
         */
         public static final int PaletteView_exampleDimension = 1;
         /**
@@ -173,7 +173,7 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          @attr name com.teamhex.cooler:exampleDrawable
+          @attr name android:exampleDrawable
         */
         public static final int PaletteView_exampleDrawable = 3;
         /**
@@ -187,7 +187,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.teamhex.cooler:exampleString
+          @attr name android:exampleString
         */
         public static final int PaletteView_exampleString = 0;
     };

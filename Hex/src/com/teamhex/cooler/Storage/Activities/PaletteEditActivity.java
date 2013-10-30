@@ -37,7 +37,7 @@ public class PaletteEditActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                 	System.out.println("DONE EDITING\n");
-                	paletteRecord.setName(nameEdit.getText().toString());
+                	paletteRecord.setName(nameEdit.getText().toString()); //Doesn't do anything because it's editing an object loaded from a serialized object. 
                 	finish();
                 }
             }

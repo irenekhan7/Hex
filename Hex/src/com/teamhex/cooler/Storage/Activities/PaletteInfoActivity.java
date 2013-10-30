@@ -1,5 +1,7 @@
 package com.teamhex.cooler.Storage.Activities;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.teamhex.cooler.PaletteView;
 import com.teamhex.cooler.R;
+import com.teamhex.cooler.Storage.Classes.ColorRecord;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 public class PaletteInfoActivity extends Activity {
@@ -46,12 +49,29 @@ public class PaletteInfoActivity extends Activity {
 	}
 	
 	PaletteRecord paletteRecord;
+	String infoString;
 	public void setPaletteRecord(PaletteRecord setting)
 	{
 		paletteRecord = setting;
 		paletteView.setColorScheme(paletteRecord);
 		
-		nameView.setText(setting.getName());
+		ArrayList<ColorRecord> colors = setting.getColors();
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(setting.getName());
+		sb.append("\n");
+		int max = colors.size();
+		for(int i = 0; i < max; i++)
+		{
+			sb.append(colors.get(i).getName());
+			sb.append("  ");
+			sb.append(colors.get(i).getHex());
+			sb.append("\n");
+		}
+		
+		infoString = sb.toString();
+		nameView.setText(infoString);
 		setTitle(setting.getName());
 	}
 
@@ -62,11 +82,12 @@ public class PaletteInfoActivity extends Activity {
 		return true;
 	}
 	
+	/*
 	@Override
 	public void onBackPressed(){
 		
 		  finish();
 		  super.onBackPressed();
-	}
+	}*/
 
 }
