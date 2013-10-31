@@ -1,23 +1,69 @@
 package com.teamhex.cooler;
-
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-//import java.util.List;
-//import java.util.Map;
-//import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
-//import android.graphics.Bitmap;
-//import android.graphics.Color;
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
-public class ColorPaletteGenerator 
-{
+public class ColorPaletteGenerator extends Activity {
+	private ImageView mImageView;
+	private Bitmap mImageBitmap;
+	private ImageView[] colorBars;
 
+	
 	/********************************************************************************************
 	 * Begin Color Algorithm Code
 	 *******************************************************************************************/
+	
+	public static class ColorSet
+	{
+		public ColorSet() { clear(); }
+		public ColorSet(int i) { clear(); add(i); }
+		private ColorSet(double a, double r, double g, double b, int n) { _A = a; _R = r; _G = g; _B = b; _n = n; }
+		
+		public void add(int pixel) { _A += (pixel >> 24); _R += ((pixel >> 16) & 0xFF); _G += ((pixel >> 8) & 0xFF); _B += (pixel & 0xFF); _n++; }
+		public ColorSet mean() { return new ColorSet(_A/_n, _R/_n, _G/_n, _B/_n, _n); }
+		public void clear() { _A = 0; _R = 0; _G = 0; _B = 0; _n = 0; }
+		
+		public int toInt() { return (((int)_A & 0xFF) << 24) | (((int)_R & 0xFF) << 16) | (((int)_G & 0xFF) << 8) | ((int)_B & 0xFF); }
+		
+		public static double dist(ColorSet v1, ColorSet v2)
+		{
+			return (v1._A - v2._A) * (v1._A - v2._A) +
+				   (v1._R - v2._R) * (v1._R - v2._R) +
+				   (v1._G - v2._G) * (v1._G - v2._G) +
+				   (v1._B - v2._B) * (v1._B - v2._B);
+		}
+		
+		public static double dist(int v1, ColorSet v2)
+		{
+			return ((v1 >> 24) - v2._A) * ((v1 >> 24) - v2._A) +
+				   (((v1 >> 16) & 0xFF) - v2._R) * (((v1 >> 16) & 0xFF) - v2._R) +
+				   (((v1 >> 8) & 0xFF) - v2._G) * (((v1 >> 8) & 0xFF) - v2._G) +
+				   ((v1 & 0xFF) - v2._B) * ((v1 & 0xFF) - v2._B);
+		}
+		
+		public double a() { return _A; }
+		public double r() { return _R; }
+		public double g() { return _G; }
+		public double b() { return _B; }
+		public double n() { return _n; }
+		
+		private double _A, _R, _G, _B;
+		private int _n;
+	};
 	
 	/*private static int dist(int v1, int v2)
 	 *		Helper function that returns the squared Euclidean distance between the AR(Alpha-Red)
@@ -31,11 +77,13 @@ public class ColorPaletteGenerator
 	 * 		The squared Euclidean distance between the two colors, using the AR(Alpha-Red) and
 	 * 		GB(Green-Blue) values as input
 	 */
-	private static int dist(int v1, int v2)
+	/*private static double dist(ColorSet v1, ColorSet v2)
 	{
-		return ((v1 >> 16) - (v2 >> 16)) * ((v1 >> 16) - (v2 >> 16)) + 
-			   ((v1 & 0xFFFF) - (v2 & 0xFFFF)) * ((v1 & 0xFFFF) - (v2 & 0xFFFF));
-	}
+		return (v1.a() - v2.a()) * (v1.a() - v2.a()) +
+			   (v1.r() - v2.r()) * (v1.r() - v2.r()) +
+			   (v1.g() - v2.g()) * (v1.g() - v2.g()) +
+			   (v1.b() - v2.b()) * (v1.b() - v2.b());
+	}*/
 	
 	
 	//Helper comparator class that compares two integers based on their hue values.
@@ -55,18 +103,6 @@ public class ColorPaletteGenerator
 	    {
 	        return (int)(hue(i1) - hue(i2));
 	    }
-	};
-	
-	public static class ColorSet
-	{
-		public ColorSet() { clear(); }
-		
-		public void add(int pixel) { A += (pixel >> 24); R += ((pixel >> 16) & 0xFF); G += ((pixel >> 8) & 0xFF); B += (pixel & 0xFF); n++; }
-		public int mean() { return (n == 0) ? 0 : ((A/n) << 24) | (((R/n) & 0xFF) << 16) | (((G/n) & 0xFF) << 8) | ((B/n) & 0xFF); }
-		public void clear() { A = 0; R = 0; G = 0; B = 0; n = 0; }
-		
-		private int A, R, G, B;
-		private int n;
 	};
 	
 	/*public static int[] colorAlgorithm(int[] pixels, int k)
@@ -92,7 +128,11 @@ public class ColorPaletteGenerator
 		{
 			Random rand = new Random();
 			
-			int[] means = new int[k];
+			ColorSet[] means = new ColorSet[k];
+			for (int i = 0; i < k; i++)
+			{
+				means[i] = new ColorSet();
+			}
 			
 			//Randomly and independently select k unique indices whose points will be the initial
 			//values for each of the k means.
@@ -105,7 +145,8 @@ public class ColorPaletteGenerator
 			Collections.shuffle(index, rand);
 			for (int i = 0; i < k; i++)
 			{
-				means[i] = pixels[index.get(i)];
+				means[i].clear();
+				means[i].add(pixels[index.get(i)]);
 			}
 			index.clear();
 			
@@ -121,7 +162,7 @@ public class ColorPaletteGenerator
 				sets[i] = new ColorSet();
 			}
 			
-			int maxdist = 0;
+			double maxdist = 0;
 			do
 			{
 				for (int i = 0; i < n; i++)
@@ -129,27 +170,30 @@ public class ColorPaletteGenerator
 					int min = 0;
 					for (int j = 1; j < k; j++)
 					{
-						if (dist(pixels[i], means[j]) < dist(pixels[i], means[min]))
+						//ColorSet pixel = new ColorSet(pixels[i]);
+						if (ColorSet.dist(pixels[i], means[j]) <= ColorSet.dist(pixels[i], means[min]))
 						{
 							min = j;
 						}
 					}
 					sets[min].add(pixels[i]);
 				}
+				
 				maxdist = 0;
 				for (int i = 0; i < k; i++)
 				{
-					int mean = sets[i].mean();
-					int meandist = dist(means[i], mean);
+					ColorSet mean = sets[i].mean();
+					double meandist = ColorSet.dist(means[i], mean);
 					if (meandist > maxdist)
 					{
 						maxdist = meandist;
 					}
 					means[i] = mean;
 					sets[i].clear();
+					System.out.println("maxdist = " + maxdist);
 				}
 			}
-			while (maxdist > 0);
+			while (maxdist > 25);
 			
 			//Because the clusters are randomly generated, the colors may appear in any order.
 			//We first sort the colors by hue to make the color scheme appear more presentable
@@ -157,15 +201,16 @@ public class ColorPaletteGenerator
 			Integer[] colors = new Integer[k];
 			for (int i = 0; i < k; i++)
 			{
-				colors[i] = means[i];
+				colors[i] = means[i].toInt();
 			}
 			Arrays.sort(colors, HueComparator);
 			
+			int[] colors2 = new int[k];
 			for (int i = 0; i < k; i++)
 			{
-				means[i] = colors[i];
+				colors2[i] = colors[i];
 			}
-			return means;
+			return colors2;
 		}
 		
 		return null;
@@ -175,142 +220,4 @@ public class ColorPaletteGenerator
 	 * End Color Algorithm Code
 	 *******************************************************************************************/
 
-	
-	/********************************************************************************************
-	 * Begin OLD Color Algorithm Code
-	 *******************************************************************************************/
-	
-	//private static int threshold = 5000;	//Similarity threshold. Colors whose squared difference
-											//with another color in the swatch is less than or equal
-											//to this value are not included in the swatch. Currently
-											//a fixed value, but should ideally be based on the mean
-											//and standard deviation of the color values.
-	
-	
-	/*public int[] colorAlgorithm(Bitmap bitmap, int n):
-	 *		Computes a color swatch of size <n> based on the input <bitmap>.
-	 * 
-	 * Parameters:
-	 * 		Bitmap bitmap - the input bitmap image used to generate the color swatch.
-	 * 		int n		  - the number of colors to be included in the color swatch.
-	 * 
-	 * Returns:
-	 * 		An int array of size <n> that contains the colors in the swatch. The number of colors
-	 *      in the swatch is not necessarily <n>, however (see below).
-	 */
-	/*public static int[] colorAlgorithm(Bitmap bitmap, int n)
-	{
-		int width = bitmap.getWidth();
-		int height = bitmap.getHeight();
-		
-		int[] colorScheme = new int[n];
-		
-		//Construct a TreeMap that represents a histogram of the number of times that each color
-		//appears in the bitmap.
-		TreeMap<Integer, Integer> histogram = new TreeMap<Integer, Integer>();
-		for (int i = 0; i < width - 1; i++)
-		{
-			for (int j = 0; j < height - 1; j++)
-			{
-				int color = bitmap.getPixel(i, j);
-				if (histogram.containsKey(color))
-				{
-					Integer val = histogram.get(color);
-					histogram.put(color, val + 1);
-				}
-				else
-				{
-					histogram.put(color, 1);
-				}
-			}
-		}
-		
-		//Create a reverse sorted histogram such that the keys are now the number of times that a
-		//color appears and the values are the colors themselves.
-		TreeMap<Integer, Integer> reverse = new TreeMap<Integer, Integer>(Collections.reverseOrder());
-		for (Map.Entry<Integer, Integer> entry : histogram.entrySet()) 
-		{
-			reverse.put(entry.getValue(), entry.getKey());
-		}
-		
-		//Take the <n> highest-frequency colors that are not within <threshold> of each other.
-		//Note that if either <threshold> or <n> are too high, then there may not be enough valid
-		//colors to include in the swatch. However, because the highest-frequency color is always
-		//included, the swatch is guaranteed to have at least one color.
-		for (int i = 0; i < n; i++)
-		{
-			Map.Entry<Integer, Integer> e = reverse.firstEntry();
-			if (e != null)
-			{
-				colorScheme[i] = e.getValue();
-			
-				reverse.remove(e.getKey());
-			
-				for (int j = 0; j < i; j++)
-				{
-					int r = Color.red(colorScheme[i]) - Color.red(colorScheme[j]);
-					int g = Color.green(colorScheme[i]) - Color.green(colorScheme[j]);
-					int b = Color.blue(colorScheme[i]) - Color.blue(colorScheme[j]);
-				
-					if ((r * r + g * g + b * b) < threshold)
-					{
-						colorScheme[i] = 0;
-						i--;
-						break;
-					}
-				}
-			}
-		}
-		
-		return colorScheme;
-	}*/
-	
-	/********************************************************************************************
-	 * End OLD Color Algorithm Code
-	 *******************************************************************************************/
-	
-	
-	/*
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		
-		setContentView(R.layout.activity_algorithm);
-		
-		DisplayMetrics display = this.getResources().getDisplayMetrics();
-		
-		int width = display.widthPixels;
-		
-		mImageBitmap = BitmapFactory.decodeFile("/sdcard/rainbow2.jpg");
-		
-		int[] colors = colorAlgorithm(mImageBitmap, 5);
-		
-		mImageView = (ImageView) findViewById(R.id.imageView1);
-		mImageView.setImageBitmap(mImageBitmap);
-		
-		mImageView.setMinimumWidth(width);
-		mImageView.setMinimumHeight(mImageBitmap.getHeight() * width/mImageBitmap.getWidth());
-		mImageView.setScaleType(ScaleType.FIT_XY);
-		
-		colorBars = new ImageView[5];
-		
-		Bitmap scaled = Bitmap.createScaledBitmap(mImageBitmap, width/5, 10000, false);
-		
-		colorBars[0] = (ImageView) findViewById(R.id.imageView2);
-		colorBars[1] = (ImageView) findViewById(R.id.imageView3);
-		colorBars[2] = (ImageView) findViewById(R.id.imageView4);
-		colorBars[3] = (ImageView) findViewById(R.id.imageView5);
-		colorBars[4] = (ImageView) findViewById(R.id.imageView6);
-		for (int i = 0; i < 5; i++)
-		{
-			colorBars[i].setImageBitmap(scaled);
-			colorBars[i].setScaleType(ScaleType.FIT_XY);
-			colorBars[i].setMaxWidth(width/5);
-			colorBars[i].setMinimumHeight(100000);
-			colorBars[i].setColorFilter(colors[i]);
-		}
-		
-	}
-	
-	*/
 }
