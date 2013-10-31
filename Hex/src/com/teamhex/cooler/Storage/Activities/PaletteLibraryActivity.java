@@ -57,6 +57,12 @@ public class PaletteLibraryActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.i("TeamHex", "LibraryActivity now running onCreate");
 		super.onCreate(savedInstanceState);
+		RecreateLibrary();
+	}
+	
+	// Used by onCreate and onResume for the heavy lifting
+	void RecreateLibrary() {
+		Log.i("TeamHex", "Recreating library from scratch.");
 		setContentView(R.layout.scheme_list_activity);
 		
 		// Create the initial storage manager
@@ -109,6 +115,14 @@ public class PaletteLibraryActivity extends Activity {
 
         container.setOnItemClickListener(mMessageClickedHandler); 
 	}
+
+    
+	// Going back to the library means any changes must be shown; therefore, refresh
+    @Override
+    protected void onResume() {
+        super.onResume();
+    	RecreateLibrary();
+    }
 	
 	// StorageManager keeps track of, and manipulates, the library of files
 	private HexStorageManager storage;
