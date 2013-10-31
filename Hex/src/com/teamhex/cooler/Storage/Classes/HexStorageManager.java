@@ -150,11 +150,14 @@ public class HexStorageManager {
 		
 		//Ensures the user cannot save a file with the same name as another file
 		//The user could potentially crash the program using this if they have massive amounts of time, and are jerks.
+
 		String originalName = name;
 		int i = 2; 
 		while(record_names.contains(name)){
 			name = originalName + " ("+i+')';
+			i++; //Here, Ian was wrong.
 		}
+		
 		records.put(name, record);
 		record_names.add(name);
 		RecordSave(record, name);
