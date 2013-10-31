@@ -23,12 +23,20 @@
             android:layout_weight="1.94" />
 
         <Button
-            android:id="@+id/button_edit"
+            android:id="@+id/button_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:text="Edit!" />
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/button_save"
+            android:text="Edit" />
 
         <Button
             android:id="@+id/button_share"
@@ -36,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/button_edit"
-            android:text="Share!" />
+            android:text="Share" />
 
     </RelativeLayout>
 

@@ -17,6 +17,9 @@
 package com.teamhex.cooler.Storage.Activities;
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import com.teamhex.cooler.PaletteView;
 //import com.teamhex.cooler.Menu;
 //import com.teamhex.cooler.Override;
@@ -44,6 +47,7 @@ public class PaletteLibraryActivity extends Activity {
     
     //static final private int BACK_ID = Menu.FIRST;
   //  static final private int CLEAR_ID = Menu.FIRST + 1;
+	static final int VIEW_PALETTE_INFO = 7;
 
   //  private EditText mEditor;
    // private Camera camera;
@@ -109,14 +113,27 @@ public class PaletteLibraryActivity extends Activity {
             	PaletteView s = (PaletteView) v.findViewById(R.id.paletteEditView);
                 Intent i = new Intent(PaletteLibraryActivity.this, PaletteInfoActivity.class);
                 i.putExtra("palette", s.getColorScheme());
-                startActivity(i);
+                startActivityForResult(i, VIEW_PALETTE_INFO);
             }
         };
 
         container.setOnItemClickListener(mMessageClickedHandler); 
 	}
 
+
+    // When the Save Button Pressed event returns, check the data
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	Log.i("TeamHex", "A View Palette activity has returned returned: " + Integer.toString(requestCode) + ", " + Integer.toString(resultCode));
+		Bundle extras = data.getExtras();
+		if(extras != null && extras.containsKey("changes")) {
+			Log.i("TeamHex", "There were changes!");
+			ArrayList<String[]> changes = (ArrayList<String[]>) data.getSerializableExtra("changes");
+			Log.i("TeamHex", "There were " + Integer.toString(changes.size()) + " of them!");
+			storage.applyChanges(changes);
+		}
+    }
     
+	
 	// Going back to the library means any changes must be shown; therefore, refresh
     @Override
     protected void onResume() {

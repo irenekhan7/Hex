@@ -175,6 +175,46 @@ public class HexStorageManager {
 		}
 	}
 	
+	// Saves a record under a new name
+	public void RecordRename(String nameOld, String nameNew) { RecordRename(records.get(nameOld), nameOld, nameNew); }
+	public void RecordRename(PaletteRecord record, String nameNew) { RecordRename(record, record.getName(), nameNew); }
+	public void RecordRename(PaletteRecord record, String nameOld, String nameNew) {
+		Log.i("TeamHex", "Renaming " + nameOld + " to " + nameNew);
+		// Remove references to the record and its name
+		records.remove(nameOld);
+		record_names.remove(record_names.indexOf(nameOld));
+		
+		// Delete the record's old file
+		Log.i("TeamHex", "Trying to delete " + nameOld + ".txt");
+		fileDelete(nameOld + ".txt");
+		
+		// Set the record's internal name
+		record.setName(nameNew);
+		
+		// Add it normally
+		RecordAdd(record, nameNew);
+	}
+	
+	// Applies a bunch of changes
+    // Each change in the ArrayList is an array of size 3:
+    // [0] -> Palette Name
+    // [1] -> Attribute
+    // [2] -> New attribute value
+	public void applyChanges(ArrayList<String[]> changes) {
+		Log.i("TeamHex", "Applying " + Integer.toString(changes.size()) + " changes to storage.");
+		String[] changed;
+		for(int i = 0, len = changes.size(); i < len; ++i) {
+			changed = changes.get(i);
+	    	Log.i("TeamHex", "   " + Integer.toString(i + 1) + ". changing " + changed[0] + "'s " + changed[1] + " to " + changed[2]);
+	    	// Depending on the type of change...
+	    	switch(Character.toLowerCase(changed[1].charAt(0))) {
+	    		// Change on a name
+	    		case 'n':
+	    			RecordRename(changed[0], changed[2]);
+	    		break;
+	    	}
+		}
+	}
 
     /* 
      * Utility functions 
@@ -192,6 +232,14 @@ public class HexStorageManager {
 		File fileOld = new File(nameOld),
 			 fileNew = new File(nameNew);
 		fileOld.renameTo(fileNew);
+	}
+	
+	// fileDelete
+	// Simply deletes a file of a particular name
+	public void fileDelete(String filename) {
+		File file = new File(filename);
+		if(file.exists())
+			file.delete();
 	}
 	
     // getFileReader
