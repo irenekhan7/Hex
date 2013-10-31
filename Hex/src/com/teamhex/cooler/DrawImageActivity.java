@@ -27,6 +27,8 @@ import android.view.SurfaceView;
 public class DrawImageActivity extends Activity {
 
 Bitmap b = null;
+Canvas canvas = null;
+
 @Override
 public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -46,18 +48,31 @@ class DrawingView extends SurfaceView {
     int corners = 2;
     boolean square = false;
     private List<Point> pointsList = new ArrayList<Point>();
-
+    int touched = 0;
     public DrawingView(Context context) {
         super(context);
         surfaceHolder = getHolder();
         paint.setColor(Color.WHITE);
         paint.setStyle(Style.FILL);
+        //NULL PTR EXCEPTION
+        //canvas = surfaceHolder.lockCanvas();
+        //canvas.drawBitmap(b, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), null);
+        //touched = 1;
+        //surfaceHolder.unlockCanvasAndPost(canvas);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (surfaceHolder.getSurface().isValid()) {
+        	
+        	if(surfaceHolder.getSurface().isValid() && touched == 0)
+        	{
+                canvas = surfaceHolder.lockCanvas();
+                canvas.drawBitmap(b, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), null);
+                touched = 1;
+                surfaceHolder.unlockCanvasAndPost(canvas);
+        	}
+        	else if (surfaceHolder.getSurface().isValid() && touched == 1) {
             	if(square == true)
             	{
             		square = false;
@@ -69,19 +84,16 @@ class DrawingView extends SurfaceView {
                  pointsList.add(new Point((int)event.getX(), (int)event.getY()));
                 if (corners != 0)
                 corners--;
-                
-                // Get canvas from surface
-                Canvas canvas = surfaceHolder.lockCanvas();
 
+                canvas = surfaceHolder.lockCanvas();
+                
                 // Clear screen / replace with draw image
                 canvas.drawColor(Color.BLACK);
 
                 //Draw image
-                //Resources res = getResources();
-                //Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.ic_launcher);
-                //canvas = new Canvas(b.copy(Bitmap.Config.ARGB_8888, true));
                 canvas.drawBitmap(b, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), null);
-                // Iterate on the list
+                
+                //Traverse points
                 for(int i=0; i<pointsList.size(); i++) {
                     Point current = pointsList.get(i);
 
