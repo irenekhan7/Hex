@@ -116,7 +116,7 @@ public class ColorPaletteGenerator
 			//this process until none of the pixels change their nearest mean between iterations.
 			
 			ColorSet[] sets = new ColorSet[k];
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < k; i++)
 			{
 				sets[i] = new ColorSet();
 			}
