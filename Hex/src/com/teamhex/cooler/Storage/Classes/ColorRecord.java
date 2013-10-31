@@ -48,7 +48,7 @@ public class ColorRecord implements Serializable {
 	
 	// Colors are stored in the format "name hex percentage"
 	public String getSaveString() {
-		return name + " " + hex + " " + Float.toString(percentage);
+		return name.replace(" ", "_") + " " + hex + " " + Float.toString(percentage);
 	}
 	
 	// Takes in an X11Helper and uses it to 'guess' the appropriate name

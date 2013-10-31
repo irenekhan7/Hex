@@ -30,14 +30,14 @@ public class PaletteRecord implements Serializable {
 	// Default Constructor
 	public PaletteRecord() { this("No Name"); }
 	public PaletteRecord(String _name) { 
-		name = _name;
+		name = NameFilter(_name);
 		description = "";
 		colors = new ArrayList<ColorRecord>();
 	}
 	// Required: String name, BufferedReader br
 	public PaletteRecord(String _name, BufferedReader br) throws IOException {
 		// Name and description are easy
-		name = _name;
+		name = NameFilter(_name);
 		description = br.readLine();
 		
 		// Continuously read in new colors while possible
@@ -88,6 +88,12 @@ public class PaletteRecord implements Serializable {
 	public void addColors(Integer[] adders) {
 		for(int i = 0, len = adders.length; i < len; ++i)
 			colors.add(new ColorRecord(adders[i]));
+	}
+	
+	// Replaces out any invalid characters, which are:
+	// * ' ' -> '_'
+	public String NameFilter(String _name) {
+		return _name.replace(" ", "_");
 	}
 
 	private String name;
