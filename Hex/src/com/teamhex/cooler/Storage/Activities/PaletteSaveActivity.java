@@ -31,7 +31,7 @@ public class PaletteSaveActivity extends Activity {
 		storage = new HexStorageManager(getApplicationContext());
 		
 		// Save the palette record
-		storage.RecordSave(palette);
+		storage.RecordAdd(palette);
 
 		Log.i("TeamHex", "The Palette has been saved.");
 		//finish();
