@@ -170,9 +170,9 @@ public class MainActivity extends Activity {
         }
     	
     	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
-    	int[] pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
-    	mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
-		int[] colors = ColorPaletteGenerator.colorAlgorithm(pixels, 5);
+    	//int[] pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
+    	//mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
+		int[] colors = ColorPaletteGenerator.colorAlgorithm(mBitmap, 5);
     	System.out.println("ANALYZE");
     	
     	// Store the output from colors[] into a new PaletteRecord
