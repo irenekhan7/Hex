@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -146,6 +147,14 @@ public class HexStorageManager {
 	public void RecordAdd(PaletteRecord record) { RecordAdd(record, record.getName()); }
 	public void RecordAdd(PaletteRecord record, String name) {
 		Log.i("TeamHex", "Adding a new record under name " + name);
+		
+		//Ensures the user cannot save a file with the same name as another file
+		//The user could potentially crash the program using this if they have massive amounts of time, and are jerks.
+		String originalName = name;
+		int i = 2; 
+		while(record_names.contains(name)){
+			name = originalName + " ("+i+')';
+		}
 		records.put(name, record);
 		record_names.add(name);
 		RecordSave(record, name);

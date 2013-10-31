@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -180,7 +181,7 @@ public class MainActivity extends Activity {
 	        if(resultCode == RESULT_OK){  
 	            Uri selectedImage = data.getData();
 	            try {
-					mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+					mBitmap = getThumbnail(selectedImage);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -220,7 +221,7 @@ public class MainActivity extends Activity {
 	    	System.out.println("SAVED");
     	}
     }
-    
+    	
 
     // Handle media storage once picture is captured
     private PictureCallback mPicture = new PictureCallback() 
@@ -248,11 +249,17 @@ public class MainActivity extends Activity {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
             
-            // Decode the bitmap and store it into mBitmap
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-    		bmOptions.inSampleSize = 4;
-    		bmOptions.inPurgeable = true;
-            mBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), bmOptions);
+         // First decode with inJustDecodeBounds=true to check dimensions
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), options);
+
+            // Calculate inSampleSize
+            options.inSampleSize = calculateInSampleSize(options, 200, 200);
+
+            // Decode bitmap with inSampleSize set
+            options.inJustDecodeBounds = false;
+            mBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), options);
         }
         
         /** Create a File for saving an image or video */
@@ -291,6 +298,52 @@ public class MainActivity extends Activity {
         } 
         
     };
+    
+
+    //http://stackoverflow.com/questions/3879992/get-bitmap-from-an-uri-android
+    public Bitmap getThumbnail(Uri uri) throws FileNotFoundException, IOException{
+        InputStream input = this.getContentResolver().openInputStream(uri);
+
+        BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
+        onlyBoundsOptions.inJustDecodeBounds = true;
+        onlyBoundsOptions.inDither=true;//optional
+        onlyBoundsOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+        BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+        input.close();
+        if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1))
+            return null;
+        
+        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+        bitmapOptions.inSampleSize = calculateInSampleSize(onlyBoundsOptions, 200, 200);
+        bitmapOptions.inDither=true;//optional
+        bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+        input = this.getContentResolver().openInputStream(uri);
+        Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+        input.close();
+        return bitmap;
+    }
+    
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    // Raw height and width of image
+    final int height = options.outHeight;
+    final int width = options.outWidth;
+    int inSampleSize = 1;
+
+    if (height > reqHeight || width > reqWidth) {
+
+        // Calculate ratios of height and width to requested height and width
+        final int heightRatio = Math.round((float) height / (float) reqHeight);
+        final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+        // Choose the smallest ratio as inSampleSize value, this will guarantee
+        // a final image with both dimensions larger than or equal to the
+        // requested height and width.
+        inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+    }
+
+    return inSampleSize;
+    }
 
     // Helps PaletteRecords generate names for their colors
     private X11Helper mX11Helper = new X11Helper();
