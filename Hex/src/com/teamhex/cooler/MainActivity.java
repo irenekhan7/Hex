@@ -223,6 +223,7 @@ public class MainActivity extends Activity {
     }
     	
 
+    int sampleSize = 100;
     // Handle media storage once picture is captured
     private PictureCallback mPicture = new PictureCallback() 
     {
@@ -255,7 +256,7 @@ public class MainActivity extends Activity {
             BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), options);
 
             // Calculate inSampleSize
-            options.inSampleSize = calculateInSampleSize(options, 200, 200);
+            options.inSampleSize = calculateInSampleSize(options, sampleSize, sampleSize);
 
             // Decode bitmap with inSampleSize set
             options.inJustDecodeBounds = false;
@@ -314,7 +315,7 @@ public class MainActivity extends Activity {
             return null;
         
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-        bitmapOptions.inSampleSize = calculateInSampleSize(onlyBoundsOptions, 200, 200);
+        bitmapOptions.inSampleSize = calculateInSampleSize(onlyBoundsOptions, sampleSize, sampleSize);
         bitmapOptions.inDither=true;//optional
         bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
         input = this.getContentResolver().openInputStream(uri);
