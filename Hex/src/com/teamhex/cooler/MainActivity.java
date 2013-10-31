@@ -10,7 +10,6 @@ import java.util.Date;
 
 import com.teamhex.cooler.DrawImageActivity;
 import com.teamhex.cooler.CameraPreview;
-import com.teamhex.cooler.DrawImageActivity.DrawingView;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
 import com.teamhex.cooler.Storage.Activities.PaletteSaveActivity;
@@ -39,7 +38,6 @@ public class MainActivity extends Activity {
 	public static final int ACTIVITY_SELECT_IMAGE = 3;
 	
 	private Camera mCamera;
-	private DrawingView drawView;
 	private CameraPreview mPreview;
 	private Bitmap mBitmap = null;
 	
@@ -195,9 +193,12 @@ public class MainActivity extends Activity {
     	if(requestCode == 1)
     	{
 	    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
-	    	//int[] pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
-	    	//mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
-			int[] colors = ColorPaletteGenerator.colorAlgorithm(mBitmap, 5);
+	    	int[] pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
+	    	mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
+			
+	    	
+	    	
+	    	int[] colors = ColorPaletteGenerator.colorAlgorithm(pixels, 5);
 	    	System.out.println("ANALYZE");
 	    	
 	    	// Store the output from colors[] into a new PaletteRecord
