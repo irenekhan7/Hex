@@ -91,10 +91,6 @@ public class HexStorageManager {
 			return;
 		}
 		
-		// 4. X11 name generation is lazily loaded in the X11Helper
-		Log.i("TeamHex", "4. Making the X11Helper - not loading by default.");
-		// X11_names = new X11Helper();
-		
 		Log.i("TeamHex", "Finished making a StorageManager using file index " + _filename);
 	}
 	
@@ -204,13 +200,6 @@ public class HexStorageManager {
     	return osw;
     }
     
-    // getColorName
-    // Pipe to the X11Helper's getColorName
-    public String getColorName(String hex) {
-    	// return X11Helper.getColorName(hex);
-    	return "NotYet";
-    }
-    
     // remakeFileIndex
     // Outputs the names of each PaletteRecord
     public void remakeFileIndex() {
@@ -255,6 +244,4 @@ public class HexStorageManager {
 	private int num_loaded; 					// How many records have been loaded so far
 	private ArrayList<String> record_names; 	// The ordered list of record names
 	private Map<String, PaletteRecord> records; // The stored records, keyed by name
-	// @SuppressWarnings("unused")
-	// private X11Helper X11_names; 				// Used for color name analysis
 }
