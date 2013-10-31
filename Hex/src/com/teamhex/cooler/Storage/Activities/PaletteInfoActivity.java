@@ -46,6 +46,22 @@ public class PaletteInfoActivity extends Activity {
                 }
             }
         );
+        
+        Button shareButton = (Button) findViewById(R.id.button_share);
+        shareButton.setOnClickListener(
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                	System.out.println("SHARING\n");
+                	
+                	Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                	sharingIntent.setType("text/plain");
+                	sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Color Scheme");
+                	sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, infoString);
+                	startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                }
+            }
+        );
 	}
 	
 	PaletteRecord paletteRecord;
