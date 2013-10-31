@@ -115,7 +115,7 @@ public class ColorPaletteGenerator
 			//then calculate the centroid of each set, which becomes the new mean. We then repeat
 			//this process until none of the pixels change their nearest mean between iterations.
 			
-			ColorSet[] sets = new ColorSet[5];
+			ColorSet[] sets = new ColorSet[k];
 			for (int i = 0; i < 5; i++)
 			{
 				sets[i] = new ColorSet();
