@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 
 public class HexStorageManager {
@@ -94,9 +95,9 @@ public class HexStorageManager {
 		// 4. If there aren't any records, create a default one
 		if(record_names.isEmpty()) {
 			PaletteRecord empty = new PaletteRecord("America");
-			empty.addColor(new ColorRecord("Red", "#ffffff", (float).33));
-			empty.addColor(new ColorRecord("White", "#ffffff", (float).33));
-			empty.addColor(new ColorRecord("Blue", "#ffffff", (float).34));
+			empty.addColor(new ColorRecord("Red", "#ff0000", (float)33.0));
+			empty.addColor(new ColorRecord("White", "#ffffff", (float)33.0));
+			empty.addColor(new ColorRecord("Blue", "#0000ff", (float)34.0));
 			RecordAdd(empty);
 		}
 		
