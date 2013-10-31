@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.teamhex.cooler.X11Helper;
 
 import android.graphics.Color;
-import android.util.Log;
 
 public class ColorRecord implements Serializable {
 	// Serial ID to stop ADT from complaining

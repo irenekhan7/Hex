@@ -91,8 +91,8 @@ public class PaletteLibraryActivity extends Activity {
 		
 		
 		PaletteRecord[] palettes = storage.getPalettesArray();
-		if(palettes.length == 0)
-		{
+		if(palettes.length == 0) {
+			Log.i("TeamHex", "No pre-existing records index found, making a default.");
 			palettes = new PaletteRecord[1];
 			PaletteRecord empty = new PaletteRecord();
 			empty.addColor(Color.RED);
@@ -102,6 +102,7 @@ public class PaletteLibraryActivity extends Activity {
 			empty.addColor(Color.MAGENTA);
 			empty.setName("America and Green and Magenta");
 			palettes[0] = empty;
+			storage.RecordAdd(empty);
 		}
 		adapter = new PaletteRecordAdapter(
 				this,

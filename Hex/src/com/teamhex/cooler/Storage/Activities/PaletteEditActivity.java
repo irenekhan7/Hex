@@ -3,12 +3,11 @@ package com.teamhex.cooler.Storage.Activities;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-
 import com.teamhex.cooler.PaletteView;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
@@ -27,7 +26,7 @@ public class PaletteEditActivity extends Activity {
 		nameEdit = (EditText) findViewById(R.id.editName);
 		
 		Intent i = getIntent();
-        PaletteRecord palette = (PaletteRecord)i.getSerializableExtra("palette");
+        PaletteRecord palette = (PaletteRecord) i.getSerializableExtra("palette");
         setPaletteRecord(palette);
         
        
@@ -36,8 +35,13 @@ public class PaletteEditActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                	System.out.println("DONE EDITING\n");
-                	paletteRecord.setName(nameEdit.getText().toString()); //Doesn't do anything because it's editing an object loaded from a serialized object. 
+                	Log.i("TeamHex", "Editing record " + paletteRecord.getName());
+                	String nameNew = nameEdit.getText().toString();
+                	
+                	Log.i("TeamHex", "Returning a new name: " + nameNew);
+                	Intent result = new Intent();
+                	result.putExtra("nameNew",  nameNew);
+                	setResult(RESULT_OK, result);
                 	finish();
                 }
             }
@@ -47,6 +51,7 @@ public class PaletteEditActivity extends Activity {
 	PaletteRecord paletteRecord;
 	public void setPaletteRecord(PaletteRecord setting)
 	{
+		Log.i("TeamHex", "The Edit activity is now loading PaletteRecord " + setting.getName());
 		paletteRecord = setting;
 		paletteView.setColorScheme(paletteRecord);
 		
