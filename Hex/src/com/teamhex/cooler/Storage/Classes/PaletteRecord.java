@@ -28,9 +28,9 @@ public class PaletteRecord implements Serializable {
 	// Serial ID to stop ADT from complaining
 	private static final long serialVersionUID = -8073525651268285421L;
 	// Default Constructor
-	public PaletteRecord() { 
-		// Everything is initially blank
-		name = "No Name";
+	public PaletteRecord() { this("No Name"); }
+	public PaletteRecord(String _name) { 
+		name = _name;
 		description = "";
 		colors = new ArrayList<ColorRecord>();
 	}
