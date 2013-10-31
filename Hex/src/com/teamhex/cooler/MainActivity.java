@@ -19,8 +19,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
@@ -34,6 +36,7 @@ public class MainActivity extends Activity {
 	private static final String TAG = "TeamHex";
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
+	public static final int ACTIVITY_SELECT_IMAGE = 3;
 	
 	private Camera mCamera;
 	private DrawingView drawView;
@@ -93,7 +96,11 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     //Import
-                	Log.i("TeamHex", "Image importing not yet implemented!");
+                	//Potentially causes crash
+                	Intent i = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                		startActivityForResult(i, ACTIVITY_SELECT_IMAGE); 
+
                 }
             }
         );
@@ -170,29 +177,47 @@ public class MainActivity extends Activity {
                             .getByteArrayExtra("subBitmap").length); 
         }
     	
-    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
-    	//int[] pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
-    	//mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
-		int[] colors = ColorPaletteGenerator.colorAlgorithm(mBitmap, 5);
-    	System.out.println("ANALYZE");
-    	
-    	// Store the output from colors[] into a new PaletteRecord
-    	PaletteRecord palette = new PaletteRecord();
-    	palette.setName("A really random color scheme");
-    	for (int i = 0; i < 5; i++)
-    		palette.addColor(colors[i]);
-    	
-    	System.out.println("ANALYZED");
-    	
-    	// Get auto-generated names for the palette
-    	Log.i("TeamHex", "Using the X11Helper to generate names for the palette");
-    	palette.setX11Names(mX11Helper);
-    	
-    	// Go to the PaletteSaveActivity to save the palette into the library
-    	Intent intent_save = new Intent(MainActivity.this, PaletteSaveActivity.class);
-    	intent_save.putExtra("palette", palette);
-    	startActivity(intent_save);
-    	System.out.println("SAVED");
+    	if(requestCode == ACTIVITY_SELECT_IMAGE)
+	    {
+	        if(resultCode == RESULT_OK){  
+	            Uri selectedImage = data.getData();
+	            try {
+					mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+	        }
+	    }
+    	if(requestCode == 1)
+    	{
+	    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
+	    	//int[] pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
+	    	//mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
+			int[] colors = ColorPaletteGenerator.colorAlgorithm(mBitmap, 5);
+	    	System.out.println("ANALYZE");
+	    	
+	    	// Store the output from colors[] into a new PaletteRecord
+	    	PaletteRecord palette = new PaletteRecord();
+	    	palette.setName("A really random color scheme");
+	    	for (int i = 0; i < 5; i++)
+	    		palette.addColor(colors[i]);
+	    	
+	    	System.out.println("ANALYZED");
+	    	
+	    	// Get auto-generated names for the palette
+	    	Log.i("TeamHex", "Using the X11Helper to generate names for the palette");
+	    	palette.setX11Names(mX11Helper);
+	    	
+	    	// Go to the PaletteSaveActivity to save the palette into the library
+	    	Intent intent_save = new Intent(MainActivity.this, PaletteSaveActivity.class);
+	    	intent_save.putExtra("palette", palette);
+	    	startActivity(intent_save);
+	    	System.out.println("SAVED");
+    	}
     }
     
 
