@@ -141,7 +141,7 @@ public class ColorPaletteGenerator
 				{
 					int mean = sets[i].mean();
 					int meandist = dist(means[i], mean);
-					if (i == 0)
+					if (neandist > maxdist)
 					{
 						maxdist = meandist;
 					}
