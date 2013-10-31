@@ -136,6 +136,15 @@ public class HexStorageManager {
 		num_loaded = max;
 	}
 	
+	// Adds a record to the listing
+	public void RecordAdd(PaletteRecord record) { RecordAdd(record, record.getName()); }
+	public void RecordAdd(PaletteRecord record, String name) {
+		Log.i("TeamHex", "Adding a new record under name " + name);
+		records.put(name, record);
+		record_names.add(name);
+		remakeFileIndex();
+	}
+	
 	// Saves the file for the given record
 	public void RecordSave(String name) {
 		// Make sure that record name exists
@@ -209,12 +218,15 @@ public class HexStorageManager {
     	// Attempt to remake the file index
     	try {
 			OutputStreamWriter osw = getFileWriter(fileIndexName);
-			for(int i = 0, len = record_names.size(); i < len; ++i)
+			for(int i = 0, len = record_names.size(); i < len; ++i) {
+				Log.i("TeamHex", "   ...writing name " + record_names.get(i));
 				osw.write(record_names.get(i) + "\n");
+			}
 			osw.close();
 		}
     	// If it fails, who knows?
     	catch(IOException e) {
+    		Log.w("TeamHex", "Failed to rebuild file index under name " + fileIndexName);
 			e.printStackTrace();
 		}
     }
