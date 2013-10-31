@@ -45,13 +45,14 @@ public class X11Helper {
 	}
 	
 	// Functions to get color distance between two colors, in hex and/or RGB format
+	// Distance is calculated as the (sum of the squares of the (differences in (R,G,B) values) )
 	public int getColorDistance(String a, String b) { return getColorDistance(getColorRGB(a), getColorRGB(b)); }
 	public int getColorDistance(String a, Integer[] b) { return getColorDistance(getColorRGB(a), b); }
 	public int getColorDistance(Integer[] a, String b) { return getColorDistance(a, getColorRGB(b)); }
 	public int getColorDistance(Integer[] a, Integer[] b) {
-		return Math.abs(a[0] - b[0]) +
-			   Math.abs(a[1] - b[1]) +
-			   Math.abs(a[2] - b[2]);
+		return (int) (Math.pow(Math.abs(a[0] - b[0]), 2) +
+					  Math.pow(Math.abs(a[1] - b[1]), 2) +
+					  Math.pow(Math.abs(a[2] - b[2]), 2)  );
 	}
 	
 	// RGB values are stored by the size-3 integer arrays, for quick lookups
@@ -362,6 +363,6 @@ public class X11Helper {
 	  "Yellow",
 	  "Light Yellow",
 	  "Ivory",
-		  "White"
+	  "White"
 	};
 }
