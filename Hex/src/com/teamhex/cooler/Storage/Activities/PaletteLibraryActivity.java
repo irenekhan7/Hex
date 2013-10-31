@@ -25,7 +25,6 @@ import com.teamhex.cooler.R;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +32,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 import com.teamhex.cooler.Storage.Classes.PaletteRecordAdapter;
 import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 
@@ -51,11 +49,13 @@ public class PaletteLibraryActivity extends Activity {
    // private Camera camera;
     
     public PaletteLibraryActivity() {
+		Log.i("TeamHex", "LibraryActivity now being constructed.");
     }
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.i("TeamHex", "LibraryActivity now running onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.scheme_list_activity);
 		
@@ -88,32 +88,12 @@ public class PaletteLibraryActivity extends Activity {
 		
 		// Make the adapter to generate the mini-Views
 		Log.i("TeamHex", "2. Creating adapter...");
-		
-		
-		PaletteRecord[] palettes = storage.getPalettesArray();
-		if(palettes.length == 0)
-		{
-			palettes = new PaletteRecord[1];
-			PaletteRecord empty = new PaletteRecord();
-			empty.addColor(Color.RED);
-			empty.addColor(Color.WHITE);
-			empty.addColor(Color.BLUE);
-			empty.addColor(Color.GREEN);
-			empty.addColor(Color.MAGENTA);
-			empty.setName("America and Green and Magenta");
-			palettes[0] = empty;
-		}
 		adapter = new PaletteRecordAdapter(
 				this,
 				R.layout.listcolor,
-				palettes);
-		Log.i("TeamHex", "   Adapter created.");
-		
+				storage.getPalettesArray());
 		// Give the adapter to the container
-		Log.i("TeamHex", "3. Unifying the container and adapter...");
 		container.setAdapter(adapter);
-		Log.i("TeamHex", "   Container has received the adapter.");
-		
 		
 		Log.i("TeamHex", "Finished running DisplayLibrary.");
 		

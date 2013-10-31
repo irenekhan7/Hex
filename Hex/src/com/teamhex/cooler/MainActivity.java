@@ -44,6 +44,7 @@ public class MainActivity extends Activity {
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+		Log.i("TeamHex", "MainActivity now running onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
