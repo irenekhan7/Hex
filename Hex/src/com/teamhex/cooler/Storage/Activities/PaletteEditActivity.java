@@ -3,12 +3,11 @@ package com.teamhex.cooler.Storage.Activities;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-
 import com.teamhex.cooler.PaletteView;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
@@ -36,8 +35,16 @@ public class PaletteEditActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                	System.out.println("DONE EDITING\n");
-                	paletteRecord.setName(nameEdit.getText().toString()); //Doesn't do anything because it's editing an object loaded from a serialized object. 
+                	// Get the user's name input from a standard Android getText()
+                	Log.i("TeamHex", "Getting the name to change to..");
+                	String nameNew = nameEdit.getText().toString();
+                	Log.i("TeamHex", "The new name is '" + nameNew + "'");
+                	paletteRecord.setName(nameNew); //Doesn't do anything because it's editing an object loaded from a serialized object. 
+                	
+                	// Store the obtained string in a result intent
+                	Intent resultIntent = new Intent();
+                	resultIntent.putExtra("nameNew", nameNew);
+                	setResult(Activity.RESULT_OK, resultIntent);
                 	finish();
                 }
             }
