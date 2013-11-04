@@ -198,17 +198,16 @@ public class MainActivity extends Activity {
 	    	mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
 			
 	    	
-	    	
+	    	Log.i("TeamHex", "Using the ColorPaletteGenerator.colorAlgorithm to get the [] colors.");
 	    	int[] colors = ColorPaletteGenerator.colorAlgorithm(pixels, 5);
-	    	System.out.println("ANALYZE");
 	    	
 	    	// Store the output from colors[] into a new PaletteRecord
 	    	PaletteRecord palette = new PaletteRecord();
-	    	palette.setName("A really random color scheme");
+	    	palette.setName("Untitled Palette");
 	    	for (int i = 0; i < 5; i++)
 	    		palette.addColor(colors[i]);
 	    	
-	    	System.out.println("ANALYZED");
+	    	Log.i("TeamHex", "Finixhed adding the colors to a new palette.");
 	    	
 	    	// Get auto-generated names for the palette
 	    	Log.i("TeamHex", "Using the X11Helper to generate names for the palette");
