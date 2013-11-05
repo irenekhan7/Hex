@@ -1,23 +1,19 @@
-package com.teamhex.cooler;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
+package com.teamhex.coloralgorithm;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Random;
+
+//TODO: Remove unused imports
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-public class ColorPaletteGenerator extends Activity {
+public class AlgorithmActivity extends Activity {
 	private ImageView mImageView;
 	private Bitmap mImageBitmap;
 	private ImageView[] colorBars;
@@ -27,17 +23,44 @@ public class ColorPaletteGenerator extends Activity {
 	 * Begin Color Algorithm Code
 	 *******************************************************************************************/
 	
+	//Storage class that represents a set of one or more colors
 	public static class ColorSet
 	{
 		public ColorSet() { clear(); }
-		public ColorSet(int i) { clear(); add(i); }
+		public ColorSet(int i) { set(i); }
 		private ColorSet(double a, double r, double g, double b, int n) { _A = a; _R = r; _G = g; _B = b; _n = n; }
+
+		public void set(int i) 
+		{ 
+			clear(); 
+			add(i); 
+		}
 		
-		public void add(int pixel) { _A += (pixel >> 24); _R += ((pixel >> 16) & 0xFF); _G += ((pixel >> 8) & 0xFF); _B += (pixel & 0xFF); _n++; }
-		public ColorSet mean() { return new ColorSet(_A/_n, _R/_n, _G/_n, _B/_n, _n); }
-		public void clear() { _A = 0; _R = 0; _G = 0; _B = 0; _n = 0; }
+		public void add(int i) 
+		{ 
+			_A += (i >> 24); 
+			_R += ((i >> 16) & 0xFF); 
+			_G += ((i >> 8) & 0xFF); 
+			_B += (i & 0xFF); 
+			_n++;
+		}
 		
-		public int toInt() { return (((int)_A & 0xFF) << 24) | (((int)_R & 0xFF) << 16) | (((int)_G & 0xFF) << 8) | ((int)_B & 0xFF); }
+		public ColorSet mean() 
+		{ 
+			return new ColorSet(_A/_n, _R/_n, _G/_n, _B/_n, _n); 
+		}
+		public void clear() 
+		{ 
+			_A = 0; _R = 0; _G = 0; _B = 0; _n = 0; 
+		}
+		
+		public int toInt() 
+		{ 
+			return (((int)_A & 0xFF) << 24) | 
+				   (((int)_R & 0xFF) << 16) | 
+				   (((int)_G & 0xFF) << 8)  | 
+				    ((int)_B & 0xFF); 
+		}
 		
 		public static double dist(ColorSet v1, ColorSet v2)
 		{
@@ -55,39 +78,13 @@ public class ColorPaletteGenerator extends Activity {
 				   ((v1 & 0xFF) - v2._B) * ((v1 & 0xFF) - v2._B);
 		}
 		
-		public double a() { return _A; }
-		public double r() { return _R; }
-		public double g() { return _G; }
-		public double b() { return _B; }
-		public double n() { return _n; }
-		
 		private double _A, _R, _G, _B;
 		private int _n;
 	};
 	
-	/*private static int dist(int v1, int v2)
-	 *		Helper function that returns the squared Euclidean distance between the AR(Alpha-Red)
-	 *		and GB(Green-Blue) values of the two selected colors. 
-	 *
-	 * Parameters:
-	 * 		int v1 - the first color to be compared
-	 * 		int v2 - the second color to be compared
-	 * 
-	 * Returns:
-	 * 		The squared Euclidean distance between the two colors, using the AR(Alpha-Red) and
-	 * 		GB(Green-Blue) values as input
-	 */
-	/*private static double dist(ColorSet v1, ColorSet v2)
-	{
-		return (v1.a() - v2.a()) * (v1.a() - v2.a()) +
-			   (v1.r() - v2.r()) * (v1.r() - v2.r()) +
-			   (v1.g() - v2.g()) * (v1.g() - v2.g()) +
-			   (v1.b() - v2.b()) * (v1.b() - v2.b());
-	}*/
-	
 	
 	//Helper comparator class that compares two integers based on their hue values.
-	private static Comparator<Integer> HueComparator = new Comparator<Integer>()
+	private static Comparator<Integer> ColorComparator = new Comparator<Integer>()
 	{
 		public double hue(Integer i)
 		{
@@ -121,7 +118,7 @@ public class ColorPaletteGenerator extends Activity {
 	 * 		If the size of <pixels> is less than <k>, then it is impossible to generate <k>
 	 * 		color schemes from the input and null will be returned.
 	 */
-	public static int[] colorAlgorithm(int[] pixels, int k)
+	public int[] colorAlgorithm(int[] pixels, int k)
 	{
 		int n = pixels.length;
 		if ((k < n) && (k > 0))
@@ -134,34 +131,54 @@ public class ColorPaletteGenerator extends Activity {
 				means[i] = new ColorSet();
 			}
 			
-			//Randomly and independently select k unique indices whose points will be the initial
-			//values for each of the k means.
-			ArrayList<Integer> index = new ArrayList<Integer>();
-			index.ensureCapacity(n);
-			for (int i = 0; i < n; i++)
+			
+			//k-means++ initialization
+			double[] distances = new double[n];
+			
+			means[0].set(pixels[rand.nextInt(n)]);
+			for (int i = 1; i < k; i++)
 			{
-				index.add(i);
+				double sum = 0;
+				for (int j = 0; j < n; j++)
+				{
+					double mindist = ColorSet.dist(pixels[j], means[0]);
+					for (int a = 1; a < i; a++)
+					{
+						double dist = ColorSet.dist(pixels[j], means[a]);
+						if (dist < mindist)
+						{
+							mindist = dist;
+						}
+					}
+					distances[j] = mindist;
+					sum += mindist;
+				}
+				double p = rand.nextDouble() * sum;
+				sum = 0;
+				for (int j = 0; j < n; j++)
+				{
+					sum += distances[j];
+					if (sum > p)
+					{
+						means[i].set(pixels[j]);
+						break;
+					}
+				}
 			}
-			Collections.shuffle(index, rand);
-			for (int i = 0; i < k; i++)
-			{
-				means[i].clear();
-				means[i].add(pixels[index.get(i)]);
-			}
-			index.clear();
+			
 			
 			//Iterate through the data set. At each iteration, we pair each pixel with the
 			//closest mean based on squared Euclidean distance. The set of these pixels forms a
-			//Voroni diagram in two dimensions. After we have paired each point with a mean, we
+			//Voronoi diagram in two dimensions. After we have paired each point with a mean, we
 			//then calculate the centroid of each set, which becomes the new mean. We then repeat
 			//this process until none of the pixels change their nearest mean between iterations.
-			
 			ColorSet[] sets = new ColorSet[k];
 			for (int i = 0; i < k; i++)
 			{
 				sets[i] = new ColorSet();
 			}
 			
+			double prevdist = 0;
 			double maxdist = 0;
 			do
 			{
@@ -170,7 +187,6 @@ public class ColorPaletteGenerator extends Activity {
 					int min = 0;
 					for (int j = 1; j < k; j++)
 					{
-						//ColorSet pixel = new ColorSet(pixels[i]);
 						if (ColorSet.dist(pixels[i], means[j]) <= ColorSet.dist(pixels[i], means[min]))
 						{
 							min = j;
@@ -179,6 +195,7 @@ public class ColorPaletteGenerator extends Activity {
 					sets[min].add(pixels[i]);
 				}
 				
+				prevdist = maxdist;
 				maxdist = 0;
 				for (int i = 0; i < k; i++)
 				{
@@ -190,20 +207,21 @@ public class ColorPaletteGenerator extends Activity {
 					}
 					means[i] = mean;
 					sets[i].clear();
-					System.out.println("maxdist = " + maxdist);
 				}
 			}
-			while (maxdist > 25);
+			while ((maxdist < prevdist) || (prevdist == 0));
 			
 			//Because the clusters are randomly generated, the colors may appear in any order.
 			//We first sort the colors by hue to make the color scheme appear more presentable
 			//to the user.
+			
+			//TODO: Make this conversion process from int > Integer > int a lot less messy
 			Integer[] colors = new Integer[k];
 			for (int i = 0; i < k; i++)
 			{
 				colors[i] = means[i].toInt();
 			}
-			Arrays.sort(colors, HueComparator);
+			Arrays.sort(colors, ColorComparator);
 			
 			int[] colors2 = new int[k];
 			for (int i = 0; i < k; i++)
@@ -219,5 +237,4 @@ public class ColorPaletteGenerator extends Activity {
 	/********************************************************************************************
 	 * End Color Algorithm Code
 	 *******************************************************************************************/
-
 }
