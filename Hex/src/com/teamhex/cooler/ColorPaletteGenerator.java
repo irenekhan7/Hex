@@ -3,22 +3,10 @@ package com.teamhex.cooler;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
-
-//TODO: Remove unused imports
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 
 public class ColorPaletteGenerator extends Activity {
-	private ImageView mImageView;
-	private Bitmap mImageBitmap;
-	private ImageView[] colorBars;
 
-	
 	/********************************************************************************************
 	 * Begin Color Algorithm Code
 	 *******************************************************************************************/
