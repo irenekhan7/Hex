@@ -1,4 +1,4 @@
-package com.teamhex.coloralgorithm;
+package com.teamhex.cooler;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -13,7 +13,7 @@ import android.util.DisplayMetrics;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-public class AlgorithmActivity extends Activity {
+public class ColorPaletteGenerator extends Activity {
 	private ImageView mImageView;
 	private Bitmap mImageBitmap;
 	private ImageView[] colorBars;
@@ -118,7 +118,7 @@ public class AlgorithmActivity extends Activity {
 	 * 		If the size of <pixels> is less than <k>, then it is impossible to generate <k>
 	 * 		color schemes from the input and null will be returned.
 	 */
-	public int[] colorAlgorithm(int[] pixels, int k)
+	public static int[] colorAlgorithm(int[] pixels, int k)
 	{
 		int n = pixels.length;
 		if ((k < n) && (k > 0))
