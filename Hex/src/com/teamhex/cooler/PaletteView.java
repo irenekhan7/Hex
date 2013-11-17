@@ -108,6 +108,11 @@ public class PaletteView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
     	
+    	//If the event is outside of the view, don't handle the event.
+    	if(event.getY() < 0 || event.getY() > viewHeight || event.getX() < 0 || event.getX() > viewWidth)
+    	{
+    		return false;
+    	}
     	
     	
         // Let the GestureDetector interpret this event
@@ -115,12 +120,27 @@ public class PaletteView extends View {
         
         if(editing)
     	{
-	    	
-	    	float percentage = (float)event.getY() / (float)viewHeight;
-	    	ColorRecord editing = colors.get(indexEditing);
-	    	int color = Color.parseColor(editing.getHex());
-	    	editing.setInt(Color.rgb(Color.red(color), Color.green(color),(int)(255 * percentage)));
-	    	invalidate();
+        	Log.i("TeamHex", "Y is: " + event.getY());
+        	
+	    	if(event.getPointerCount() >= 2)
+	    	{
+	    		for(int i = 0; i < colors.size(); i++)
+	    		{
+	    			float percentage = (float)event.getY() / (float)viewHeight;
+	    	    	ColorRecord editing = colors.get(i);
+	    	    	int color = Color.parseColor(editing.getHex());
+	    	    	editing.setInt(Color.rgb(Color.red(color), Color.green(color),(int)(255 * percentage)));
+	    	    	invalidate();
+	    		}
+	    	}
+	    	else
+	    	{
+		    	float percentage = (float)event.getY() / (float)viewHeight;
+		    	ColorRecord editing = colors.get(indexEditing);
+		    	int color = Color.parseColor(editing.getHex());
+		    	editing.setInt(Color.rgb(Color.red(color), Color.green(color),(int)(255 * percentage)));
+		    	invalidate();
+	    	}
     	}
     	
         // If the GestureDetector doesn't want this event, do some custom processing.
