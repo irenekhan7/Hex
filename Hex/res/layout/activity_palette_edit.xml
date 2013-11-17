@@ -8,9 +8,10 @@
         android:id="@+id/editName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ems="10"
         android:imeOptions="actionDone"
-        android:singleLine="true" 
-        android:ems="10">
+        android:singleLine="true" >
+
         <requestFocus />
     </EditText>
 
@@ -29,8 +30,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_weight=".5" >
+        android:layout_height="60dp" >
 
         <Spinner
             android:id="@+id/spinner_edit"

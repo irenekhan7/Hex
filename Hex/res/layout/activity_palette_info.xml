@@ -32,7 +32,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="60dp" >
 
         <TextView
             android:id="@+id/colorInfo"
@@ -43,24 +43,24 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="match_parent" >
 
             <Button
                 android:id="@+id/button_share"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Share" />
 
             <Button
                 android:id="@+id/button_save"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Save" />
 
             <Button
                 android:id="@+id/button_edit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Edit" />
         </LinearLayout>
     </LinearLayout>

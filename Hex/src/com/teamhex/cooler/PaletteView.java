@@ -10,7 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -144,8 +143,6 @@ public class PaletteView extends View {
         
         if(editing)
     	{
-        	Log.i("TeamHex", "Y is: " + event.getY());
-        	
 	    	if(event.getPointerCount() >= 2)
 	    	{
 	    		for(int i = 0; i < colors.size(); i++)
