@@ -4,35 +4,48 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.94" >
-
-        <com.teamhex.cooler.PaletteView
-            android:id="@+id/paletteEditView"
-            android:layout_width="fill_parent"
-            android:layout_height="395dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1.94" />
-
-        <Button
-            android:id="@+id/button_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:text="Save" />
-    </RelativeLayout>
-
     <EditText
         android:id="@+id/editName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
-
+        android:imeOptions="actionDone"
+        android:singleLine="true" 
+        android:ems="10">
         <requestFocus />
     </EditText>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_weight="1" >
+
+        <com.teamhex.cooler.PaletteView
+            android:id="@+id/paletteEditView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1.94" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_weight=".5" >
+
+        <Spinner
+            android:id="@+id/spinner_edit"
+            android:layout_width="134dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Save" />
+
+    </LinearLayout>
 
 </LinearLayout>

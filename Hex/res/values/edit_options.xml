@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="edit_options_array">
+        <item>Hue</item>
+        <item>Saturation</item>
+        <item>Lightness</item>
+        <item>Contrast</item>
+    </string-array>
+</resources>

@@ -17,14 +17,19 @@ public class ColorRecord implements Serializable {
 		hex  = _hex;
 		percentage = 0;
 	}
+	
+	// Constructor: ColorRecord copying
+	public ColorRecord(ColorRecord copying) {
+		name = copying.getName();
+		hex  = copying.getHex();
+		percentage = copying.getPercentage();
+	}
+	
 	// Constructor: Integer hex
 	public ColorRecord(Integer _value)  {
 		name      = "No_Name";
 
-		int r = Color.red(_value);
-		int g = Color.green(_value);
-		int b = Color.blue(_value);
-		hex        = String.format("#%02x%02x%02x", r, g, b);
+		setInt(_value);
 		
 		percentage = 0;
 	}
@@ -65,7 +70,13 @@ public class ColorRecord implements Serializable {
 	public void setName(String name)            { this.name = name; }
 	public void setPercentage(float percentage) { this.percentage = percentage; }
 	public void setHex(String hex)              { this.hex = hex; }
-
+	public void setInt(Integer _value){
+		int r = Color.red(_value);
+		int g = Color.green(_value);
+		int b = Color.blue(_value);
+		hex        = String.format("#%02x%02x%02x", r, g, b);
+	}
+	
 	private String name;
 	private String hex;
 	private float  percentage;

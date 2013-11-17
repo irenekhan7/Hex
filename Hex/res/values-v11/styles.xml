@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="HexTheme" parent="@android:Theme.Holo">
+	</style>
+	<style name="HexTheme.NoTitleBar" parent="@android:Theme.Holo">
+	    <item name="android:windowNoTitle">true</item>
+	</style>
+</resources>
