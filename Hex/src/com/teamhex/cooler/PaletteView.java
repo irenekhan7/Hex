@@ -119,6 +119,8 @@ public class PaletteView extends View {
     
     public String info = "";
     
+    public boolean isListItem = false;
+    
    //Send a message to the parent activity that the view has been touched.
     public void fireInteractEvent()
     {
@@ -132,7 +134,7 @@ public class PaletteView extends View {
     public boolean onTouchEvent(MotionEvent event) {
     	
     	//If the event is outside of the view, don't handle the event.
-    	if(event.getY() < 0 || event.getY() > viewHeight || event.getX() < 0 || event.getX() > viewWidth)
+    	if(isListItem || event.getY() < 0 || event.getY() > viewHeight || event.getX() < 0 || event.getX() > viewWidth)
     	{
     		return false;
     	}

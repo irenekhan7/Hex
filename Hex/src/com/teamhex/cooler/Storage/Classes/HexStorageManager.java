@@ -297,11 +297,12 @@ public class HexStorageManager {
 	// Note that this will only get the ones that are loaded
 	public PaletteRecord[] getPalettesArray() {
 		PaletteRecord[] returner = new PaletteRecord[num_loaded];
-		int i = 0;
-		for(Entry<String, PaletteRecord> e : records.entrySet()) {
-			returner[i] = e.getValue();
-			++i;
+		
+		for(int i = 0; i < record_names.size(); i++)
+		{
+			returner[i] = records.get(record_names.get(i));
 		}
+		
 		return returner;
 	}
 	

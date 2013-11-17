@@ -45,6 +45,7 @@ public class ColorListAdapter extends ArrayAdapter<PaletteRecord> {
  
         holder.txtDesc.setText(rowItem.getName());
         holder.paletteView.setColorScheme(rowItem);
+        holder.paletteView.isListItem = true;
        // holder.schemeView.addColor(Color.BLUE);
        // holder.schemeView.addColor(Color.YELLOW);
  
