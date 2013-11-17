@@ -20,6 +20,7 @@ public class PaletteInfoActivity extends Activity {
 
 	PaletteView paletteView;
 	TextView nameView;
+	TextView colorInfoView;
 	
 	static final int EDIT_PALETTE_NAME = 14;
 	
@@ -32,6 +33,14 @@ public class PaletteInfoActivity extends Activity {
 		// Fetch the palette and name views
 		paletteView = (PaletteView) findViewById(R.id.paletteEditView);
 		nameView = (TextView) findViewById(R.id.paletteName);
+		colorInfoView = (TextView) findViewById(R.id.colorInfo);
+		
+		paletteView.setOnInteractListener(new PaletteView.OnInteractListener() {
+			@Override
+			public void onInteract() {
+				colorInfoView.setText(paletteView.info);
+			}
+		});
 		
 		// Retrieve the palette from serialized data
 		Intent i = getIntent();
@@ -102,6 +111,7 @@ public class PaletteInfoActivity extends Activity {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(setting.getName());
+		
 		sb.append("\n");
 		int max = colors.size();
 		for(int i = 0; i < max; i++)
@@ -113,7 +123,7 @@ public class PaletteInfoActivity extends Activity {
 		}
 		
 		infoString = sb.toString();
-		nameView.setText(infoString);
+		nameView.setText(setting.getName());
 		setTitle(setting.getName());
 	}
 

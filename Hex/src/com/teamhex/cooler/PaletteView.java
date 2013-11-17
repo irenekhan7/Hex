@@ -15,6 +15,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+
+
 public class PaletteView extends View {
 	// Initial variables
     Paint paint = new Paint();
@@ -32,9 +34,20 @@ public class PaletteView extends View {
     	mDetector = new GestureDetector(PaletteView.this.getContext(), new GestureListener());
     }
     
+    public interface OnInteractListener{
+    	void onInteract();
+    }
+
+    private OnInteractListener onInteractListener;
+    
+    public void setOnInteractListener(OnInteractListener listener) {
+    	onInteractListener = listener;
+    }
     // Get & Set for ColorScheme
     public void setColorScheme(PaletteRecord setting) { palette = setting; colors = palette.getColors();}
     public PaletteRecord getColorScheme() { return palette; }
+    
+    
     
     ArrayList<ColorRecord> colors;
     public void enableEditing()
@@ -105,6 +118,17 @@ public class PaletteView extends View {
     private boolean editing = false; //Is this palette view in edit mode?
     private int indexEditing = 0; //What is the index of the color that is being edited?
     
+    public String info = "";
+    
+   //Send a message to the parent activity that the view has been touched.
+    public void fireInteractEvent()
+    {
+    	if(onInteractListener != null)
+    	{
+    		onInteractListener.onInteract(); 
+    	}
+    }
+    
     @Override
     public boolean onTouchEvent(MotionEvent event) {
     	
@@ -172,6 +196,8 @@ public class PaletteView extends View {
         @Override
         public boolean onDown(MotionEvent e) {
         	indexEditing = (int)(((float)e.getX() / (float)viewWidth) * colors.size());
+        	info =  colors.get(indexEditing).getName() + "\n" + colors.get(indexEditing).getHex();
+        	fireInteractEvent();
             return true;
         }
     }
