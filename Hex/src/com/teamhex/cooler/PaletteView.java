@@ -50,21 +50,19 @@ public class PaletteView extends View {
     
     
     ArrayList<ColorRecord> colors;
+    ArrayList<ColorRecord> originalColors;
     public void enableEditing()
     {
     	editing = true;
     	
     	//Copies the colors to avoid editing the color palette directly. 
     	//May not be necessary, commented out for now
-    	
-    	/*
-    	ArrayList<ColorRecord> newColors = new ArrayList<ColorRecord>();
+    	originalColors = new ArrayList<ColorRecord>();
     	for(int i = 0; i < colors.size();i++)
     	{
-    		newColors.add(new ColorRecord(colors.get(i)));
+    		originalColors.add(new ColorRecord(colors.get(i)));
     	}
-    	colors = newColors;
-    	*/
+    	
     }
     
     public ArrayList<ColorRecord> getColors() { return colors; }
@@ -161,8 +159,9 @@ public class PaletteView extends View {
 	    	{
 		    	float percentage = (float)event.getY() / (float)viewHeight;
 		    	ColorRecord editing = colors.get(indexEditing);
-		    	int color = Color.parseColor(editing.getHex());
-		    	editing.setInt(ColorPaletteModifier.modifyHue(color, percentage));
+		    	ColorRecord original = originalColors.get(indexEditing);
+		    	int color = Color.parseColor(original.getHex());
+		    	editing.setInt(ColorPaletteModifier.modifySaturation(color, percentage));
 		    	invalidate();
 	    	}
     	}
