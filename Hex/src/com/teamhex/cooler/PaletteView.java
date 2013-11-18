@@ -2,6 +2,7 @@ package com.teamhex.cooler;
 
 import java.util.ArrayList;
 
+import com.teamhex.cooler.ColorPaletteModifier.ColorVariable;
 import com.teamhex.cooler.Storage.Classes.ColorRecord;
 import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
@@ -27,7 +28,6 @@ public class PaletteView extends View {
     // PaletteView Constructors
     public PaletteView(Context context) { super(context); Init();}
     public PaletteView(Context context, AttributeSet attrs) { super(context, attrs); Init();}
-    
     
     private void Init()
     {
@@ -57,12 +57,17 @@ public class PaletteView extends View {
     	
     	//Copies the colors to avoid editing the color palette directly. 
     	//May not be necessary, commented out for now
+    	setOriginalColors();
+    	
+    }
+    
+    public void setOriginalColors()
+    {
     	originalColors = new ArrayList<ColorRecord>();
     	for(int i = 0; i < colors.size();i++)
     	{
     		originalColors.add(new ColorRecord(colors.get(i)));
     	}
-    	
     }
     
     public ArrayList<ColorRecord> getColors() { return colors; }
@@ -131,6 +136,14 @@ public class PaletteView extends View {
     	}
     }
     
+    private int mode = 0;
+    
+    public void setMode(int modeSet)
+    {
+    	mode = modeSet;
+    	setOriginalColors();
+	}
+    
     @Override
     public boolean onTouchEvent(MotionEvent event) {
     	
@@ -151,7 +164,7 @@ public class PaletteView extends View {
 	    			float percentage = (float)event.getY() / (float)viewHeight;
 	    	    	ColorRecord editing = colors.get(i);
 	    	    	int color = Color.parseColor(editing.getHex());
-	    	    	editing.setInt(Color.rgb(Color.red(color), Color.green(color),(int)(255 * percentage)));
+	    	    	editing.setInt(ColorPaletteModifier.modify(color, percentage,ColorVariable.values()[mode]));
 	    	    	invalidate();
 	    		}
 	    	}
@@ -161,7 +174,7 @@ public class PaletteView extends View {
 		    	ColorRecord editing = colors.get(indexEditing);
 		    	ColorRecord original = originalColors.get(indexEditing);
 		    	int color = Color.parseColor(original.getHex());
-		    	editing.setInt(ColorPaletteModifier.modify(color, percentage, ColorPaletteModifier.ColorVariable.SATURATION));
+		    	editing.setInt(ColorPaletteModifier.modify(color, percentage, ColorVariable.values()[mode]));
 		    	invalidate();
 	    	}
     	}

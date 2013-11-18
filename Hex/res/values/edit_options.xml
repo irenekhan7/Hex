@@ -3,7 +3,7 @@
     <string-array name="edit_options_array">
         <item>Hue</item>
         <item>Saturation</item>
-        <item>Lightness</item>
+        <item>Value</item>
         <item>Contrast</item>
     </string-array>
 </resources>

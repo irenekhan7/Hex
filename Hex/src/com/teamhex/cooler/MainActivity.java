@@ -63,6 +63,10 @@ public class MainActivity extends Activity {
                     // get an image from the camera
                 	Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
                     mCamera.takePicture(null, null, mPicture);
+                    if(mBitmap != null)
+                    {
+                    	//analyze();
+                    }
                 }
             }
         );
@@ -77,11 +81,7 @@ public class MainActivity extends Activity {
                     //Analyze image
                 	if (mBitmap != null)
                 	{
-                		ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                        mBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
-                		Intent d = new Intent(MainActivity.this, DrawImageActivity.class);
-                        d.putExtra("byteArray", bs.toByteArray());
-                    	startActivityForResult(d, 1);
+                		analyze();
                 	}
                 }
             }
@@ -118,6 +118,15 @@ public class MainActivity extends Activity {
                 }
             }
         );
+    }
+    
+    private void analyze()
+    {
+    	ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        mBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
+		Intent d = new Intent(MainActivity.this, DrawImageActivity.class);
+        d.putExtra("byteArray", bs.toByteArray());
+    	startActivityForResult(d, 1);
     }
     
     @Override
@@ -189,6 +198,7 @@ public class MainActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 
+	            analyze();
 	        }
 	    }
     	if(requestCode == 1)

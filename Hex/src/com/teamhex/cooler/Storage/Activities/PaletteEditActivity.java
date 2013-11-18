@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -79,6 +80,14 @@ public class PaletteEditActivity extends Activity {
 	     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	     // Apply the adapter to the spinner
 	     spinner.setAdapter(adapter);
+	     
+	     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+	    	    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+	    	        paletteView.setMode(pos);
+	    	    }
+	    	    public void onNothingSelected(AdapterView<?> parent) {
+	    	    }
+	     });
 	}
 	
 	PaletteRecord paletteRecord;
