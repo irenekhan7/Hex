@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.teamhex.cooler.PaletteView;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Classes.ColorRecord;
+import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 public class PaletteInfoActivity extends Activity {
@@ -21,8 +22,6 @@ public class PaletteInfoActivity extends Activity {
 	PaletteView paletteView;
 	TextView nameView;
 	TextView colorInfoView;
-	
-	static final int EDIT_PALETTE_NAME = 14;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +45,6 @@ public class PaletteInfoActivity extends Activity {
 		Intent i = getIntent();
         setPaletteRecord((PaletteRecord) i.getSerializableExtra("palette"));
         
-        // Any later edits will be stored in the changes object
-        changes = new ArrayList<String[]>();
-        
         // Event: Edit Button Pressed 
         Button editButton = (Button) findViewById(R.id.button_edit);
         editButton.setOnClickListener(
@@ -59,7 +55,7 @@ public class PaletteInfoActivity extends Activity {
                 	
                 	Intent i = new Intent(PaletteInfoActivity.this, PaletteEditActivity.class);
                     i.putExtra("palette", myPaletteRecord);
-                    startActivityForResult(i, EDIT_PALETTE_NAME);
+                    startActivity(i);
                     // See onActivityResult for what'll happen next
                 }
             }
@@ -89,12 +85,7 @@ public class PaletteInfoActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                	System.out.println("SAVING\n");
-                	MentionAllChanges();
-                	// Store the listing of changes in a result intent
-                	Intent resultIntent = new Intent();
-                	resultIntent.putExtra("changes", changes);
-                	setResult(Activity.RESULT_OK, resultIntent);
+                	Log.i("TeamHex", "PaletteInfoActivity has pressed save.");
                 	finish();
                 }
             }
@@ -136,50 +127,32 @@ public class PaletteInfoActivity extends Activity {
 
     // When the Edit Button Pressed event returns, check the data
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	Log.i("TeamHex", "An Edit Palette activity has returned returned: " + Integer.toString(requestCode) + ", " + Integer.toString(resultCode));
-    	
-    	// A new change must be recorded...
-    	String[] changed = new String[3];
-    	// ... with the first name of this record
-    	changed[0] = myPaletteRecord.getName();
-    	
-    	boolean has_change = true;
-    	
-    	switch(requestCode) {
-    		// The name was edited
-    		case(EDIT_PALETTE_NAME):
-    			Log.i("TeamHex", "The request code is for 'EDIT_PALETTE_NAME'");
-    			Bundle extras = data.getExtras();
-    			// (only if an extra equal to nameNew was returned)
-    			if(extras != null && extras.containsKey("nameNew")) {
-        			String nameNew = data.getStringExtra("nameNew");
-    				Log.i("TeamHex", "Found a new name: '" + nameNew + "'");
-    				myPaletteRecord.setName(nameNew);
-    				setPaletteRecord(myPaletteRecord);
-    				changed[1] = "Name";
-    				changed[2] = nameNew;
-    			}
-    			else {
-    				Log.i("TeamHex", "No new name was given...");
-    				has_change = false;
-    			}
-    		break;
-    	}
-    	// Now that it's all been process, remember to save/send the change
-    	if(has_change) {
-	    	MentionChange(changed);
-	    	changes.add(changed);
-    	}
+    	Log.i("TeamHex", "An Edit Palette activity has returned.");
     }
-    
-    // Helper functions to Log.i change(s)
-    private void MentionChange(String[] changed) { MentionChange(changed, "Remember"); }
-    private void MentionChange(String[] changed, String prefix) {
-    	Log.i("TeamHex", prefix + " to change " + changed[0] + "'s " + changed[1] + " to " + changed[2]);
-    }
-    private void MentionAllChanges() {
-    	for(int i = 0; i < changes.size(); ++i)
-    		MentionChange(changes.get(i), "...remembering");
+
+	// Going back means the palette must be reloaded from memory
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
+        // The new palette name should be given as serialized data
+        String nameNew;
+        Intent i = getIntent();
+        // If the new name is given, set it to that
+        if(i.hasExtra("nameNew"))
+        	nameNew = (String)i.getSerializableExtra("nameNew");
+        // Otherwise just use the old one
+        else nameNew = myPaletteRecord.getName();
+        
+        // Load that stuff from memory
+        HexStorageManager mHexStorageManager = new HexStorageManager(getApplication());
+        mHexStorageManager.RecordLoad(nameNew);
+        
+        // Set the loaded palette as the current one
+        setPaletteRecord(mHexStorageManager.RecordGet(nameNew));
+        
+        // Change the nameView
+        nameView.setText(nameNew);
     }
     
 	/*
@@ -189,9 +162,6 @@ public class PaletteInfoActivity extends Activity {
 		  finish();
 		  super.onBackPressed();
 	}*/
-    
-    // Listing of changes made (see HexStorageManager::applyChanges)
-    private ArrayList<String[]> changes;
 
 	// The PaletteRecord currently being displayed
 	PaletteRecord myPaletteRecord;
