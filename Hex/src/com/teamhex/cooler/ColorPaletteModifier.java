@@ -21,10 +21,6 @@ public class ColorPaletteModifier
 		int v1 = (Double.isNaN(h) ? 0 : (int)(h * 91.0222222));
 		int v2 = (int)(s * 255);
 		int v3 = (int)(v * 255);
-
-		System.out.println("[DEBUG:] ColorHSV");
-		System.out.println("h = " + h + " s = " + s + " v = " + v);
-		System.out.println("v1 = " + v1 + " v2 = " + v2 + "v3 = " + v3);
 		
 		return (((flag & 0x1) << 31) | (v1 & 0xFFFF) << 16) | ((v2 & 0xFF) << 8) | (v3 & 0xFF);
 	}
@@ -104,7 +100,6 @@ public class ColorPaletteModifier
 		double m = v - c;
 		double x = c * (1 - Math.abs((h % 2) - 1));
 
-		System.out.println("\n(int)h = " + (int)h + " x = " + x + " c = " + c + " m = " + m + "\n");
 		switch ((int)h)
 		{
 			case 0:
