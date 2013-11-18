@@ -2,12 +2,13 @@ package com.teamhex.cooler;
 
 public class ColorPaletteModifier 
 {
-	private static int ColorRGB(int r, int g, int b)
+	public static int ColorRGB(int r, int g, int b)
 	{
+		System.out.println("r = " + r + " g = " + g + " b = " + b);
 		return ((0xFF << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF));
 	}
 	
-	private static int ColorHSV(double h, double s, double v)
+	public static int ColorHSV(double h, double s, double v)
 	{
 		int flag = (Double.isNaN(h) ? 1 : 0);
 		
@@ -18,7 +19,7 @@ public class ColorPaletteModifier
 		return (((flag & 0x1) << 31) | (v1 & 0xFFFF) << 16) | ((v2 & 0xFF) << 8) | (v3 & 0xFF);
 	}
 	
-	private static double getHue(int hsvColor)
+	public static double getHue(int hsvColor)
 	{
 		int flag = (hsvColor >> 31);
 		if (flag == 1)
@@ -32,24 +33,24 @@ public class ColorPaletteModifier
 		}
 	}
 	
-	private static double getSaturation(int hsvColor)
+	public static double getSaturation(int hsvColor)
 	{
 		return ((double)((hsvColor >> 8) & 0xFF))/255.0;
 	}
 	
-	private static double getValue(int hsvColor)
+	public static double getValue(int hsvColor)
 	{
 		return ((double)(hsvColor & 0xFF))/255.0;
 	}
 	
-	private static int RGBtoHSV(int rgbColor)
+	public static int RGBtoHSV(int rgbColor)
 	{
-		int r = ((rgbColor >> 16) & 0xFF);
-		int g = ((rgbColor >> 8) & 0xFF); 
-		int b = (rgbColor & 0xFF);
+		double r = (double)((rgbColor >> 16) & 0xFF)/255.0;
+		double g = (double)((rgbColor >> 8) & 0xFF)/255.0; 
+		double b = (double)(rgbColor & 0xFF)/255.0;
 		
-		int max = (r > g) ? ((r > b) ? r : b) : g;
-		int min = (r < g) ? ((r < b) ? r : b) : g;
+		double max = (r > g) ? ((r > b) ? r : b) : ((g > b) ? g : b);
+		double min = (r < g) ? ((r < b) ? r : b) : ((g < b) ? g : b);
 		
 		double v = max;
 		double d = max - min;
@@ -61,7 +62,7 @@ public class ColorPaletteModifier
 		else
 		{
 			double h = Double.NaN;
-			double s = (max == 0) ? 0 : (max - min)/max;
+			double s = (max == 0) ? 0 : d/v;
 			if (r == max)
 			{
 				h = 60 * (g - b)/d;
@@ -78,45 +79,46 @@ public class ColorPaletteModifier
 		}
 	}
 	
-	private static int HSVtoRGB(int hsvColor)
+	public static int HSVtoRGB(int hsvColor)
 	{
 		double h = getHue(hsvColor)/60.0;
 		double s = getSaturation(hsvColor);
 		double v = getValue(hsvColor);
 		
+		System.out.println("h = " + h*60.0 + " s = " + s + " v = " + v);
+		
 		if (s == 0.0)
 		{
-			return ColorRGB(0, 0, 0);
+			return ColorRGB((int)(v*255.0), (int)(v*255.0), (int)(v*255.0));
 		}
 		
-		int h2 = (int)h;
-		double rem = h - (double)h2;
-		
-		double a = v * (1.0 - s);
-		double b = v * (1.0 - (s * rem));
-		double c = v * (1.0 - (s * (1.0 - rem)));
-		
-		switch (h2)
+		double c = s * v;
+		double m = v - c;
+		double x = c * (1 - Math.abs((h % 2) - 1));
+
+		System.out.println("\n(int)h = " + (int)h + " x = " + x + " c = " + c + " m = " + m + "\n");
+		switch ((int)h)
 		{
 			case 0:
-				return ColorRGB((int)v,(int)c,(int)a);
+				return ColorRGB((int)((c+m)*255.0),(int)((x+m)*255.0),(int)(m*255.0));
 			case 1:
-				return ColorRGB((int)b,(int)v,(int)a);
+				return ColorRGB((int)((x+m)*255.0),(int)((c+m)*255.0),(int)(m*255.0));
 			case 2:
-				return ColorRGB((int)a,(int)v,(int)c);
+				return ColorRGB((int)(m*255.0),(int)((c+m)*255.0),(int)((x+m)*255.0));
 			case 3:
-				return ColorRGB((int)a,(int)b,(int)v);
+				return ColorRGB((int)(m*255.0),(int)((x+m)*255.0),(int)((c+m)*255.0));
 			case 4:
-				return ColorRGB((int)c,(int)a,(int)v);
+				return ColorRGB((int)((x+m)*255.0),(int)(m*255.0),(int)((c+m)*255.0));
 			case 5:
-				return ColorRGB((int)v,(int)a,(int)b);
+				return ColorRGB((int)((c+m)*255.0),(int)(m*255.0),(int)((x+m)*255.0));
 			default:
-				return ColorRGB(0,0,0);
+				return ColorRGB((int)(m*255.0),(int)(m*255.0),(int)(m*255.0));
 		}
 	}
 	
 	public static int modifyHue(int rgbColor, double scale)
 	{
+		System.out.print("scale = " + scale +"\n");
 		int hsvColor = RGBtoHSV(rgbColor);
 		double hue = scale * 360.0;
 		
@@ -129,6 +131,7 @@ public class ColorPaletteModifier
 			hue += 360.0;
 		}
 		
+		System.out.println("hue = " + hue + " sat = " + getSaturation(hsvColor) + " val = " + getValue(hsvColor));
 		return HSVtoRGB(ColorHSV(hue, getSaturation(hsvColor), getValue(hsvColor)));
 	}
 	

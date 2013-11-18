@@ -141,8 +141,6 @@ public class PaletteView extends View {
     	{
     		return false;
     	}
-    	
-    	
         // Let the GestureDetector interpret this event
         boolean result = mDetector.onTouchEvent(event);
         
@@ -164,7 +162,7 @@ public class PaletteView extends View {
 		    	float percentage = (float)event.getY() / (float)viewHeight;
 		    	ColorRecord editing = colors.get(indexEditing);
 		    	int color = Color.parseColor(editing.getHex());
-		    	editing.setInt(Color.rgb(Color.red(color), Color.green(color),(int)(255 * percentage)));
+		    	editing.setInt(ColorPaletteModifier.modifyHue(color, percentage));
 		    	invalidate();
 	    	}
     	}
