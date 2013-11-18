@@ -48,7 +48,7 @@ public class PaletteLibraryActivity extends Activity {
     //static final private int BACK_ID = Menu.FIRST;
   //  static final private int CLEAR_ID = Menu.FIRST + 1;
 	static final int VIEW_PALETTE_INFO = 7;
-
+	static final int DELETE_PALETTE_RESULT = 10;
   //  private EditText mEditor;
    // private Camera camera;
     
@@ -124,6 +124,11 @@ public class PaletteLibraryActivity extends Activity {
     // When the Save Button Pressed event returns, check the data
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	Log.i("TeamHex", "A View Palette activity has returned.");
+    	if(resultCode == DELETE_PALETTE_RESULT)
+    	{
+    		storage.RecordDelete(data.getExtras().getString("name"));
+    
+    	}
     }
     
 	

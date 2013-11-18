@@ -203,7 +203,7 @@ public class MainActivity extends Activity {
 	    	
 	    	// Store the output from colors[] into a new PaletteRecord
 	    	PaletteRecord palette = new PaletteRecord();
-	    	palette.setName("Untitled Palette");
+	    	palette.setName("Untitled_Palette");
 	    	for (int i = 0; i < 5; i++)
 	    		palette.addColor(colors[i]);
 	    	

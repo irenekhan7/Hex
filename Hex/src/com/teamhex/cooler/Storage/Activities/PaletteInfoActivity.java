@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +25,10 @@ public class PaletteInfoActivity extends Activity {
 	TextView colorInfoView;
 	
 	static final int EDIT_PALETTE_NAME = 14;
+	// 1. Instantiate an AlertDialog.Builder with its constructor
+	AlertDialog.Builder builder;
+
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,26 @@ public class PaletteInfoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_palette_info);
 		
+		builder = new AlertDialog.Builder(this);
+		// 2. Chain together various setter methods to set the dialog characteristics
+		builder.setTitle("Are you sure?");
+
+		builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	        	   System.out.println("DELETING\n");
+	               	//MentionAllChanges();
+	               	Intent resultIntent = new Intent();
+	               	resultIntent.putExtra("name", myPaletteRecord.getName());
+	               	setResult(PaletteLibraryActivity.DELETE_PALETTE_RESULT, resultIntent);
+	               	finish();
+	           }
+	       });
+		
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               // User cancelled the dialog
+	           }
+	       });
 		// Fetch the palette and name views
 		paletteView = (PaletteView) findViewById(R.id.paletteEditView);
 		nameView = (TextView) findViewById(R.id.paletteName);
@@ -81,13 +107,13 @@ public class PaletteInfoActivity extends Activity {
 
         // Event: Save Button Pressed
         // When the Save Button Pressed event returns, save all and go back to PaletteLibraryActivity
-        Button saveButton = (Button) findViewById(R.id.button_save);
+        Button saveButton = (Button) findViewById(R.id.button_delete);
         saveButton.setOnClickListener(
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                	Log.i("TeamHex", "PaletteInfoActivity has pressed save.");
-                	finish();
+                	AlertDialog dialog = builder.create();
+                	dialog.show();
                 }
             }
         );

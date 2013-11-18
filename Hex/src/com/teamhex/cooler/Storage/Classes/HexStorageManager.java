@@ -154,7 +154,7 @@ public class HexStorageManager {
 		String originalName = name;
 		int i = 2; 
 		while(record_names.contains(name)){
-			name = originalName + " ("+i+')';
+			name = originalName + "_("+i+')';
 			i++; //Here, Ian was wrong.
 		}
 		
@@ -228,6 +228,9 @@ public class HexStorageManager {
 		// Delete the record's old file
 		Log.i("TeamHex", "Trying to delete " + name + ".txt");
 		fileDelete(name + ".txt");
+		
+		// Reflect the changes in the file index
+		remakeFileIndex();
 	}
 	
     /* 

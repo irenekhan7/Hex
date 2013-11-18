@@ -74,10 +74,10 @@ containing a value of this type.
         public static final int action_settings=0x7f0a0011;
         public static final int button_analyze=0x7f0a0001;
         public static final int button_capture=0x7f0a0003;
+        public static final int button_delete=0x7f0a0008;
         public static final int button_edit=0x7f0a000d;
         public static final int button_import=0x7f0a0004;
         public static final int button_open_library=0x7f0a0002;
-        public static final int button_save=0x7f0a0008;
         public static final int button_share=0x7f0a000c;
         public static final int camera_preview=0x7f0a0000;
         public static final int colorInfo=0x7f0a000b;
