@@ -1,10 +1,16 @@
 package com.teamhex.cooler;
 
+import java.io.IOException;
+
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -52,8 +58,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Parameters p = mCamera.getParameters();
         p.setPictureSize(512, 384);
 
+        p.set("orientation", "portrait");
+        
+        // set other parameters ..
         mCamera.getParameters().setRotation(90);
-
+        
         Camera.Size s = p.getSupportedPreviewSizes().get(0);
         p.setPreviewSize( s.width, s.height );
 
@@ -97,7 +106,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // set preview size and make any resize, rotate or
         // reformatting changes here
         Log.i("TeamHex", "The preview has changed, we should update! :D :D :D :D :D :D :D");
-
+        
+        setCameraDisplayOrientation((Activity) this.getContext(), 0, mCamera);
+        
+        try {
+			mCamera.setPreviewDisplay(holder);
+		} catch (IOException e1) {
+			//Ignore
+		}
+        
         // start preview with new settings
         try {
             mCamera.setPreviewDisplay(mHolder);
@@ -106,5 +123,34 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         } catch (Exception e){
             Log.d(TAG, "Error starting camera preview: " + e.getMessage());
         }
+    }
+    
+    
+    //Modified from Android documentation: http://developer.android.com/reference/android/hardware/Camera.html#setDisplayOrientation(int)
+    public static void setCameraDisplayOrientation(Activity activity, int cameraId, android.hardware.Camera camera) {
+        android.hardware.Camera.CameraInfo info =
+                new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(cameraId, info);
+        int rotation = activity.getWindowManager().getDefaultDisplay()
+                .getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_180: degrees = 180; break;
+            case Surface.ROTATION_270: degrees = 270; break;
+        }
+
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        Camera.Parameters params = camera.getParameters();
+        params.setRotation(result); 
+        camera.setParameters(params);
+        camera.setDisplayOrientation(result);
     }
 }

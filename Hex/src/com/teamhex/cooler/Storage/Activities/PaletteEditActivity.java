@@ -1,21 +1,30 @@
 package com.teamhex.cooler.Storage.Activities;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+
 import com.teamhex.cooler.PaletteView;
 import com.teamhex.cooler.R;
+import com.teamhex.cooler.Storage.Classes.ColorRecord;
+import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 public class PaletteEditActivity extends Activity {
 
 	PaletteView paletteView;
 	EditText nameEdit;
+	HexStorageManager mHexStorageManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,27 +37,57 @@ public class PaletteEditActivity extends Activity {
 		Intent i = getIntent();
         PaletteRecord palette = (PaletteRecord)i.getSerializableExtra("palette");
         setPaletteRecord(palette);
+        paletteView.enableEditing();
         
+        mHexStorageManager = new HexStorageManager(getApplication());
+        mHexStorageManager.RecordLoadAll();
        
-        Button editButton = (Button) findViewById(R.id.button_save);
-        editButton.setOnClickListener(
+        Button saveButton = (Button) findViewById(R.id.button_save);
+        saveButton.setOnClickListener(
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                 	// Get the user's name input from a standard Android getText()
                 	Log.i("TeamHex", "Getting the name to change to..");
-                	String nameNew = nameEdit.getText().toString();
-                	Log.i("TeamHex", "The new name is '" + nameNew + "'");
-                	paletteRecord.setName(nameNew); //Doesn't do anything because it's editing an object loaded from a serialized object. 
+                	String nameOld = paletteRecord.getName(),
+                		   nameNew = nameEdit.getText().toString();
                 	
-                	// Store the obtained string in a result intent
-                	Intent resultIntent = new Intent();
-                	resultIntent.putExtra("nameNew", nameNew);
-                	setResult(Activity.RESULT_OK, resultIntent);
+                	Log.i("TeamHex", "The new name is '" + nameNew + "', from '" + nameOld + "'");
+                	if(nameNew != nameOld) {
+                		Log.i("TeamHex", "Renaming!");
+                		mHexStorageManager.RecordRename(paletteRecord.getName(), nameNew);
+                	}
+                	
+                	Log.i("TeamHex", "Getting new colors from paletteView");
+                	ArrayList<ColorRecord> colors = paletteView.getColors();
+                	for(int i = 0, len = colors.size(); i < len; ++i)
+                		Log.i("TeamHex", "   " + Integer.toString(i) + ": " + colors.get(i).getSaveString());
+                	
+                	PaletteRecord record = mHexStorageManager.RecordGet(nameNew);
+                	record.setColors(colors);
+                	mHexStorageManager.RecordSave(record);
+                	
                 	finish();
                 }
             }
         );
+        
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_edit);
+	     // Create an ArrayAdapter using the string array and a default spinner layout
+	     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+	             R.array.edit_options_array, android.R.layout.simple_spinner_item);
+	     // Specify the layout to use when the list of choices appears
+	     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	     // Apply the adapter to the spinner
+	     spinner.setAdapter(adapter);
+	     
+	     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+	    	    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+	    	        paletteView.setMode(pos);
+	    	    }
+	    	    public void onNothingSelected(AdapterView<?> parent) {
+	    	    }
+	     });
 	}
 	
 	PaletteRecord paletteRecord;

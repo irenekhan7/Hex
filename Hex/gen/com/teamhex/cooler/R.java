@@ -8,6 +8,9 @@
 package com.teamhex.cooler;
 
 public final class R {
+    public static final class array {
+        public static final int edit_options_array=0x7f060000;
+    }
     public static final class attr {
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
@@ -59,28 +62,32 @@ containing a value of this type.
         public static final int activity_vertical_margin=0x7f050001;
     }
     public static final class drawable {
+        public static final int hexcolor=0x7f020000;
         /**  Retrieved via Resources.getDrawable() and friends. 
          */
-        public static final int semi_black=0x7f020001;
-        public static final int violet=0x7f020000;
+        public static final int semi_black=0x7f020002;
+        public static final int violet=0x7f020001;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f090008;
-        public static final int RelativeLayout1=0x7f09000c;
-        public static final int action_settings=0x7f09000f;
-        public static final int button_analyze=0x7f090001;
-        public static final int button_capture=0x7f090003;
-        public static final int button_edit=0x7f090009;
-        public static final int button_import=0x7f090004;
-        public static final int button_open_library=0x7f090002;
-        public static final int button_save=0x7f090006;
-        public static final int button_share=0x7f09000a;
-        public static final int camera_preview=0x7f090000;
-        public static final int editName=0x7f090007;
-        public static final int name=0x7f09000d;
-        public static final int paletteEditView=0x7f090005;
-        public static final int paletteName=0x7f09000b;
-        public static final int schemeList=0x7f09000e;
+        public static final int LinearLayout1=0x7f0a0000;
+        public static final int RelativeLayout1=0x7f0a000f;
+        public static final int action_settings=0x7f0a0012;
+        public static final int button_analyze=0x7f0a0002;
+        public static final int button_capture=0x7f0a0003;
+        public static final int button_delete=0x7f0a000d;
+        public static final int button_edit=0x7f0a000e;
+        public static final int button_import=0x7f0a0004;
+        public static final int button_open_library=0x7f0a0005;
+        public static final int button_save=0x7f0a0009;
+        public static final int button_share=0x7f0a000c;
+        public static final int camera_preview=0x7f0a0001;
+        public static final int colorInfo=0x7f0a000b;
+        public static final int editName=0x7f0a0006;
+        public static final int name=0x7f0a0010;
+        public static final int paletteEditView=0x7f0a0007;
+        public static final int paletteName=0x7f0a000a;
+        public static final int schemeList=0x7f0a0011;
+        public static final int spinner_edit=0x7f0a0008;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -91,28 +98,27 @@ containing a value of this type.
         public static final int scheme_list_activity=0x7f030005;
     }
     public static final class menu {
-        public static final int palette_edit=0x7f080000;
-        public static final int scheme_info=0x7f080001;
+        public static final int palette_edit=0x7f090000;
+        public static final int scheme_info=0x7f090001;
     }
     public static final class string {
-        public static final int action_settings=0x7f060005;
-        public static final int app_name=0x7f060007;
-        public static final int back=0x7f060001;
-        public static final int clear=0x7f060002;
-        public static final int hello_world=0x7f060006;
+        public static final int action_settings=0x7f070005;
+        public static final int app_name=0x7f070007;
+        public static final int back=0x7f070001;
+        public static final int clear=0x7f070002;
+        public static final int hello_world=0x7f070006;
         /**  This is a complex string containing style runs. 
          */
-        public static final int main_label=0x7f060003;
+        public static final int main_label=0x7f070003;
         /**  Simple strings. 
          */
-        public static final int skeleton_app=0x7f060000;
-        public static final int title_activity_palette_edit=0x7f060008;
-        public static final int title_activity_scheme_info=0x7f060004;
+        public static final int skeleton_app=0x7f070000;
+        public static final int title_activity_palette_edit=0x7f070008;
+        public static final int title_activity_scheme_info=0x7f070004;
     }
     public static final class style {
-        public static final int ActionButton=0x7f070000;
-        public static final int TextAppearance=0x7f070001;
-        public static final int TextAppearance_ActionButton=0x7f070002;
+        public static final int HexTheme=0x7f080000;
+        public static final int HexTheme_NoTitleBar=0x7f080001;
     }
     public static final class styleable {
         /** Attributes that can be used with a PaletteView.

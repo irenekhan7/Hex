@@ -20,18 +20,14 @@
      will be used in multiple tags. -->
 
 <resources>
-    <style name="ActionButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">@style/TextAppearance.ActionButton</item>
+    
+    <style name="HexTheme" parent="@android:style/Theme">
     </style>
+    
+    <style name="HexTheme.NoTitleBar" parent="@android:Theme">
+	    <item name="android:windowNoTitle">true</item>
+	</style>
 
-    <style name="TextAppearance" parent="android:TextAppearance">
-    </style>
-
-    <style name="TextAppearance.ActionButton">
-        <item name="android:textStyle">italic</item>
-    </style>
 
 </resources>
 
