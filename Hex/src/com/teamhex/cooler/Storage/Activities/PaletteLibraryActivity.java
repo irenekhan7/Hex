@@ -123,19 +123,7 @@ public class PaletteLibraryActivity extends Activity {
 
     // When the Save Button Pressed event returns, check the data
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	Log.i("TeamHex", "A View Palette activity has returned. " + Integer.toString(requestCode) + ", " + Integer.toString(resultCode));
-    	if(data == null) {
-    		Log.i("TeamHex", "No data was returned, so nothing needs to be changed.");
-    		return;
-    	}
-		Log.i("TeamHex", "Data was returned, obtaining list of changes...");
-		Bundle extras = data.getExtras();
-		if(extras != null && extras.containsKey("changes")) {
-			Log.i("TeamHex", "There were changes.");
-			ArrayList<String[]> changes = (ArrayList<String[]>) data.getSerializableExtra("changes");
-			Log.i("TeamHex", "There were " + Integer.toString(changes.size()) + " of them!");
-			storage.applyChanges(changes);
-		}
+    	Log.i("TeamHex", "A View Palette activity has returned.");
     }
     
 	

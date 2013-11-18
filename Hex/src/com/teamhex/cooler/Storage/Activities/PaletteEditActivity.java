@@ -1,5 +1,7 @@
 package com.teamhex.cooler.Storage.Activities;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -13,12 +15,15 @@ import android.widget.Spinner;
 
 import com.teamhex.cooler.PaletteView;
 import com.teamhex.cooler.R;
+import com.teamhex.cooler.Storage.Classes.ColorRecord;
+import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 public class PaletteEditActivity extends Activity {
 
 	PaletteView paletteView;
 	EditText nameEdit;
+	HexStorageManager mHexStorageManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,22 +37,31 @@ public class PaletteEditActivity extends Activity {
         PaletteRecord palette = (PaletteRecord)i.getSerializableExtra("palette");
         setPaletteRecord(palette);
         paletteView.enableEditing();
+        
+        mHexStorageManager = new HexStorageManager(getApplication());
+        mHexStorageManager.RecordLoadAll();
        
-        Button editButton = (Button) findViewById(R.id.button_save);
-        editButton.setOnClickListener(
+        Button saveButton = (Button) findViewById(R.id.button_save);
+        saveButton.setOnClickListener(
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                 	// Get the user's name input from a standard Android getText()
                 	Log.i("TeamHex", "Getting the name to change to..");
-                	String nameNew = nameEdit.getText().toString();
-                	Log.i("TeamHex", "The new name is '" + nameNew + "'");
-                	paletteRecord.setName(nameNew); //Doesn't do anything because it's editing an object loaded from a serialized object. 
+                	String nameOld = paletteRecord.getName(),
+                		   nameNew = nameEdit.getText().toString();
                 	
-                	// Store the obtained string in a result intent
-                	Intent resultIntent = new Intent();
-                	resultIntent.putExtra("nameNew", nameNew);
-                	setResult(Activity.RESULT_OK, resultIntent);
+                	Log.i("TeamHex", "The new name is '" + nameNew + "', from '" + nameOld + "'");
+                	if(nameNew != nameOld) {
+                		Log.i("TeamHex", "Renaming!");
+                		mHexStorageManager.RecordRename(paletteRecord.getName(), nameNew);
+                	}
+                	
+                	Log.i("TeamHex", "Getting new colors from paletteView");
+                	ArrayList<ColorRecord> colors = paletteView.getColors();
+                	for(int i = 0, len = colors.size(); i < len; ++i)
+                		Log.i("TeamHex", "   " + Integer.toString(i) + ": " + colors.get(i).getSaveString());
+                	
                 	finish();
                 }
             }

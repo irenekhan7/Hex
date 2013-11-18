@@ -3,6 +3,7 @@ package com.teamhex.cooler;
 import java.util.ArrayList;
 
 import com.teamhex.cooler.Storage.Classes.ColorRecord;
+import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 import android.content.Context;
@@ -65,6 +66,8 @@ public class PaletteView extends View {
     	colors = newColors;
     	*/
     }
+    
+    public ArrayList<ColorRecord> getColors() { return colors; }
     
     int viewWidth = 0;
     int viewHeight = 0;
