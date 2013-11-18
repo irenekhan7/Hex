@@ -115,42 +115,53 @@ public class ColorPaletteModifier
 		}
 	}
 	
-	public static int shiftHue(int rgbColor, double offset)
+	public static int modifyHue(int rgbColor, double scale)
 	{
 		int hsvColor = RGBtoHSV(rgbColor);
-		double hue = getHue(hsvColor);
+		double hue = scale * 360.0;
 		
-		hue = (1.0 + offset) * hue;
+		while (hue > 360.0)
+		{
+			hue -= 360.0;
+		}
 		while (hue < 0)
 		{
 			hue += 360.0;
-		}
-		while (hue > 360)
-		{
-			hue -= 360.0;
 		}
 		
 		return HSVtoRGB(ColorHSV(hue, getSaturation(hsvColor), getValue(hsvColor)));
 	}
 	
-	public static int shiftSaturation(int rgbColor, double offset)
+	public static int modifySaturation(int rgbColor, double scale)
 	{
 		int hsvColor = RGBtoHSV(rgbColor);
-		double sat = getSaturation(hsvColor);
+		double sat = scale;// * 1.0;
 		
-		sat = (1.0 + offset) * sat;
-		sat = ((sat > 1.0) ? 1.0 : ((sat < 0.0) ? 0 : sat));
+		while (sat > 1.0)
+		{
+			sat -= 1.0;
+		}
+		while (sat < 0)
+		{
+			sat += 1.0;
+		}
 		
 		return HSVtoRGB(ColorHSV(getHue(hsvColor), sat, getValue(hsvColor)));
 	}
 	
-	public static int shiftValue(int rgbColor, double offset)
+	public static int modifyValue(int rgbColor, double scale)
 	{
 		int hsvColor = RGBtoHSV(rgbColor);
-		double val = getValue(hsvColor);
+		double val = scale;// * 1.0;
 		
-		val = (1.0 + offset) * val;
-		val = ((val > 1.0) ? 1.0 : ((val < 0.0) ? 0 : val));
+		while (val > 1.0)
+		{
+			val -= 1.0;
+		}
+		while (val < 0)
+		{
+			val += 1.0;
+		}
 		
 		return HSVtoRGB(ColorHSV(getHue(hsvColor), getSaturation(hsvColor), val));
 	}
