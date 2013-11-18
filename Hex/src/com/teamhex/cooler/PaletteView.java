@@ -161,7 +161,7 @@ public class PaletteView extends View {
 		    	ColorRecord editing = colors.get(indexEditing);
 		    	ColorRecord original = originalColors.get(indexEditing);
 		    	int color = Color.parseColor(original.getHex());
-		    	editing.setInt(ColorPaletteModifier.modifySaturation(color, percentage));
+		    	editing.setInt(ColorPaletteModifier.modify(color, percentage, ColorPaletteModifier.ColorVariable.SATURATION));
 		    	invalidate();
 	    	}
     	}

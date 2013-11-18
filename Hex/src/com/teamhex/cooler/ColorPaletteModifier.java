@@ -2,6 +2,13 @@ package com.teamhex.cooler;
 
 public class ColorPaletteModifier 
 {
+	public enum ColorVariable
+	{
+		HUE,
+		SATURATION,
+		VALUE,
+	}
+	
 	public static int ColorRGB(int r, int g, int b)
 	{
 		System.out.println("r = " + r + " g = " + g + " b = " + b);
@@ -116,56 +123,43 @@ public class ColorPaletteModifier
 		}
 	}
 	
-	public static int modifyHue(int rgbColor, double scale)
-	{
-		System.out.print("scale = " + scale +"\n");
-		int hsvColor = RGBtoHSV(rgbColor);
-		double hue = scale * 360.0;
-		
-		while (hue > 360.0)
-		{
-			hue -= 360.0;
-		}
-		while (hue < 0)
-		{
-			hue += 360.0;
-		}
-		
-		System.out.println("hue = " + hue + " sat = " + getSaturation(hsvColor) + " val = " + getValue(hsvColor));
-		return HSVtoRGB(ColorHSV(hue, getSaturation(hsvColor), getValue(hsvColor)));
-	}
-	
-	public static int modifySaturation(int rgbColor, double scale)
+	public static int modify(int rgbColor, double scale, ColorVariable var)
 	{
 		int hsvColor = RGBtoHSV(rgbColor);
-		double sat = scale;// * 1.0;
-		
-		while (sat > 1.0)
+		switch (var)
 		{
-			sat -= 1.0;
-		}
-		while (sat < 0)
-		{
-			sat += 1.0;
+			case HUE:
+			{
+				double hue = scale * 360.0;
+				while (hue > 360.0)
+					hue -= 360.0;
+				while (hue < 0)
+					hue += 360.0;
+				return HSVtoRGB(ColorHSV(hue, getSaturation(hsvColor), getValue(hsvColor)));
+			}
+			case SATURATION:
+			{
+				double sat = scale;// * 1.0;
+				while (sat > 1.0)
+					sat -= 1.0;
+				while (sat < 0)
+					sat += 1.0;
+				return HSVtoRGB(ColorHSV(getHue(hsvColor), sat, getValue(hsvColor)));
+			}
+			case VALUE:
+			{
+				double val = scale;// * 1.0;
+				while (val > 1.0)
+					val -= 1.0;
+				while (val < 0)
+					val += 1.0;
+				return HSVtoRGB(ColorHSV(getHue(hsvColor), getSaturation(hsvColor), val));
+			}
+			default:
+			{
+				return 0;
+			}
 		}
 		
-		return HSVtoRGB(ColorHSV(getHue(hsvColor), sat, getValue(hsvColor)));
-	}
-	
-	public static int modifyValue(int rgbColor, double scale)
-	{
-		int hsvColor = RGBtoHSV(rgbColor);
-		double val = scale;// * 1.0;
-		
-		while (val > 1.0)
-		{
-			val -= 1.0;
-		}
-		while (val < 0)
-		{
-			val += 1.0;
-		}
-		
-		return HSVtoRGB(ColorHSV(getHue(hsvColor), getSaturation(hsvColor), val));
 	}
 }
