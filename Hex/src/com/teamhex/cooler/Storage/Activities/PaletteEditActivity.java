@@ -62,7 +62,7 @@ public class PaletteEditActivity extends Activity {
                 	for(int i = 0, len = colors.size(); i < len; ++i)
                 		Log.i("TeamHex", "   " + Integer.toString(i) + ": " + colors.get(i).getSaveString());
                 	
-                	PaletteRecord record = mHexStorageManager.recordGet(nameNew);
+                	PaletteRecord record = mHexStorageManager.RecordGet(nameNew);
                 	record.setColors(colors);
                 	mHexStorageManager.RecordSave(record);
                 	

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.teamhex.cooler.PaletteView;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Classes.ColorRecord;
+import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 public class PaletteInfoActivity extends Activity {
@@ -21,8 +22,6 @@ public class PaletteInfoActivity extends Activity {
 	PaletteView paletteView;
 	TextView nameView;
 	TextView colorInfoView;
-	
-	static final int EDIT_PALETTE_NAME = 14;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,7 @@ public class PaletteInfoActivity extends Activity {
                 	
                 	Intent i = new Intent(PaletteInfoActivity.this, PaletteEditActivity.class);
                     i.putExtra("palette", myPaletteRecord);
-                    startActivityForResult(i, EDIT_PALETTE_NAME);
+                    startActivity(i);
                     // See onActivityResult for what'll happen next
                 }
             }
@@ -129,6 +128,28 @@ public class PaletteInfoActivity extends Activity {
     // When the Edit Button Pressed event returns, check the data
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	Log.i("TeamHex", "An Edit Palette activity has returned.");
+    }
+
+	// Going back means the palette must be reloaded from memory
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
+        // The new palette name should be given as serialized data
+        String nameNew;
+        Intent i = getIntent();
+        // If the new name is given, set it to that
+        if(i.hasExtra("nameNew"))
+        	nameNew = (String)i.getSerializableExtra("nameNew");
+        // Otherwise just use the old one
+        else nameNew = myPaletteRecord.getName();
+        
+        // Load that stuff from memory
+        HexStorageManager mHexStorageManager = new HexStorageManager(getApplication());
+        mHexStorageManager.RecordLoad(nameNew);
+        
+        // Set the loaded palette as the current one
+        setPaletteRecord(mHexStorageManager.RecordGet(nameNew));
     }
     
 	/*
