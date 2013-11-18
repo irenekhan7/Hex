@@ -3,9 +3,8 @@ package com.teamhex.cooler;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
-import android.app.Activity;
 
-public class ColorPaletteGenerator extends Activity {
+public class ColorPaletteGenerator {
 
 	/********************************************************************************************
 	 * Begin Color Algorithm Code

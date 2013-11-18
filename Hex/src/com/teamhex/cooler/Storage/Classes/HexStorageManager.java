@@ -299,7 +299,7 @@ public class HexStorageManager {
 	// Gets
 	public Context getContext()      { return context; }
 	public String getFileIndexName() { return fileIndexName; }
-	public PaletteRecord recordGet(String name) { return records.get(name); }
+	public PaletteRecord RecordGet(String name) { return records.get(name); }
 	// Note that this will only get the ones that are loaded
 	public PaletteRecord[] getPalettesArray() {
 		PaletteRecord[] returner = new PaletteRecord[num_loaded];
