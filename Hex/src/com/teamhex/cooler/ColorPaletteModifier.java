@@ -11,7 +11,6 @@ public class ColorPaletteModifier
 	
 	public static int ColorRGB(int r, int g, int b)
 	{
-		System.out.println("r = " + r + " g = " + g + " b = " + b);
 		return ((0xFF << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF));
 	}
 	
@@ -22,6 +21,10 @@ public class ColorPaletteModifier
 		int v1 = (Double.isNaN(h) ? 0 : (int)(h * 91.0222222));
 		int v2 = (int)(s * 255);
 		int v3 = (int)(v * 255);
+
+		System.out.println("[DEBUG:] ColorHSV");
+		System.out.println("h = " + h + " s = " + s + " v = " + v);
+		System.out.println("v1 = " + v1 + " v2 = " + v2 + "v3 = " + v3);
 		
 		return (((flag & 0x1) << 31) | (v1 & 0xFFFF) << 16) | ((v2 & 0xFF) << 8) | (v3 & 0xFF);
 	}
@@ -35,7 +38,7 @@ public class ColorPaletteModifier
 		}
 		else
 		{
-			int n = hsvColor >> 16;
+			int n = (hsvColor  >> 16) & 0x7FFF;
 			return (n * 0.01098632812);
 		}
 	}
@@ -91,8 +94,6 @@ public class ColorPaletteModifier
 		double h = getHue(hsvColor)/60.0;
 		double s = getSaturation(hsvColor);
 		double v = getValue(hsvColor);
-		
-		System.out.println("h = " + h*60.0 + " s = " + s + " v = " + v);
 		
 		if (s == 0.0)
 		{
