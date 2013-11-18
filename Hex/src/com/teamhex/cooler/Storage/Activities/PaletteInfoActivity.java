@@ -150,6 +150,9 @@ public class PaletteInfoActivity extends Activity {
         
         // Set the loaded palette as the current one
         setPaletteRecord(mHexStorageManager.RecordGet(nameNew));
+        
+        // Change the nameView
+        nameView.setText(nameNew);
     }
     
 	/*
