@@ -24,10 +24,10 @@ public class HexStorageManager {
 	// Required: String filename, Context context
 	// The initial list of PaletteRecords is loaded using the index file
 	// Sample usage: 
-	// 		new StorageManager(getApplicationContext());
+	// 		new HexStorageManager(getApplication());
 	public HexStorageManager() {
 		Log.w("TeamHex", "A StorageManager is being created without a file name or context!");
-		Log.w("TeamHex", "Sample usage: new Storagemanager(getApplicationContext());");
+		Log.w("TeamHex", "Sample usage: new Storagemanager(getApplication());");
 	}
 	public HexStorageManager(Context _context) { this(_context, "RecordsIndex"); }
 	public HexStorageManager(Context _context, String _filename) {
@@ -192,6 +192,12 @@ public class HexStorageManager {
 	public void RecordRename(PaletteRecord record, String nameNew) { RecordRename(record, record.getName(), nameNew); }
 	public void RecordRename(PaletteRecord record, String nameOld, String nameNew) {
 		Log.i("TeamHex", "Renaming " + nameOld + " to " + nameNew);
+		
+		if(!records.containsKey(nameOld)) {
+			Log.i("TeamHex", "nameOld " + nameOld + " not found. Is there a problem with spaces?");
+			return;
+		}
+		
 		// Remove references to the record and its name
 		records.remove(nameOld);
 		record_names.remove(record_names.indexOf(nameOld));
@@ -205,29 +211,25 @@ public class HexStorageManager {
 		
 		// Add it normally
 		RecordAdd(record, nameNew);
-	}
-	
-	// Applies a bunch of changes
-    // Each change in the ArrayList is an array of size 3:
-    // [0] -> Palette Name
-    // [1] -> Attribute
-    // [2] -> New attribute value
-	public void applyChanges(ArrayList<String[]> changes) {
-		Log.i("TeamHex", "Applying " + Integer.toString(changes.size()) + " changes to storage.");
-		String[] changed;
-		for(int i = 0, len = changes.size(); i < len; ++i) {
-			changed = changes.get(i);
-	    	Log.i("TeamHex", "   " + Integer.toString(i + 1) + ". changing " + changed[0] + "'s " + changed[1] + " to " + changed[2]);
-	    	// Depending on the type of change...
-	    	switch(Character.toLowerCase(changed[1].charAt(0))) {
-	    		// Change on a name
-	    		case 'n':
-	    			RecordRename(changed[0], changed[2]);
-	    		break;
-	    	}
-		}
+		
+		// Reflect the changes in the file index
+		remakeFileIndex();
 	}
 
+	// Deletes a record and removes it from the index
+	public void RecordDelete(String name) { RecordDelete(records.get(name), name); }
+	public void RecordDelete(PaletteRecord record) { RecordDelete(record, record.getName()); }
+	public void RecordDelete(PaletteRecord record, String name) {
+		Log.i("TeamHex", "Deleting record " + name + ".");
+		// Remove references to the record and its name
+		records.remove(name);
+		record_names.remove(record_names.indexOf(name));
+		
+		// Delete the record's old file
+		Log.i("TeamHex", "Trying to delete " + name + ".txt");
+		fileDelete(name + ".txt");
+	}
+	
     /* 
      * Utility functions 
      */
