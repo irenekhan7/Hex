@@ -41,6 +41,8 @@ public class MainActivity extends Activity {
 	private Camera mCamera;
 	private CameraPreview mPreview;
 	private Bitmap mBitmap = null;
+	private boolean pixelsReceived = false;
+	int[] pixels = null;
 	
 	FrameLayout preview;
 	
@@ -169,7 +171,11 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
 
-    	if (getIntent().hasExtra("subBitmap")) {
+    	if(getIntent().hasExtra("polygonPixels"))
+    	{
+    	 pixelsReceived = true;
+    	}
+    	else if (getIntent().hasExtra("subBitmap")) {
 
             mBitmap = BitmapFactory.decodeByteArray(
                     getIntent().getByteArrayExtra("subBitmap"), 0, getIntent()
@@ -194,9 +200,14 @@ public class MainActivity extends Activity {
     	if(requestCode == 1)
     	{
 	    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
-	    	int[] pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
-	    	mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
-			
+	    	if(!pixelsReceived)
+	    	{
+	    	 pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
+	    	 mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
+	    	}
+
+	    	//for(int a = 0; a < pixels.length; a++)
+	    	//	System.out.println("PIXEL " + a + ": " + pixels[a] + " ");
 	    	
 	    	Log.i("TeamHex", "Using the ColorPaletteGenerator.colorAlgorithm to get the [] colors.");
 	    	int[] colors = ColorPaletteGenerator.colorAlgorithm(pixels, 5);
