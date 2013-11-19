@@ -180,11 +180,8 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
 
-    	if(getIntent().hasExtra("polygonPixels"))
-    	{
-    	 pixelsReceived = true;
-    	}
-    	else if (getIntent().hasExtra("subBitmap")) {
+    	
+    	if (getIntent().hasExtra("subBitmap")) {
 
             mBitmap = BitmapFactory.decodeByteArray(
                     getIntent().getByteArrayExtra("subBitmap"), 0, getIntent()
@@ -209,12 +206,30 @@ public class MainActivity extends Activity {
 	    }
     	if(requestCode == 1)
     	{
+ 
 	    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
-	    	if(!pixelsReceived)
+	    	
+	    	Bundle extras = getIntent().getExtras();
+	    	
+	    	if(resultCode == 1000)
 	    	{
-	    	 pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
-	    	 mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
+	    	 //SUCESSFULLY GETS HERE
+	    	 //System.out.println("\n\nRESULT 1000\n\n");
+	    	 if(extras.getIntArray("polygonPixels") != null) 
+	    	 {
+	          //NEVER GETS HERE, polygonPixels = null
+	    	  pixelsReceived = true;
+	    	  System.out.println("PIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\n");
+	    	  pixels = extras.getIntArray("polygonPixels");
+	    	 }
+	    	 else { System.out.println("RESULT CODE IS 1000 PIXELS NOT RECEIVED"); System.exit(1);}  
 	    	}
+	    	else if(resultCode == RESULT_OK)
+		    {
+		    	 pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
+		    	 mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
+		    	 System.out.println("PIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\n");
+		    }    	
 
 	    	//for(int a = 0; a < pixels.length; a++)
 	    	//	System.out.println("PIXEL " + a + ": " + pixels[a] + " ");

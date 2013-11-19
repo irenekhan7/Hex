@@ -134,9 +134,11 @@ class DrawingView extends View {
 		  for(int x = left; x < right; x++)
 		  {
 			for(int y = bottom; y < top; y++)
+			{
 			 boundingBox.add(new Point(x, y));
 			//PRINT
 		    //canvas.drawCircle((float)x, (float)y, 1, paint); 
+			}
 		  }
 			  
 		  //For each pixel in image, run poly test
@@ -162,7 +164,7 @@ class DrawingView extends View {
 		  
 		  Intent i1 = getIntent();
           i1.putExtra("polygonPixels", pixels);
-          setResult(RESULT_OK, i1);
+          setResult(1000, i1);
           finish();
 		  
 		 }
@@ -249,7 +251,7 @@ class DrawingView extends View {
                     //Intent d = new Intent(DrawImageActivity.this, MainActivity.class);
             		//ByteArrayOutputStream bs = new ByteArrayOutputStream();
                     //subBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
-                    //d.putExtra("subBitmap", bs.toByteArray());
+                    //d.putEx-tra("subBitmap", bs.toByteArray());
                 	//startActivity(d);
                     //int[] pixels = new int[subBitmap.getWidth() * subBitmap.getHeight()];
         	    	//subBitmap.getPixels(pixels, 0, subBitmap.getWidth(), 0, 0, subBitmap.getWidth(), subBitmap.getHeight());
