@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int ACTIVITY_SELECT_IMAGE = 3;
+	public static final int ACTIVITY_SELECTED_REGION = 1;
 	
 	private Camera mCamera;
 	private CameraPreview mPreview;
@@ -127,7 +128,7 @@ public class MainActivity extends Activity {
     	ByteArrayOutputStream bs = new ByteArrayOutputStream();
         mBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
 		Intent d = new Intent(MainActivity.this, DrawImageActivity.class);
-        d.putExtra("byteArray", bs.toByteArray());
+        d.putExtra("byteArray", bs.toByteArray()); //Should probably be saved to the phone and passed as uri instead.
     	startActivityForResult(d, 1);
     }
     
@@ -205,7 +206,7 @@ public class MainActivity extends Activity {
 	            analyze();
 	        }
 	    }
-    	if(requestCode == 1)
+    	if(requestCode == ACTIVITY_SELECTED_REGION)
     	{
  
 	    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
@@ -228,6 +229,31 @@ public class MainActivity extends Activity {
 	    	 { 
 	    		 System.out.println("RESULT CODE IS 1000 PIXELS NOT RECEIVED"); System.exit(1);
 	    	 }  
+	    	
+	    	//for(int a = 0; a < pixels.length; a++)
+		    //	System.out.println("PIXEL " + a + ": " + pixels[a] + " ");
+		    	
+		    Log.i("TeamHex", "Using the ColorPaletteGenerator.colorAlgorithm to get the [] colors.");
+		    int[] colors = ColorPaletteGenerator.colorAlgorithm(pixels, 5);
+		    	
+		    // Store the output from colors[] into a new PaletteRecord
+		    PaletteRecord palette = new PaletteRecord();
+		    palette.setName("Untitled_Palette");
+		    for (int i = 0; i < 5; i++)
+		    	palette.addColor(colors[i]);
+		    	
+		    Log.i("TeamHex", "Finixhed adding the colors to a new palette.");
+		    	
+		    	// Get auto-generated names for the palette
+		    Log.i("TeamHex", "Using the X11Helper to generate names for the palette");
+		    palette.setX11Names(mX11Helper);
+		    	
+		    	// Go to the PaletteSaveActivity to save the palette into the library
+		    Intent intent_save = new Intent(MainActivity.this, PaletteSaveActivity.class);
+		    intent_save.putExtra("palette", palette);
+		    startActivity(intent_save);
+		    System.out.println("SAVED");
+		    
 	    }
 	    else if(resultCode == RESULT_OK)
 		{
@@ -236,29 +262,7 @@ public class MainActivity extends Activity {
 		    System.out.println("PIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\n");
 		}    	
 
-	    //for(int a = 0; a < pixels.length; a++)
-	    //	System.out.println("PIXEL " + a + ": " + pixels[a] + " ");
-	    	
-	    Log.i("TeamHex", "Using the ColorPaletteGenerator.colorAlgorithm to get the [] colors.");
-	    int[] colors = ColorPaletteGenerator.colorAlgorithm(pixels, 5);
-	    	
-	    // Store the output from colors[] into a new PaletteRecord
-	    PaletteRecord palette = new PaletteRecord();
-	    palette.setName("Untitled_Palette");
-	    for (int i = 0; i < 5; i++)
-	    	palette.addColor(colors[i]);
-	    	
-	    Log.i("TeamHex", "Finixhed adding the colors to a new palette.");
-	    	
-	    	// Get auto-generated names for the palette
-	    Log.i("TeamHex", "Using the X11Helper to generate names for the palette");
-	    palette.setX11Names(mX11Helper);
-	    	
-	    	// Go to the PaletteSaveActivity to save the palette into the library
-	    Intent intent_save = new Intent(MainActivity.this, PaletteSaveActivity.class);
-	    intent_save.putExtra("palette", palette);
-	    startActivity(intent_save);
-	    System.out.println("SAVED");
+	    
     }
     	
 

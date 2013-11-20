@@ -16,10 +16,6 @@
 
 package com.teamhex.cooler.Storage.Activities;
 
-
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import com.teamhex.cooler.PaletteView;
 //import com.teamhex.cooler.Menu;
 //import com.teamhex.cooler.Override;
@@ -67,7 +63,7 @@ public class PaletteLibraryActivity extends Activity {
 	// Used by onCreate and onResume for the heavy lifting
 	void RecreateLibrary() {
 		Log.i("TeamHex", "Recreating library from scratch.");
-		setContentView(R.layout.scheme_list_activity);
+		setContentView(R.layout.activity_library);
 		
 		// Create the initial storage manager
 		storage = new HexStorageManager(getApplicationContext());
