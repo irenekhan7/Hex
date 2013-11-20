@@ -144,7 +144,7 @@ class DrawingView extends View {
 			//PRINT
 		    //canvas.drawCircle((float)x, (float)y, 1, paint); 
 			}
-		  }
+		  } 
 			  
 		  //For each pixel in image, run poly test
 		  //If test succeeds, add pixel to polygonPixels
