@@ -209,52 +209,55 @@ public class MainActivity extends Activity {
  
 	    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
 	    	
-	    	Bundle extras = getIntent().getExtras();
+	    	pixels = data.getIntArrayExtra("com.teamhex.cooler.polygonPixels");
 	    	
 	    	if(resultCode == 1000)
 	    	{
 	    	 //SUCESSFULLY GETS HERE
-	    	 //System.out.println("\n\nRESULT 1000\n\n");
-	    	 if(extras.getIntArray("polygonPixels") != null) 
+	    	 System.out.println("\n\nRESULT 1000\n\n");
+	    	 /*if(extras.getIntArray("polygonPixels") != null) 
 	    	 {
 	          //NEVER GETS HERE, polygonPixels = null
 	    	  pixelsReceived = true;
 	    	  System.out.println("PIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\n");
 	    	  pixels = extras.getIntArray("polygonPixels");
+	    	 */
 	    	 }
-	    	 else { System.out.println("RESULT CODE IS 1000 PIXELS NOT RECEIVED"); System.exit(1);}  
-	    	}
-	    	else if(resultCode == RESULT_OK)
-		    {
-		    	 pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
-		    	 mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
-		    	 System.out.println("PIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\n");
-		    }    	
+	    	 else 
+	    	 { 
+	    		 System.out.println("RESULT CODE IS 1000 PIXELS NOT RECEIVED"); System.exit(1);
+	    	 }  
+	    }
+	    else if(resultCode == RESULT_OK)
+		{
+		    pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
+		    mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
+		    System.out.println("PIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\nPIXELS NOT RECEIVED\n");
+		}    	
 
-	    	//for(int a = 0; a < pixels.length; a++)
-	    	//	System.out.println("PIXEL " + a + ": " + pixels[a] + " ");
+	    //for(int a = 0; a < pixels.length; a++)
+	    //	System.out.println("PIXEL " + a + ": " + pixels[a] + " ");
 	    	
-	    	Log.i("TeamHex", "Using the ColorPaletteGenerator.colorAlgorithm to get the [] colors.");
-	    	int[] colors = ColorPaletteGenerator.colorAlgorithm(pixels, 5);
+	    Log.i("TeamHex", "Using the ColorPaletteGenerator.colorAlgorithm to get the [] colors.");
+	    int[] colors = ColorPaletteGenerator.colorAlgorithm(pixels, 5);
 	    	
-	    	// Store the output from colors[] into a new PaletteRecord
-	    	PaletteRecord palette = new PaletteRecord();
-	    	palette.setName("Untitled_Palette");
-	    	for (int i = 0; i < 5; i++)
-	    		palette.addColor(colors[i]);
+	    // Store the output from colors[] into a new PaletteRecord
+	    PaletteRecord palette = new PaletteRecord();
+	    palette.setName("Untitled_Palette");
+	    for (int i = 0; i < 5; i++)
+	    	palette.addColor(colors[i]);
 	    	
-	    	Log.i("TeamHex", "Finixhed adding the colors to a new palette.");
+	    Log.i("TeamHex", "Finixhed adding the colors to a new palette.");
 	    	
 	    	// Get auto-generated names for the palette
-	    	Log.i("TeamHex", "Using the X11Helper to generate names for the palette");
-	    	palette.setX11Names(mX11Helper);
+	    Log.i("TeamHex", "Using the X11Helper to generate names for the palette");
+	    palette.setX11Names(mX11Helper);
 	    	
 	    	// Go to the PaletteSaveActivity to save the palette into the library
-	    	Intent intent_save = new Intent(MainActivity.this, PaletteSaveActivity.class);
-	    	intent_save.putExtra("palette", palette);
-	    	startActivity(intent_save);
-	    	System.out.println("SAVED");
-    	}
+	    Intent intent_save = new Intent(MainActivity.this, PaletteSaveActivity.class);
+	    intent_save.putExtra("palette", palette);
+	    startActivity(intent_save);
+	    System.out.println("SAVED");
     }
     	
 

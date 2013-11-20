@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 
+import com.teamhex.cooler.ColorPaletteModifier;
+
 public class ColorPaletteGenerator {
 
 	/********************************************************************************************
@@ -73,19 +75,15 @@ public class ColorPaletteGenerator {
 	//Helper comparator class that compares two integers based on their hue values.
 	private static Comparator<Integer> ColorComparator = new Comparator<Integer>()
 	{
-		public double hue(Integer i)
-		{
-			int r = (i >> 16) & 0xFF;
-			int g = (i >> 8) & 0xFF;
-			int b = i & 0xFF;
-			
-			return Math.atan2(1.73205080757 * (g - b), 2 * r - g - b);
-		}
-		
 	    @Override
 	    public int compare(Integer i1, Integer i2) 
 	    {
-	        return (int)(hue(i1) - hue(i2));
+	    	int hsv1 = ColorPaletteModifier.RGBtoHSV(i1);
+	    	int hsv2 = ColorPaletteModifier.RGBtoHSV(i2);
+	    	
+	    	double c1 = ColorPaletteModifier.getSaturation(hsv1) * ColorPaletteModifier.getValue(hsv2);
+	    	double c2 = ColorPaletteModifier.getSaturation(hsv2) * ColorPaletteModifier.getValue(hsv2);
+	        return (int)(c1 - c2);
 	    }
 	};
 	

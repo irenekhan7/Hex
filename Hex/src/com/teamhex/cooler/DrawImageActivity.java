@@ -163,7 +163,7 @@ class DrawingView extends View {
 		  }
 		  
 		  Intent i1 = getIntent();
-          i1.putExtra("polygonPixels", pixels);
+          i1.putExtra("com.teamhex.cooler.polygonPixels", pixels);
           setResult(1000, i1);
           finish();
 		  
