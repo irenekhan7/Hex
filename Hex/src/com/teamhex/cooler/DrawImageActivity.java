@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
@@ -107,7 +108,7 @@ class DrawingView extends View {
 		  
 		  //Get total image pixels
 		  //Get bounding box around points
-		  ArrayList<Point> boundingBox = new ArrayList<Point>();
+		  //ArrayList<Point> boundingBox = new ArrayList<Point>();
 		  int left = points.get(0).x;
 		  int right = points.get(0).x;
 		  int top = points.get(0).y;
@@ -120,18 +121,22 @@ class DrawingView extends View {
 			   right = points.get(a).x;
 		   if(points.get(a).x < left)
 			   left = points.get(a).x;
-		   if(points.get(a).y > top)
-			   top = points.get(a).y;
-		   if(points.get(a).y < bottom)
+		   if(points.get(a).y > bottom)
 			   bottom = points.get(a).y;
+		   if(points.get(a).y < top)
+			   top = points.get(a).y;
 		  }
+		  
+		  int n = points.size();
+		  int width = right - left;
+		  int height = bottom - top;
 		  
 		  System.out.println("TOP: " + top + "\nBOTTOM: " + bottom
 				  + "\nLEFT: " + left + "\nRIGHT: " + right);
 		  //Draw circle for each pixel in the bounding box
 		  //WORKS
 		  //Add bounding box pixels to arraylist
-		  for(int x = left; x < right; x++)
+		  /*for(int x = left; x < right; x++)
 		  {
 			for(int y = bottom; y < top; y++)
 			{
@@ -150,10 +155,103 @@ class DrawingView extends View {
 			//canvas.drawCircle((float)p.x, (float)p.y, 1, paint); 
 		    polygonPixels.add(p);
 		   }
+		  }*/
+		  
+		  
+		  ArrayList<Integer>[] lineMap = (ArrayList<Integer>[]) new ArrayList[height+1];
+		  for (int i = 0; i <= height; i++)
+		  {
+			  lineMap[i] = new ArrayList<Integer>();
+		  }
+		  
+		  int y1, y2;
+		  for (int i = 0; i < n; i++)
+		  {
+			  if (i != (n - 1))
+			  {
+				  y1 = points.get(i).y;
+				  y2 = points.get(i+1).y;
+			  }
+			  else
+			  {
+				  y1 = points.get(n - 1).y;
+				  y2 = points.get(0).y;
+			  }
+			  
+			  if (y2 <= y1)
+			  {
+				  int temp = y1;
+				  y1 = y2;
+				  y2 = temp;
+			  }
+			  
+			  for (int j = y1; j <= y2; j++)
+			  {
+				  lineMap[j-top].add(i);
+			  }
+		  }
+		  
+		  double xscale = b.getWidth()/canvas.getWidth();
+		  double yscale = b.getHeight()/canvas.getHeight();
+		  
+		  ArrayList<Integer> intervals = new ArrayList<Integer>();
+		  
+		  for (int i = 0; i <= height; i++)
+		  {
+			  ArrayList<Double> intersections = new ArrayList<Double>();
+			  ArrayList<Integer> lines = lineMap[i];
+			  
+			  for (int j = 0; j < lines.size(); j++)
+			  {
+				  int lineID = lines.get(j);
+				  Point p1, p2;
+				  
+				  if (lineID != (n - 1))
+				  {
+					  p1 = points.get(lineID);
+					  p2 = points.get(lineID+1);
+				  }
+				  else
+				  {
+					  p1 = points.get(n - 1);
+					  p2 = points.get(0);
+				  }
+				  
+				  if (p1.x == p2.x)
+				  {
+					  intersections.add((double)p1.x);
+				  }
+				  else if (p1.y == p2.y)
+				  {
+					  intersections.add((double)p1.x);
+					  intersections.add((double)p2.x);
+				  }
+				  else
+				  {
+					  double slope = (double)(p2.y - p1.y)/(double)(p2.x - p1.x);
+					  double yInt = (double)p2.y - ((double)p2.x * slope);
+					  
+					  intersections.add(((double)(i + top) - yInt)/slope);
+				  }
+			  }
+			  Collections.sort(intersections);
+			  
+			  for (int j = 0; j < intersections.size() - 1; j += 2)
+			  {
+				  int y = i + top;
+				  int x1 = (int)Math.floor(intersections.get(j));
+				  int x2 = (int)Math.ceil(intersections.get(j+1));
+				  
+				  for (int k = x1; k <= x2; k++)
+				  {
+					  polygonPixels.add(new Point(k, y));
+				  }
+			  }
 		  }
 		  
 		  //Send polygonPixels to MainActivity
 		  //Conversion factor?
+		  
 		  int[] pixels = new int[polygonPixels.size()];
 		  for(int a = 0; a < polygonPixels.size(); a++)
 		  {
