@@ -181,12 +181,13 @@ public class MainActivity extends Activity {
     {
 
     	
-    	if (getIntent().hasExtra("subBitmap")) {
-
+    	if (data.hasExtra("subBitmap")) {
+    		Log.i("TeamHex", "I AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\n");
             mBitmap = BitmapFactory.decodeByteArray(
-                    getIntent().getByteArrayExtra("subBitmap"), 0, getIntent()
+                    data.getByteArrayExtra("subBitmap"), 0, data
                             .getByteArrayExtra("subBitmap").length); 
         }
+    	else { Log.i("TeamHex", "I AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\n");}
     	
     	if(requestCode == ACTIVITY_SELECT_IMAGE)
 	    {
