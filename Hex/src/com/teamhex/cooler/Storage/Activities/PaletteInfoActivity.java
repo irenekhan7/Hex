@@ -57,7 +57,7 @@ public class PaletteInfoActivity extends Activity {
 	           }
 	       });
 		// Fetch the palette and name views
-		paletteView = (PaletteView) findViewById(R.id.paletteEditView);
+		paletteView = (PaletteView) findViewById(R.id.palette_view);
 		nameView = (TextView) findViewById(R.id.paletteName);
 		colorInfoView = (TextView) findViewById(R.id.colorInfo);
 		
@@ -122,7 +122,7 @@ public class PaletteInfoActivity extends Activity {
 	{
 		Log.i("TeamHex", "Displaying the palette record " + setting.getName());
 		myPaletteRecord = setting;
-		paletteView.setColorScheme(myPaletteRecord);
+		paletteView.setPalette(myPaletteRecord);
 		
 		ArrayList<ColorRecord> colors = setting.getColors();
 		

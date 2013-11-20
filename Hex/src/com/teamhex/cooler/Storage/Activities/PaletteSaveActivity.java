@@ -19,7 +19,7 @@ public class PaletteSaveActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.scheme_list_activity);
+		setContentView(R.layout.activity_library);
 		
 		// The palette has been passed as a serializable extra
 		Log.i("TeamHex", "Grabbing a serialized Palette to save");

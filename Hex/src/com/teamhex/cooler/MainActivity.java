@@ -129,7 +129,8 @@ public class MainActivity extends Activity {
         mBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
 		Intent d = new Intent(MainActivity.this, DrawImageActivity.class);
         d.putExtra("byteArray", bs.toByteArray()); //Should probably be saved to the phone and passed as uri instead.
-    	startActivityForResult(d, 1);
+        startActivity(d);
+    	//startActivityForResult(d, 1);
     }
     
     @Override

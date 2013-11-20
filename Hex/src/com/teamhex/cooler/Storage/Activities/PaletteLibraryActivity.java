@@ -106,7 +106,7 @@ public class PaletteLibraryActivity extends Activity {
 		// Create a message handling object as an anonymous class.
         OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            	PaletteView s = (PaletteView) v.findViewById(R.id.paletteEditView);
+            	PaletteView s = (PaletteView) v.findViewById(R.id.palette_view);
                 Intent i = new Intent(PaletteLibraryActivity.this, PaletteInfoActivity.class);
                 i.putExtra("palette", s.getColorScheme());
                 startActivityForResult(i, VIEW_PALETTE_INFO);

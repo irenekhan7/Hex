@@ -51,14 +51,14 @@ public class PaletteRecordAdapter extends ArrayAdapter<PaletteRecord> {
 	            holder.txtDesc = (TextView) convertView.findViewById(R.id.name);
 	            
 	            // Color visuals
-	            holder.schemeView = (PaletteView) convertView.findViewById(R.id.paletteEditView);
+	            holder.schemeView = (PaletteView) convertView.findViewById(R.id.palette_view);
 	            
 	            convertView.setTag(holder);
 	        } else
 	            holder = (ViewHolder) convertView.getTag();
 	 
 	        holder.txtDesc.setText(rowItem.getName());
-	        holder.schemeView.setColorScheme(rowItem);
+	        holder.schemeView.setPalette(rowItem);
 	       // holder.schemeView.addColor(Color.BLUE);
 	       // holder.schemeView.addColor(Color.YELLOW);
 	 

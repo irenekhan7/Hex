@@ -10,6 +10,7 @@ package com.teamhex.cooler;
 public final class R {
     public static final class array {
         public static final int edit_options_array=0x7f060000;
+        public static final int select_options_array=0x7f060001;
     }
     public static final class attr {
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
@@ -69,33 +70,37 @@ containing a value of this type.
         public static final int violet=0x7f020001;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f0a0000;
-        public static final int RelativeLayout1=0x7f0a000f;
-        public static final int action_settings=0x7f0a0012;
-        public static final int button_analyze=0x7f0a0002;
-        public static final int button_capture=0x7f0a0003;
-        public static final int button_delete=0x7f0a000d;
-        public static final int button_edit=0x7f0a000e;
-        public static final int button_import=0x7f0a0004;
-        public static final int button_open_library=0x7f0a0005;
-        public static final int button_save=0x7f0a0009;
-        public static final int button_share=0x7f0a000c;
-        public static final int camera_preview=0x7f0a0001;
-        public static final int colorInfo=0x7f0a000b;
-        public static final int editName=0x7f0a0006;
-        public static final int name=0x7f0a0010;
-        public static final int paletteEditView=0x7f0a0007;
-        public static final int paletteName=0x7f0a000a;
-        public static final int schemeList=0x7f0a0011;
-        public static final int spinner_edit=0x7f0a0008;
+        public static final int LinearLayout1=0x7f0a0002;
+        public static final int RelativeLayout1=0x7f0a0000;
+        public static final int action_settings=0x7f0a0016;
+        public static final int button_analyze=0x7f0a0004;
+        public static final int button_capture=0x7f0a0005;
+        public static final int button_delete=0x7f0a0013;
+        public static final int button_edit=0x7f0a0014;
+        public static final int button_import=0x7f0a0006;
+        public static final int button_open_library=0x7f0a0007;
+        public static final int button_save=0x7f0a000f;
+        public static final int button_share=0x7f0a0012;
+        public static final int camera_preview=0x7f0a0003;
+        public static final int colorInfo=0x7f0a0011;
+        public static final int drawing_view=0x7f0a0008;
+        public static final int editName=0x7f0a000c;
+        public static final int name=0x7f0a0015;
+        public static final int paletteName=0x7f0a0010;
+        public static final int palette_view=0x7f0a000d;
+        public static final int preview_palette=0x7f0a000a;
+        public static final int save_create_button=0x7f0a000b;
+        public static final int schemeList=0x7f0a0001;
+        public static final int spinner_edit=0x7f0a000e;
+        public static final int spinner_select=0x7f0a0009;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int activity_palette_edit=0x7f030001;
-        public static final int activity_palette_info=0x7f030002;
-        public static final int listcolor=0x7f030003;
-        public static final int sample_scheme_view=0x7f030004;
-        public static final int scheme_list_activity=0x7f030005;
+        public static final int activity_library=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_palette_create=0x7f030002;
+        public static final int activity_palette_edit=0x7f030003;
+        public static final int activity_palette_info=0x7f030004;
+        public static final int listcolor=0x7f030005;
     }
     public static final class menu {
         public static final int palette_edit=0x7f090000;

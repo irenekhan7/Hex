@@ -38,13 +38,13 @@ public class ColorListAdapter extends ArrayAdapter<PaletteRecord> {
             convertView = mInflater.inflate(R.layout.listcolor, null);
             holder = new ViewHolder();
             holder.txtDesc = (TextView) convertView.findViewById(R.id.name);
-            holder.paletteView = (PaletteView) convertView.findViewById(R.id.paletteEditView);
+            holder.paletteView = (PaletteView) convertView.findViewById(R.id.palette_view);
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
  
         holder.txtDesc.setText(rowItem.getName());
-        holder.paletteView.setColorScheme(rowItem);
+        holder.paletteView.setPalette(rowItem);
         holder.paletteView.isListItem = true;
        // holder.schemeView.addColor(Color.BLUE);
        // holder.schemeView.addColor(Color.YELLOW);
