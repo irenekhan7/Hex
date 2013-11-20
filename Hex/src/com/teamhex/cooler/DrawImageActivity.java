@@ -157,7 +157,9 @@ class DrawingView extends View {
 		   }
 		  }*/
 		  
-		  
+		  //Map each line segment in the lasso contour to the horizontal rows that it
+		  //passes through. This saves us from performing collision checks on lines that
+		  //wouldn't have intersected anyways.
 		  ArrayList<Integer>[] lineMap = (ArrayList<Integer>[]) new ArrayList[height+1];
 		  for (int i = 0; i <= height; i++)
 		  {
@@ -191,11 +193,10 @@ class DrawingView extends View {
 			  }
 		  }
 		  
-		  double xscale = b.getWidth()/canvas.getWidth();
-		  double yscale = b.getHeight()/canvas.getHeight();
-		  
-		  ArrayList<Integer> intervals = new ArrayList<Integer>();
-		  
+		  //Perform intersection checks with the lasso contour and each row inside of the
+		  //bounding box. Each row will be split up into intervals. Because the lasso forms
+		  //a line loop by its nature, every even-numbered interval will be within the area
+		  //bounded by the lasso.
 		  for (int i = 0; i <= height; i++)
 		  {
 			  ArrayList<Double> intersections = new ArrayList<Double>();
