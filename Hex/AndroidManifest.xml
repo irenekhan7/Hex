@@ -92,9 +92,9 @@
             android:label="@string/title_activity_palette_edit"
             android:theme="@style/HexTheme.NoTitleBar"  >
         </activity>
-
-         <activity
-            android:name="com.teamhex.cooler.DrawImageActivity">
+        <activity
+            android:name="com.teamhex.cooler.DrawImageActivity"
+             android:noHistory="true" >
         </activity>
         
     </application>

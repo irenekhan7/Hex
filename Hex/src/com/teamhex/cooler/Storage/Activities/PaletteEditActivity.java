@@ -31,7 +31,7 @@ public class PaletteEditActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_palette_edit);
 		
-		paletteView = (PaletteView) findViewById(R.id.paletteEditView);
+		paletteView = (PaletteView) findViewById(R.id.palette_view);
 		nameEdit = (EditText) findViewById(R.id.editName);
 		
 		Intent i = getIntent();
@@ -94,7 +94,7 @@ public class PaletteEditActivity extends Activity {
 	public void setPaletteRecord(PaletteRecord setting)
 	{
 		paletteRecord = setting;
-		paletteView.setColorScheme(paletteRecord);
+		paletteView.setPalette(paletteRecord);
 		
 		nameEdit.setText(setting.getName());
 		setTitle(setting.getName());

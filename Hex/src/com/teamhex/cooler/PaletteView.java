@@ -43,13 +43,13 @@ public class PaletteView extends View {
     public void setOnInteractListener(OnInteractListener listener) {
     	onInteractListener = listener;
     }
-    // Get & Set for ColorScheme
-    public void setColorScheme(PaletteRecord setting) { palette = setting; colors = palette.getColors();}
+    // Get & Set for ColorPalette
+    public void setPalette(PaletteRecord setting) { palette = setting; colors = palette.getColors();invalidate();}
     public PaletteRecord getColorScheme() { return palette; }
     
     
     
-    ArrayList<ColorRecord> colors;
+    ArrayList<ColorRecord> colors = new ArrayList<ColorRecord>();
     ArrayList<ColorRecord> originalColors;
     public void enableEditing()
     {
@@ -207,9 +207,12 @@ public class PaletteView extends View {
 
         @Override
         public boolean onDown(MotionEvent e) {
-        	indexEditing = (int)(((float)e.getX() / (float)viewWidth) * colors.size());
-        	info =  colors.get(indexEditing).getName() + "\n" + colors.get(indexEditing).getHex();
-        	fireInteractEvent();
+        	if(colors != null)
+        	{
+	        	indexEditing = (int)(((float)e.getX() / (float)viewWidth) * colors.size());
+	        	info =  colors.get(indexEditing).getName() + "\n" + colors.get(indexEditing).getHex();
+	        	fireInteractEvent();
+        	}
             return true;
         }
     }
