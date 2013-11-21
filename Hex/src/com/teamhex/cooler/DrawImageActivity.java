@@ -1,6 +1,8 @@
 package com.teamhex.cooler;
 
+import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
 import com.teamhex.cooler.Storage.Activities.PaletteSaveActivity;
+import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 import android.app.Activity;
@@ -74,11 +76,8 @@ public void onCreate(Bundle savedInstanceState) {
             public void onClick(View v) {
             	if(previewPalette != null) {
 	    		    Log.i("TeamHex", "About to save the palette.");
-	    		    // Go to the PaletteSaveActivity to save the palette into the library
-	    		    Intent intent_save = new Intent(DrawImageActivity.this, PaletteSaveActivity.class);
-	    		    intent_save.putExtra("palette", palette);
-	    		    startActivity(intent_save);
-	    		    Log.i("TeamHex", "The intent_save activity was completed.");
+	    		    savePalette();
+	    		    Log.i("TeamHex", "The save was completed.");
             	}
             }
         }
@@ -106,6 +105,22 @@ PaletteRecord palette;
 	    
 	}
 
+	private void savePalette()
+	{
+		// Create the initial storage manager
+		Log.i("TeamHex", "Creating a StorageManager to save the palette");
+		HexStorageManager storage = new HexStorageManager(getApplicationContext());
+		
+		// Save the palette record
+		storage.RecordAdd(palette);
+
+		Log.i("TeamHex", "The Palette has been saved.");
+		
+		// Now that it's saved, go to the library activity
+    	Intent intent_new = new Intent(DrawImageActivity.this, PaletteLibraryActivity.class);
+    	startActivity(intent_new);
+		finish();
+	}
 	
 	private class ProcessTask extends AsyncTask<Object, Object, Object> {
 		@Override
@@ -120,12 +135,6 @@ PaletteRecord palette;
 	    	 previewPalette.setPalette(palette);
 	    	 Log.i("TeamHex:","Setting preview palette");
 	    }
-	}
-
-
-	public void saveResult()
-	{
-	
 	}
 
 	ProcessTask processTask;
