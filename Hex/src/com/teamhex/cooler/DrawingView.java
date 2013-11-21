@@ -378,7 +378,9 @@ public class DrawingView extends View {
 	public void resetSelection()
 	{
 		points.clear();
+		pointsList.clear();
 		drawPath.reset();
+		corners = 2;
 	}
 	
 	@Override
@@ -447,6 +449,10 @@ public class DrawingView extends View {
 				 //respond to down, move and up events
 				 switch (event.getAction()) {
 				 case MotionEvent.ACTION_DOWN:
+					 if(corners == 0)
+					 {
+						 resetSelection();
+					 }
 					 if(corners > 0)
 					  pointsList.add(new Point((int)touchX, (int)touchY));
 					 if (corners != 0)

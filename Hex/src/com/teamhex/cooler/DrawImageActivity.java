@@ -96,8 +96,12 @@ PaletteRecord palette;
 	    // Store the output from colors[] into a new PaletteRecord
 	    palette = new PaletteRecord();
 	    palette.setName("Untitled_Palette");
-	    for (int i = 0; i < 5; i++)
-	    	palette.addColor(colors[i]);
+	    
+	    if(colors != null)
+	    {
+		    for (int i = 0; i < 5; i++)
+		    	palette.addColor(colors[i]);
+	    }
 	    	
 	    Log.i("TeamHex", "Finixhed adding the colors to a new palette.");
 	   
