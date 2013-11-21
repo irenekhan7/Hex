@@ -65,24 +65,8 @@ public class MainActivity extends Activity {
                     mCamera.takePicture(null, null, mPicture);
                     if(mBitmap != null)
                     {
-                    	//analyze();
+                    	analyze();
                     }
-                }
-            }
-        );
-        
-       // Event listener: Analyze button
-        Button analyzeButton = (Button) findViewById(R.id.button_analyze);
-        analyzeButton.setOnClickListener(
-            new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    //Analyze image
-                	if (mBitmap != null)
-                	{
-                		analyze();
-                	}
                 }
             }
         );
