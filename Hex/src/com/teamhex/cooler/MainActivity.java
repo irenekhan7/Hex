@@ -22,7 +22,6 @@ import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
@@ -42,7 +41,6 @@ public class MainActivity extends Activity {
 	private Camera mCamera;
 	private CameraPreview mPreview;
 	private Bitmap mBitmap = null;
-	private boolean pixelsReceived = false;
 	int[] pixels = null;
 	
 	FrameLayout preview;

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.teamhex.cooler.PaletteView.OnInteractListener;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -161,7 +159,6 @@ public class DrawingView extends View {
 		  }
 		  
 		  int n = points.size();
-		  int width = right - left;
 		  int height = bottom - top;
 		  
 		  System.out.println("TOP: " + top + "\nBOTTOM: " + bottom
@@ -193,6 +190,7 @@ public class DrawingView extends View {
 		  //Map each line segment in the lasso contour to the horizontal rows that it
 		  //passes through. This saves us from performing collision checks on lines that
 		  //wouldn't have intersected anyways.
+		  @SuppressWarnings("unchecked")
 		  ArrayList<Integer>[] lineMap = (ArrayList<Integer>[]) new ArrayList[height+1];
 		  for (int i = 0; i <= height; i++)
 		  {
@@ -374,10 +372,10 @@ public class DrawingView extends View {
                     System.out.println("HEIGHT ONLY: " + height);
                     
                     //Create sub bitmap from user selection
-                    Bitmap subBitmap = Bitmap.createBitmap(b, (int)((double)topLeftX / canvas.getWidth() * b.getWidth()), 
-                    		(int)((double)topLeftY / canvas.getHeight() * b.getHeight()), 
-                    		(int) ((double)width / canvas.getWidth() * b.getWidth()), 
-                    		(int) ((double)height / canvas.getHeight() * b.getHeight()));
+                    //Bitmap subBitmap = Bitmap.createBitmap(b, (int)((double)topLeftX / canvas.getWidth() * b.getWidth()), 
+                    //		(int)((double)topLeftY / canvas.getHeight() * b.getHeight()), 
+                    //		(int) ((double)width / canvas.getWidth() * b.getWidth()), 
+                    //		(int) ((double)height / canvas.getHeight() * b.getHeight()));
                     
                     int bTopLeftX = (int)((double)topLeftX / canvas.getWidth() * b.getWidth());
                     int bTopLeftY = (int)((double)topLeftY / canvas.getHeight() * b.getHeight());

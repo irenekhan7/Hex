@@ -1,37 +1,15 @@
 package com.teamhex.cooler;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import com.teamhex.cooler.Storage.Activities.PaletteEditActivity;
-import com.teamhex.cooler.Storage.Activities.PaletteInfoActivity;
 import com.teamhex.cooler.Storage.Activities.PaletteSaveActivity;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Paint.Style;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -135,7 +113,7 @@ PaletteRecord palette;
 	}
 
 	
-	private class ProcessTask extends AsyncTask {
+	private class ProcessTask extends AsyncTask<Object, Object, Object> {
 		@Override
 		protected Object doInBackground(Object... arg0) {
 			createPalette();

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.teamhex.cooler.ColorPaletteModifier.ColorVariable;
 import com.teamhex.cooler.Storage.Classes.ColorRecord;
-import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 import android.content.Context;
