@@ -84,6 +84,7 @@ public class DrawingView extends View {
     		pixels = new int[b.getWidth() * b.getHeight()];
     		b.getPixels(pixels, 0, b.getWidth(), 0, 0, b.getWidth(), b.getHeight());
     		onSelectionListener.onSelection();
+    		canvas.drawBitmap(b, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), null);
     	}
     }
     

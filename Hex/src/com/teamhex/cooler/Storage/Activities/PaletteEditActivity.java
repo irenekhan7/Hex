@@ -67,6 +67,9 @@ public class PaletteEditActivity extends Activity {
                 	record.setColors(colors);
                 	mHexStorageManager.RecordSave(record);
                 	
+                	Intent returnIntent = new Intent();
+                	setResult(1, returnIntent);
+                	returnIntent.putExtra("nameNew", nameNew);
                 	finish();
                 }
             }

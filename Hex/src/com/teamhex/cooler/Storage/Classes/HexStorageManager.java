@@ -90,11 +90,13 @@ public class HexStorageManager {
 		
 		// 4. If there aren't any records, create a default one
 		if(record_names.isEmpty()) {
+			
+			/*
 			PaletteRecord empty = new PaletteRecord("America");
 			empty.addColor(new ColorRecord("Red", "#ff0000", (float)33.0));
 			empty.addColor(new ColorRecord("White", "#ffffff", (float)33.0));
 			empty.addColor(new ColorRecord("Blue", "#0000ff", (float)34.0));
-			RecordAdd(empty);
+			RecordAdd(empty); */
 		}
 		
 		Log.i("TeamHex", "Finished making a StorageManager using file index " + _filename);
