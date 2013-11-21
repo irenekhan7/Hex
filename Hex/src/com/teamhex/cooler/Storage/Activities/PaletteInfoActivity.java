@@ -154,20 +154,25 @@ public class PaletteInfoActivity extends Activity {
 
     // When the Edit Button Pressed event returns, check the data
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	Log.i("TeamHex", "An Edit Palette activity has returned.");
-    	String nameNew = data.getStringExtra("nameNew");
     	
-    	 // Load that stuff from memory
-        HexStorageManager mHexStorageManager = new HexStorageManager(getApplication());
-        mHexStorageManager.RecordLoad(nameNew);
-        
-        Log.i("TEAMHEX:", nameNew);
-        
-        // Set the loaded palette as the current one
-        setPaletteRecord(mHexStorageManager.RecordGet(nameNew));
-        
-        // Change the nameView
-        nameView.setText(nameNew);
+    	//Potentially the user could hit the back button to cancel, and no data would be returned.
+    	if(data != null)
+    	{
+	    	Log.i("TeamHex", "An Edit Palette activity has returned.");
+	    	String nameNew = data.getStringExtra("nameNew");
+	    	
+	    	 // Load that stuff from memory
+	        HexStorageManager mHexStorageManager = new HexStorageManager(getApplication());
+	        mHexStorageManager.RecordLoad(nameNew);
+	        
+	        Log.i("TEAMHEX:", nameNew);
+	        
+	        // Set the loaded palette as the current one
+	        setPaletteRecord(mHexStorageManager.RecordGet(nameNew));
+	        
+	        // Change the nameView
+	        nameView.setText(nameNew);
+    	}
     }
 
 	// Going back means the palette must be reloaded from memory
