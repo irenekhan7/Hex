@@ -13,7 +13,6 @@ import com.teamhex.cooler.DrawImageActivity;
 import com.teamhex.cooler.CameraPreview;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
-import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -36,6 +35,7 @@ public class MainActivity extends Activity {
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int ACTIVITY_SELECT_IMAGE = 3;
 	public static final int ACTIVITY_SELECTED_REGION = 1;
+    int sampleSize = 100;
 	
 	private Camera mCamera;
 	private CameraPreview mPreview;
@@ -60,11 +60,9 @@ public class MainActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // get an image from the camera
+                    // Get an image from the camera
                 	Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
                     mCamera.takePicture(null, null, mPicture);
-                    	
-                    
                 }
             }
         );
@@ -76,12 +74,9 @@ public class MainActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Import
-                	//Potentially causes crash
                 	Intent i = new Intent(Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 		startActivityForResult(i, ACTIVITY_SELECT_IMAGE); 
-
                 }
             }
         );
@@ -106,15 +101,14 @@ public class MainActivity extends Activity {
     	ByteArrayOutputStream bs = new ByteArrayOutputStream();
         mBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
 		Intent d = new Intent(MainActivity.this, DrawImageActivity.class);
-        d.putExtra("byteArray", bs.toByteArray()); //Should probably be saved to the phone and passed as uri instead.
+        d.putExtra("byteArray", bs.toByteArray()); // Could potentially be saved to the phone and passed as uri instead.
         startActivity(d);
-    	//startActivityForResult(d, 1);
     }
     
     @Override
     protected void onPause() {
         super.onPause(); 
-        preview.removeView(mPreview); //Remove the preview from the view to prevent crash
+        preview.removeView(mPreview); // Remove the preview from the view to prevent crash
         releaseCamera();              // release the camera immediately on pause event
     }
     
@@ -123,56 +117,60 @@ public class MainActivity extends Activity {
         super.onResume();   
         mCamera = getCameraInstance();
         mPreview.setCamera(mCamera);
+        // Only add the view to mPreview if the camera exists
         if(mCamera != null)
         {
-        	preview.addView(mPreview); //Add the preview back into the view
+        	preview.addView(mPreview); // Add the preview back into the view
         }
     }
 
+    // Release the camera for other applications
     private void releaseCamera(){
-        if (mCamera != null){
-            mCamera.release();        // release the camera for other applications
-            mCamera = null;
-        }
+    	if(mCamera == null) 
+    		return;
+        mCamera.release();        
+        mCamera = null;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
     	
-    	//Potentially adds an item to more modern Android menu interfaces. Uncommented as it prevents compilation.
-        //getMenuInflater().inflate(R.menu.main, menu);
+    	// Potentially adds an item to more modern Android menu interfaces. Commented as it prevents compilation.
+        // getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
     
     public static Camera getCameraInstance(){
-        Camera c = null;
+        // Attempt to get a Camera instance
         try {
-            c = Camera.open(); // attempt to get a Camera instance
+            return Camera.open(); 
         }
+        // Camera is not available (in use or does not exist)
         catch (Exception e){
-            // Camera is not available (in use or does not exist)
+        	return null;
         }
-        return c; // returns null if camera is unavailable
     }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
     	
-    	//If the data is null, there is nothing to do so just return.
+    	// If the data is null, there is nothing to do so just return.
     	if(data == null)
     	{
     		return;
     	}
     	
-    	if (data.hasExtra("subBitmap")) {
-    		Log.i("TeamHex", "I AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\n");
+    	if(data.hasExtra("subBitmap")) {
+    		Log.i("TeamHex", "Found a subBitmap from activity result. Apparently that makes me a squirrel.");
             mBitmap = BitmapFactory.decodeByteArray(
                     data.getByteArrayExtra("subBitmap"), 0, data
                             .getByteArrayExtra("subBitmap").length); 
         }
-    	else { Log.i("TeamHex", "I AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\nI AM NOT A SQUIRREL\n");}
+    	else { 
+    		Log.i("TeamHex", "Did not found a subBitmap from activity result. Apparently that makes me not a squirrel.");
+    	}
     	
     	if(requestCode == ACTIVITY_SELECT_IMAGE)
 	    {
@@ -193,21 +191,19 @@ public class MainActivity extends Activity {
 	    }
     	if(requestCode == ACTIVITY_SELECTED_REGION)
     	{
- 
 	    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
 	    	
 	    	pixels = data.getIntArrayExtra("com.teamhex.cooler.polygonPixels");
 	    	
 	    	if(resultCode == 1000)
 	    	{
-	    	 //SUCESSFULLY GETS HERE
-	    	 Log.i("TeamHex", "Successful result (1000)");
+	    		Log.i("TeamHex", "Successful result (1000)");
 	    	 }
-	    	 else 
-	    	 { 
-	    		 Log.i("TeamHex", "Unsuccessful result (" + Integer.toString(resultCode) + ")");
-	    		 System.exit(1);
-	    	 }  
+	    	else 
+	    	{ 
+				 Log.i("TeamHex", "Unsuccessful result (" + Integer.toString(resultCode) + ")");
+				 System.exit(1);
+	    	}  
 		    
 	    }
 	    else if(resultCode == RESULT_OK)
@@ -220,15 +216,13 @@ public class MainActivity extends Activity {
 	    
     }
     	
-
-    int sampleSize = 100;
     // Handle media storage once picture is captured
     private PictureCallback mPicture = new PictureCallback() 
     {
  
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-    		// Grab the pitcure file from MEDIA_TYPE_IMAGE
+    		// Grab the picture file from MEDIA_TYPE_IMAGE
             File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
             
             // If it's null, complain and stop
@@ -248,7 +242,7 @@ public class MainActivity extends Activity {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
             
-         // First decode with inJustDecodeBounds=true to check dimensions
+            // First decode with inJustDecodeBounds=true to check dimensions
             final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), options);
@@ -264,89 +258,96 @@ public class MainActivity extends Activity {
             analyze();
         }
         
-        /** Create a File for saving an image or video */
-        private File getOutputMediaFile(int type){
-        	File mediaFile = null;
-
-        	//Check if SD card is mounted
+        // Create a File for saving an image or video
+        private File getOutputMediaFile(int type) {
+        	// Check if an SD card is mounted
         	if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
         	{
-        	//File location : DDMS -> /mnt/sdcard/Pictures/MyCameraApp
-            File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                      Environment.DIRECTORY_PICTURES), "MyCameraApp");
+	        	// File location : DDMS -> /mnt/sdcard/Pictures/TeamHex
+	            File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+	                      Environment.DIRECTORY_PICTURES), "TeamHex");
+	
+	            // Create the storage directory if it does not exist
+	            if(!mediaStorageDir.exists()) {
+	                if(!mediaStorageDir.mkdirs()){
+	                    Log.d("TeamHex", "Failed to create storage directory directory");
+	                    return null;
+	                }
+	            }
 
-            // Create the storage directory if it does not exist
-            if (! mediaStorageDir.exists()){
-                if (! mediaStorageDir.mkdirs()){
-                    Log.d("MyCameraApp", "failed to create directory");
-                    return null;
-                }
-            }
-
-            // Create a media file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.getDefault()).format(new Date());
-            //File mediaFile;
-            if (type == MEDIA_TYPE_IMAGE){
-                mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_"+ timeStamp + ".jpg");
-            } else if(type == MEDIA_TYPE_VIDEO) {
-                mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                "VID_"+ timeStamp + ".mp4");
-            } else {
-                return null;
-            }
+	            // Create a media file name
+	            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.getDefault()).format(new Date());
+	            
+	            // Depending on the media type, create a new file
+	            String filename = mediaStorageDir.getPath() + File.separator;
+	            if(type == MEDIA_TYPE_IMAGE)
+	            	filename += "IMG_" + timeStamp + ".jpg";
+	            else if(type == MEDIA_TYPE_VIDEO)
+	            	filename += "VID_" + timeStamp + ".mp4";
+	            else return null; // Unknown files get nothing
+	            
+	            // Return an actual file under that name
+	            return new File(filename);
         	}
-            return mediaFile;
+            return null;
         } 
         
     };
     
-
-    //http://stackoverflow.com/questions/3879992/get-bitmap-from-an-uri-android
-    public Bitmap getThumbnail(Uri uri) throws FileNotFoundException, IOException{
+    // Gets a thumbnail in Bitmap form, given a URI
+    // http://stackoverflow.com/questions/3879992/get-bitmap-from-an-uri-android
+    public Bitmap getThumbnail(Uri uri) throws FileNotFoundException, IOException {
+    	// Open a stream to the URI
         InputStream input = this.getContentResolver().openInputStream(uri);
 
+        // Get a new Options factory for just the bounds, setting some variables
         BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
         onlyBoundsOptions.inJustDecodeBounds = true;
-        onlyBoundsOptions.inDither=true;//optional
-        onlyBoundsOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+        onlyBoundsOptions.inDither           = true; 					// (optional)
+        onlyBoundsOptions.inPreferredConfig  = Bitmap.Config.ARGB_8888; // (optional)
+        
+        // Decode the URI's input stream into the options factory
         BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
         input.close();
-        if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1))
+        
+        // If the sizes are invalid, it failed - return null
+        if(onlyBoundsOptions.outWidth < 0 || onlyBoundsOptions.outHeight < 0)
             return null;
         
+        // Now that sizing is known, create a factory for the full bitmap
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-        bitmapOptions.inSampleSize = calculateInSampleSize(onlyBoundsOptions, sampleSize, sampleSize);
-        bitmapOptions.inDither=true;//optional
-        bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+        bitmapOptions.inSampleSize      = calculateInSampleSize(onlyBoundsOptions, sampleSize, sampleSize);
+        bitmapOptions.inDither          = true;               	   // (optional)
+        bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888; // (optional)
+        
+        // Decode the URI's input stream into the options factory
         input = this.getContentResolver().openInputStream(uri);
+        // Retrieve the actual bitmap from the factory using the input stream
         Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
         input.close();
+        
         return bitmap;
     }
     
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-    // Raw height and width of image
-    final int height = options.outHeight;
-    final int width = options.outWidth;
-    int inSampleSize = 1;
-
-    if (height > reqHeight || width > reqWidth) {
-
-        // Calculate ratios of height and width to requested height and width
-        final int heightRatio = Math.round((float) height / (float) reqHeight);
-        final int widthRatio = Math.round((float) width / (float) reqWidth);
-
-        // Choose the smallest ratio as inSampleSize value, this will guarantee
-        // a final image with both dimensions larger than or equal to the
-        // requested height and width.
-        inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+    // Returns the sample size given a BitmapFactory options, width, and height
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	    // Raw height and width of image
+	    final int height = options.outHeight;
+	    final int width = options.outWidth;
+	    int inSampleSize = 1;
+	
+	    // If the given height or given width are smaller than the options'... 
+	    if (height > reqHeight || width > reqWidth) {
+	        // Calculate ratios of height and width to requested height and width
+	        final int heightRatio = Math.round((float) height / (float) reqHeight);
+	        final int widthRatio = Math.round((float) width / (float) reqWidth);
+	
+	        // Choose the smallest ratio as inSampleSize value, this will guarantee
+	        // a final image with both dimensions larger than or equal to the
+	        // requested height and width.
+	        inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+	    }
+	
+	    return inSampleSize;
     }
-
-    return inSampleSize;
-    }
-
-    // Helps PaletteRecords generate names for their colors
-    private X11Helper mX11Helper = new X11Helper();
 }
