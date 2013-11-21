@@ -13,7 +13,6 @@ import com.teamhex.cooler.DrawImageActivity;
 import com.teamhex.cooler.CameraPreview;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
-import com.teamhex.cooler.Storage.Activities.PaletteSaveActivity;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -228,30 +227,6 @@ public class MainActivity extends Activity {
 	    	 { 
 	    		 System.out.println("RESULT CODE IS 1000 PIXELS NOT RECEIVED"); System.exit(1);
 	    	 }  
-	    	
-	    	//for(int a = 0; a < pixels.length; a++)
-		    //	System.out.println("PIXEL " + a + ": " + pixels[a] + " ");
-		    	
-		    Log.i("TeamHex", "Using the ColorPaletteGenerator.colorAlgorithm to get the [] colors.");
-		    int[] colors = ColorPaletteGenerator.colorAlgorithm(pixels, 5);
-		    	
-		    // Store the output from colors[] into a new PaletteRecord
-		    PaletteRecord palette = new PaletteRecord();
-		    palette.setName("Untitled_Palette");
-		    for (int i = 0; i < 5; i++)
-		    	palette.addColor(colors[i]);
-		    	
-		    Log.i("TeamHex", "Finixhed adding the colors to a new palette.");
-		    	
-		    	// Get auto-generated names for the palette
-		    Log.i("TeamHex", "Using the X11Helper to generate names for the palette");
-		    palette.setX11Names(mX11Helper);
-		    	
-		    	// Go to the PaletteSaveActivity to save the palette into the library
-		    Intent intent_save = new Intent(MainActivity.this, PaletteSaveActivity.class);
-		    intent_save.putExtra("palette", palette);
-		    startActivity(intent_save);
-		    System.out.println("SAVED");
 		    
 	    }
 	    else if(resultCode == RESULT_OK)
