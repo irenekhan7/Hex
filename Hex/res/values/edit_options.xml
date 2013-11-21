@@ -4,6 +4,5 @@
         <item>Hue</item>
         <item>Saturation</item>
         <item>Value</item>
-        <item>Contrast</item>
     </string-array>
 </resources>
