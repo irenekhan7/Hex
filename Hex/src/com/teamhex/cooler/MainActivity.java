@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int ACTIVITY_SELECT_IMAGE = 3;
 	public static final int ACTIVITY_SELECTED_REGION = 1;
-    int sampleSize = 100;
+    	int sampleSize = 100;
 	
 	private Camera mCamera;
 	private CameraPreview mPreview;
