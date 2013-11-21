@@ -116,19 +116,24 @@ public class DrawingView extends View {
 			    top    = points.get(0).y,
 			    bottom = top,
 			    ax, ay;
+			
+			int n = points.size();
 		  
 			// Get top left and bottom right bounding box coordinates
-			for(int a = points.size() - 1; a > 0; ++a) {
+			for(int a = 0; a < n; a++) {
 				ax = points.get(a).x;
 				ay = points.get(a).y;
-				if(ax > right)     right = points.get(a).x;
-				else if(ax < left) left  = points.get(a).x;
-				if(ay > bottom)    bottom = points.get(a).y;
-				else if(ay < top)  top = points.get(a).y;
+				if(ax > right)     
+					right = ax;
+				if(ax < left) 
+					left = ax;
+				if(ay > bottom)    
+					bottom = ay;
+				if(ay < top)  
+					top = ay;
 			}
-		  
-			int n = points.size(),
-				height = bottom - top;
+
+			int height = bottom - top;
 		  
 			Log.i("TeamHex", "The [top, right, bottom, left] coordinates are: " + 
 					Integer.toString(top) +
