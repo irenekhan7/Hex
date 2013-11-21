@@ -24,6 +24,8 @@ Bitmap b = null;
 DrawingView drawingView;
 PaletteView previewPalette;
 
+Button saveButton;
+
 @Override
 public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -68,7 +70,9 @@ public void onCreate(Bundle savedInstanceState) {
     
     //Setup the save button
  // Event: Edit Button Pressed 
-    Button saveButton = (Button) findViewById(R.id.save_create_button);
+    saveButton = (Button) findViewById(R.id.save_create_button);
+    saveButton.setEnabled(false);
+    
     saveButton.setOnClickListener(
         new View.OnClickListener() {
             @Override
@@ -136,13 +140,14 @@ PaletteRecord palette;
 		@Override
 	    protected void onPostExecute(Object obj) {
 	    	 previewPalette.setPalette(palette);
-	    	 Log.i("TeamHex:","Setting preview palette");
+	    	 saveButton.setEnabled(true);
 	    }
 	}
 
 	ProcessTask processTask;
 	@Override
 	public void onSelection() {
+		saveButton.setEnabled(false);
 		processTask.cancel(true);
 		processTask = new ProcessTask();
 		processTask.execute();
