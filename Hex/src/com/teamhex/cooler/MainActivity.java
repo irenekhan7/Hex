@@ -160,7 +160,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-
+    	
+    	//If the data is null, there is nothing to do so just return.
+    	if(data == null)
+    	{
+    		return;
+    	}
     	
     	if (data.hasExtra("subBitmap")) {
     		Log.i("TeamHex", "I AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\nI AM A SQUIRREL\n");
@@ -176,6 +181,7 @@ public class MainActivity extends Activity {
 	            Uri selectedImage = data.getData();
 	            try {
 					mBitmap = getThumbnail(selectedImage);
+					analyze();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -183,7 +189,7 @@ public class MainActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 
-	            analyze();
+	            
 	        }
 	    }
     	if(requestCode == ACTIVITY_SELECTED_REGION)
