@@ -19,6 +19,7 @@ import android.view.View;
 
 public class DrawingView extends View {
 	
+	// The methods of selection users are allowed
 	public enum SelectionType 
 	{
 		LASSO,
@@ -26,12 +27,11 @@ public class DrawingView extends View {
 		ALL,
 	}
 	
+	// The selection listener is a basic pipe to onSelection()
 	public interface OnSelectionListener {
     	void onSelection();
     }
-
     private OnSelectionListener onSelectionListener;
-    
     public void setOnSelectionListener(OnSelectionListener listener) {
     	onSelectionListener = listener;
     }
@@ -49,35 +49,41 @@ public class DrawingView extends View {
     int touched = 0;
     Canvas canvas = null;
     
-    //The pixels selected
+    // The currently selected pixels
     int[] pixels; 
+
+    private Bitmap b;
     
-    //Constructor
+    // A rectangle to draw (if needed by onDraw)
+    Rect myRect;
+    
+    // Constructor
     public DrawingView(Context context, AttributeSet attrs) { super(context, attrs); Init();}
     public DrawingView(Context context) {
         super(context);
         Init();
     }
     
+    // Init() just sets the visual style of the selector
     private void Init() {
     	drawPath = new Path();
       	paint.setColor(Color.WHITE);
       	paint.setAntiAlias(true);
-      	paint.setStrokeWidth(3);
+      	paint.setStrokeWidth(7);
       	paint.setStyle(Paint.Style.STROKE);
       	paint.setStrokeJoin(Paint.Join.ROUND);
       	paint.setStrokeCap(Paint.Cap.ROUND);
     }
    
-    private Bitmap b;
     public void setBitmap(Bitmap setting) {
     	b = setting;
     }
     
-    //Sets the selection type being used.
+    // Sets the selection type being used
     public void setSelectionType(SelectionType type) {
     	selectionTYPE = type;
     	
+    	// If 'All' (general clicking) is selected, clear any pre-existing selection
     	if(type == SelectionType.ALL)
     	{
     		resetSelection();
@@ -88,12 +94,12 @@ public class DrawingView extends View {
     	}
     }
     
-    //Get the pixels selected
+    // Get the pixels selected
     public int[] getSelectedPixels() {
     	return pixels;
     }
     
-	//size assigned to view
+	// Size assigned to view
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
@@ -101,14 +107,15 @@ public class DrawingView extends View {
 		canvas = new Canvas(canvasBitmap);
 	}
 	
-	//draw the view - will be called after touch event
+	// Draw the view - will be called after touch event
 	@Override
 	protected void onDraw(Canvas canvas) {
 		//If the bitmap is null, what's to draw anyways?
 		if(b == null)
 			return;
 		
-		canvas.drawBitmap(b, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), null);
+		myRect = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
+		canvas.drawBitmap(b, null, myRect, null);
 		
 		if(selectionTYPE == SelectionType.LASSO) {
 		
@@ -126,10 +133,10 @@ public class DrawingView extends View {
 				right  = left,
 			    top    = points.get(0).y,
 			    bottom = top,
+			    n      = points.size(),
+			    height,
 			    ax, ay;
 			
-			int n = points.size();
-		  
 			// Get top left and bottom right bounding box coordinates
 			for(int a = 0; a < n; a++) {
 				ax = points.get(a).x;
@@ -144,62 +151,54 @@ public class DrawingView extends View {
 					top = ay;
 			}
 
-			int height = bottom - top;
+			height = bottom - top;
 		  
 			Log.i("TeamHex", "The [top, right, bottom, left] coordinates are: " + 
-					Integer.toString(top) +
-					Integer.toString(right) + 
-					Integer.toString(bottom) +
-					Integer.toString(left));
+				Integer.toString(top) +
+				Integer.toString(right) + 
+				Integer.toString(bottom) +
+				Integer.toString(left));
 		  
-		  //Map each line segment in the lasso contour to the horizontal rows that it
-		  //passes through. This saves us from performing collision checks on lines that
-		  //wouldn't have intersected anyways.
+		  // Map each line segment in the lasso contour to the horizontal rows that it
+		  // passes through. This saves us from performing collision checks on lines that
+		  // wouldn't have intersected anyways.
 		  @SuppressWarnings("unchecked")
 		  ArrayList<Integer>[] lineMap = (ArrayList<Integer>[]) new ArrayList[height+1];
-		  for (int i = 0; i <= height; i++)
-		  {
+		  for (int i = 0; i <= height; i++)  {
 			  lineMap[i] = new ArrayList<Integer>();
 		  }
 		  
 		  int y1, y2;
-		  for (int i = 0; i < n; i++)
-		
-		  {
-			  if (i != (n - 1))
-			  {
+		  for (int i = 0; i < n; i++) {
+			  if (i != (n - 1)) {
 				  y1 = points.get(i).y;
 				  y2 = points.get(i+1).y;
 			  }
-			  else
-			  {
+			  else {
 				  y1 = points.get(n - 1).y;
 				  y2 = points.get(0).y;
 			  }
 			  
-			  if (y2 <= y1)
-			  {
+			  if (y2 <= y1) {
 				  int temp = y1;
 				  y1 = y2;
 				  y2 = temp;
 			  }
 			  
-			  for (int j = y1; j <= y2; j++)
-			  {
+			  for (int j = y1; j <= y2; j++) {
 				  lineMap[j-top].add(i);
 			  }
 		  }
 		  
-		  //Perform intersection checks with the lasso contour and each row inside of the
-		  //bounding box. Each row will be split up into intervals. Because the lasso forms
-		  //a line loop by its nature, every even-numbered interval will be within the area
-		  //bounded by the lasso.
+		  // Perform intersection checks with the lasso contour and each row inside of the
+		  // bounding box. Each row will be split up into intervals. Because the lasso forms
+		  // a line loop by its nature, every even-numbered interval will be within the area
+		  // bounded by the lasso.
 		  for (int i = 0; i <= height; i++) {
 			  ArrayList<Double> intersections = new ArrayList<Double>();
 			  ArrayList<Integer> lines = lineMap[i];
 			  
-			  for (int j = 0; j < lines.size(); j++)
-			  {
+			  for (int j = 0; j < lines.size(); j++) {
 				  int lineID = lines.get(j);
 				  Point p1, p2;
 				  
@@ -284,20 +283,19 @@ public class DrawingView extends View {
             
             Point p1 = null;
             Point p2 = null;
-            //Draw square if there are 2 corners
-            if(corners == 0)
-            {
+            // Draw a square if there are 2 corners
+            if(corners == 0) {
             		p1 = new Point(pointsList.get(0).x, pointsList.get(1).y);
             		p2 = new Point(pointsList.get(1).x, pointsList.get(0).y);
             		if(pointsList.contains(p1) == false)
             		{
             		 pointsList.add(p1);
-            		 System.out.println("ADDED P1");
+            		 Log.i("TeamHex", "Added point one.");
             		}
             		if(pointsList.contains(p2) == false)
             		{
             		 pointsList.add(p2);
-            		 System.out.println("ADDED P2");
+            		 Log.i("TeamHex", "Added point two.");
             		}
             		
             		//Draw square
@@ -309,7 +307,7 @@ public class DrawingView extends View {
                     canvas.drawLine(o2.x, o2.y, p2.x, p2.y, paint);
                     square = true;
                     
-                  //Find top left point
+                    //Find top left point
                     int topLeftX;
                     int topLeftY;
                     
@@ -325,49 +323,19 @@ public class DrawingView extends View {
                     int width = Math.abs(o2.x - o1.x);
                     int height = Math.abs(o2.y - o1.y);
                     
-                    System.out.println("BITMAP WIDTH: " + b.getWidth());
-                    System.out.println("TOP LEFT X: " + (int)((double)topLeftX / canvas.getWidth() * b.getWidth()));
-                    System.out.println("TOP LEFT Y: " + (int)((double)topLeftY / canvas.getHeight() * b.getHeight()));
-                    System.out.println("WIDTH: " + ((int) ((double)width / canvas.getWidth() * b.getWidth())));
-                    System.out.println("HEIGHT: " + ((int) ((double)height / canvas.getHeight() * b.getHeight())));
-                    System.out.println("WIDTH ONLY: " + width);
-                    System.out.println("HEIGHT ONLY: " + height);
+                    Log.i("TeamHex", "Bitmap width: " + b.getWidth());
+                    Log.i("TeamHex", "Top left X: " + (int)((double)topLeftX / canvas.getWidth() * b.getWidth()));
+                    Log.i("TeamHex", "Top right Y: " + (int)((double)topLeftY / canvas.getHeight() * b.getHeight()));
+                    Log.i("TeamHex", "Width: " + ((int) ((double)width / canvas.getWidth() * b.getWidth())));
+                    Log.i("TeamHex", "Height: " + ((int) ((double)height / canvas.getHeight() * b.getHeight())));
+                    Log.i("TeamHex", "Width only: " + width);
+                    Log.i("TeamHex", "Height only: " + height);
                     
-                    //Create sub bitmap from user selection
-                    //Bitmap subBitmap = Bitmap.createBitmap(b, (int)((double)topLeftX / canvas.getWidth() * b.getWidth()), 
-                    //		(int)((double)topLeftY / canvas.getHeight() * b.getHeight()), 
-                    //		(int) ((double)width / canvas.getWidth() * b.getWidth()), 
-                    //		(int) ((double)height / canvas.getHeight() * b.getHeight()));
+                    int bTopLeftX = (int)((double)topLeftX / canvas.getWidth()  * b.getWidth()),
+                    	bTopLeftY = (int)((double)topLeftY / canvas.getHeight() * b.getHeight()),
+                    	bWidth    = (int)((double)width    / canvas.getWidth()  * b.getWidth()),
+                    	bHeight   = (int)((double)height   / canvas.getHeight() * b.getHeight());
                     
-                    int bTopLeftX = (int)((double)topLeftX / canvas.getWidth() * b.getWidth());
-                    int bTopLeftY = (int)((double)topLeftY / canvas.getHeight() * b.getHeight());
-                    int bWidth = (int) ((double)width / canvas.getWidth() * b.getWidth());
-                    int bHeight = (int) ((double)height / canvas.getHeight() * b.getHeight());
-                    
-                    //Try drawing sub bitmap
-                    //Clear screen / replace with draw image
-                    //WORKS
-                    //canvas.drawColor(Color.BLACK);
-                    //canvas.drawBitmap(subBitmap, null, new Rect(0, 0, width, height), null);
-               
-                    //Pass results back to Main activity
-                    //Intent d = new Intent(DrawImageActivity.this, MainActivity.class);
-            		//ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                    //subBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
-                    //d.putEx-tra("subBitmap", bs.toByteArray());
-                	//startActivity(d);
-                    //int[] pixels = new int[subBitmap.getWidth() * subBitmap.getHeight()];
-        	    	//subBitmap.getPixels(pixels, 0, subBitmap.getWidth(), 0, 0, subBitmap.getWidth(), subBitmap.getHeight());
-        			
-        	    	//for(int a = 0; a < pixels.length; a++)
-        	    	//	System.out.println("PIXEL " + a + ": " + pixels[a] + " ");
-        	    	
-                    //Intent i1 = getIntent();
-                    //ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                    //subBitmap.compress(Bitmap.CompressFormat.PNG,  50,  bs);
-                    //setResult(RESULT_OK, i1);
-                    //i1.putExtra("subBitmap", bs.toByteArray());
-                    //finish();
                     
                     pixels = new int[width * height];
                     b.getPixels(pixels, 0, bWidth, bTopLeftX, bTopLeftY, bWidth, bHeight);
@@ -384,6 +352,7 @@ public class DrawingView extends View {
             }
 	}
 	
+	// Clears the selected area's points and path
 	public void resetSelection()
 	{
 		points.clear();
@@ -392,6 +361,7 @@ public class DrawingView extends View {
 		corners = 2;
 	}
 	
+	// The complete listing of how to react to touch events
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if(selectionTYPE == SelectionType.LASSO)
@@ -480,6 +450,4 @@ public class DrawingView extends View {
 
 	}
 	
-
-
- } //END CLASS
+ }

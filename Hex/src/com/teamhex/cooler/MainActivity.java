@@ -93,7 +93,6 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     //Open library 
-                	//System.out.println("OPEN LIBRARY");
                 	Log.i("TeamHex", "Opening the library activity");
                 	Intent i = new Intent(MainActivity.this, PaletteLibraryActivity.class);
                     startActivity(i);
@@ -202,18 +201,13 @@ public class MainActivity extends Activity {
 	    	if(resultCode == 1000)
 	    	{
 	    	 //SUCESSFULLY GETS HERE
+	    	 Log.i("TeamHex", "Successful result (1000)");)
 	    	 System.out.println("\n\nRESULT 1000\n\n");
-	    	 /*if(extras.getIntArray("polygonPixels") != null) 
-	    	 {
-	          //NEVER GETS HERE, polygonPixels = null
-	    	  pixelsReceived = true;
-	    	  System.out.println("PIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\nPIXELS RECEIVED\n");
-	    	  pixels = extras.getIntArray("polygonPixels");
-	    	 */
 	    	 }
 	    	 else 
 	    	 { 
-	    		 System.out.println("RESULT CODE IS 1000 PIXELS NOT RECEIVED"); System.exit(1);
+	    		 Log.i("TeamHex", "Unsuccessful result (" + Integer.toString(resultCode) + ")");
+	    		 System.exit(1);
 	    	 }  
 		    
 	    }
