@@ -1,7 +1,5 @@
 package com.teamhex.cooler;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;

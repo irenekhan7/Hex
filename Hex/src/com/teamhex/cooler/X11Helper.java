@@ -10,7 +10,7 @@ public class X11Helper {
 	
 	// Important public function: given a string such as "#FFCC00", 
 	// get the equivalent color name from names
-	public String getColorName(String hex) {
+	public static String getColorName(String hex) {
 		// Make sure the hex is in the format of "FFCC00"
     	hex = hex.replaceAll("[^a-zA-Z0-9]", "").toUpperCase(Locale.ENGLISH);
 		Log.i("TeamHex", "Getting Color Name for #" + hex);
@@ -35,7 +35,7 @@ public class X11Helper {
 	}
 	
 	// Returns the RGB equivalent of a hex color
-	public Integer[] getColorRGB(String hex) {
+	public static Integer[] getColorRGB(String hex) {
 		
 		return new Integer[] {
 	        Integer.valueOf( hex.substring(0, 2), 16),
@@ -49,7 +49,7 @@ public class X11Helper {
 	public int getColorDistance(String a, String b) { return getColorDistance(getColorRGB(a), getColorRGB(b)); }
 	public int getColorDistance(String a, Integer[] b) { return getColorDistance(getColorRGB(a), b); }
 	public int getColorDistance(Integer[] a, String b) { return getColorDistance(a, getColorRGB(b)); }
-	public int getColorDistance(Integer[] a, Integer[] b) {
+	public static int getColorDistance(Integer[] a, Integer[] b) {
 		return (int) (Math.pow(Math.abs(a[0] - b[0]), 2) +
 					  Math.pow(Math.abs(a[1] - b[1]), 2) +
 					  Math.pow(Math.abs(a[2] - b[2]), 2)  );
@@ -73,7 +73,7 @@ public class X11Helper {
 		console.log("toHex of gold is", strToHex("FFCC00"));
 	 */
 	
-	private int num_values; // made in constructor
+	private static int num_values; // made in constructor
 	private static final Integer[][] rgb_values = {
 		{0, 0, 128},
 		{0, 0, 139},
