@@ -42,7 +42,7 @@ public class PaletteInfoActivity extends Activity {
 
 		builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	        	   System.out.println("DELETING\n");
+	        	   Log.i("TeamHex", "Starting to delete.");
 	               	//MentionAllChanges();
 	               	Intent resultIntent = new Intent();
 	               	resultIntent.putExtra("name", myPaletteRecord.getName());
@@ -94,7 +94,7 @@ public class PaletteInfoActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                	System.out.println("SHARING\n");
+                	Log.i("TeamHex", "Starting to share.");
                 	
                 	Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 	sharingIntent.setType("text/plain");

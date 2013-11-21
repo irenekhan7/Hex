@@ -72,19 +72,13 @@ public void onCreate(Bundle savedInstanceState) {
         new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            	if(previewPalette != null)
-            	{
-            	 	
-    		    	// Get auto-generated names for the palette
-	    		    Log.i("TeamHex", "Using the X11Helper to generate names for the palette");
-	    		    
-	    		    //previewPalette.setX11Names(mX11Helper);
-	    		    	
-	    		    	// Go to the PaletteSaveActivity to save the palette into the library
+            	if(previewPalette != null) {
+	    		    Log.i("TeamHex", "About to save the palette.");
+	    		    // Go to the PaletteSaveActivity to save the palette into the library
 	    		    Intent intent_save = new Intent(DrawImageActivity.this, PaletteSaveActivity.class);
 	    		    intent_save.putExtra("palette", palette);
 	    		    startActivity(intent_save);
-	    		    System.out.println("SAVED");
+	    		    Log.i("TeamHex", "The intent_save activity was completed.");
             	}
             }
         }

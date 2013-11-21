@@ -13,6 +13,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -25,7 +26,7 @@ public class DrawingView extends View {
 		ALL,
 	}
 	
-	public interface OnSelectionListener{
+	public interface OnSelectionListener {
     	void onSelection();
     }
 
@@ -51,19 +52,14 @@ public class DrawingView extends View {
     //The pixels selected
     int[] pixels; 
     
-    
-    
     //Constructor
     public DrawingView(Context context, AttributeSet attrs) { super(context, attrs); Init();}
-    public DrawingView(Context context)
-    {
+    public DrawingView(Context context) {
         super(context);
         Init();
-      	
     }
     
-    private void Init()
-    {
+    private void Init() {
     	drawPath = new Path();
       	paint.setColor(Color.WHITE);
       	paint.setAntiAlias(true);
@@ -74,20 +70,17 @@ public class DrawingView extends View {
     }
    
     private Bitmap b;
-    public void setBitmap(Bitmap setting)
-    {
+    public void setBitmap(Bitmap setting) {
     	b = setting;
     }
     
     //Sets the selection type being used.
-    public void setSelectionType(SelectionType type)
-    {
+    public void setSelectionType(SelectionType type) {
     	selectionTYPE = type;
     }
     
     //Get the pixels selected
-    public int[] getSelectedPixels()
-    {
+    public int[] getSelectedPixels() {
     	return pixels;
     }
     
@@ -98,94 +91,50 @@ public class DrawingView extends View {
 		canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 		canvas = new Canvas(canvasBitmap);
 	}
-
-	int pixelInPolygonTest(int numVertices, ArrayList<Point> points, Point testPoint)
-	{
-	  int i, j, c = 0;
-	  for (i = 0, j = numVertices-1; i < numVertices; j = i++) 
-	  {
-	    if ( ((points.get(i).y > testPoint.y) != (points.get(j).y > testPoint.y)) &&
-	     (testPoint.x < (points.get(j).x - points.get(i).x) * (testPoint.y - points.get(i).y) / (points.get(j).y - points.get(i).y) + points.get(i).x) )
-	       c = 1;
-	  }
-	  return c;
-	}
 	
-	public void setSelectionType()
-	{
-	
-	}
 	//draw the view - will be called after touch event
 	@Override
-	protected void onDraw(Canvas canvas) 
-	{
+	protected void onDraw(Canvas canvas) {
 		//If the bitmap is null, what's to draw anyways?
 		if(b == null)
-		{
 			return;
-		}
 		
-		if(selectionTYPE == SelectionType.LASSO)
-		{
-         canvas.drawBitmap(b, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), null);
-		 canvas.drawPath(drawPath, paint);
-		 paint.setStrokeWidth(1);
-	 	//GET PIXELS FROM POINTS AND SEND TO MAINACTIVITY
+		if(selectionTYPE == SelectionType.LASSO) {
+		canvas.drawBitmap(b, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), null);
+		canvas.drawPath(drawPath, paint);
+		paint.setStrokeWidth(1);
 		 
-		 if(touchLift)
-		 {
-		  System.out.println("RUN RAY CASTING ALGORITHM HERE");
-		  ArrayList<Point> polygonPixels = new ArrayList<Point>();
+		if(touchLift) {
+			Log.i("TeamHex", "About to run the ray casting algorithm.");
+			ArrayList<Point> polygonPixels = new ArrayList<Point>();
 		  
-		  //Get total image pixels
-		  //Get bounding box around points
-		  //ArrayList<Point> boundingBox = new ArrayList<Point>();
-		  int left = points.get(0).x;
-		  int right = points.get(0).x;
-		  int top = points.get(0).y;
-		  int bottom = points.get(0).y;
+			//Get total image pixels
+			//Get bounding box around points
+			//ArrayList<Point> boundingBox = new ArrayList<Point>();
+			int left   = points.get(0).x,
+				right  = left,
+			    top    = points.get(0).y,
+			    bottom = top,
+			    ax, ay;
 		  
-		  //Get top left and bottom right bounding box coords
-		  for(int a = 1; a < points.size(); a++)
-		  {
-		   if(points.get(a).x > right)
-			   right = points.get(a).x;
-		   if(points.get(a).x < left)
-			   left = points.get(a).x;
-		   if(points.get(a).y > bottom)
-			   bottom = points.get(a).y;
-		   if(points.get(a).y < top)
-			   top = points.get(a).y;
-		  }
-		  
-		  int n = points.size();
-		  int height = bottom - top;
-		  
-		  System.out.println("TOP: " + top + "\nBOTTOM: " + bottom
-				  + "\nLEFT: " + left + "\nRIGHT: " + right);
-		  //Draw circle for each pixel in the bounding box
-		  //WORKS
-		  //Add bounding box pixels to arraylist
-		  /*for(int x = left; x < right; x++)
-		  {
-			for(int y = bottom; y < top; y++)
-			{
-			 boundingBox.add(new Point(x, y));
-			//PRINT
-		    //canvas.drawCircle((float)x, (float)y, 1, paint); 
+			// Get top left and bottom right bounding box coordinates
+			for(int a = points.size() - 1; a > 0; ++a) {
+				ax = points.get(a).x;
+				ay = points.get(a).y;
+				if(ax > right)     right = points.get(a).x;
+				else if(ax < left) left  = points.get(a).x;
+				if(ay > bottom)    bottom = points.get(a).y;
+				else if(ay < top)  top = points.get(a).y;
 			}
-		  }
-			  
-		  //For each pixel in image, run poly test
-		  //If test succeeds, add pixel to polygonPixels
-		  for(Point p : boundingBox)
-		  {
-		   if(pixelInPolygonTest(points.size(), points, p) == 1)
-		   {
-			//canvas.drawCircle((float)p.x, (float)p.y, 1, paint); 
-		    polygonPixels.add(p);
-		   }
-		  }*/
+		  
+			int n = points.size(),
+				height = bottom - top;
+		  
+			Log.i("TeamHex", "The [top, right, bottom, left] coordinates are: " + 
+					Integer.toString(top) +
+					Integer.toString(right) + 
+					Integer.toString(bottom) +
+					Integer.toString(left));
 		  
 		  //Map each line segment in the lasso contour to the horizontal rows that it
 		  //passes through. This saves us from performing collision checks on lines that
@@ -228,8 +177,7 @@ public class DrawingView extends View {
 		  //bounding box. Each row will be split up into intervals. Because the lasso forms
 		  //a line loop by its nature, every even-numbered interval will be within the area
 		  //bounded by the lasso.
-		  for (int i = 0; i <= height; i++)
-		  {
+		  for (int i = 0; i <= height; i++) {
 			  ArrayList<Double> intersections = new ArrayList<Double>();
 			  ArrayList<Integer> lines = lineMap[i];
 			  
