@@ -249,9 +249,10 @@ public class HexStorageManager {
 	// fileDelete
 	// Simply deletes a file of a particular name
 	public void fileDelete(String filename) {
-		File file = new File(filename);
-		if(file.exists())
-			file.delete();
+		// File file = new File(filename);
+		// if(file.exists())
+		//	file.delete();
+		context.deleteFile(filename);
 	}
 	
     // getFileReader

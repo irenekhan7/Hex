@@ -50,7 +50,7 @@ public class PaletteEditActivity extends Activity {
                 	// Get the user's name input from a standard Android getText()
                 	Log.i("TeamHex", "Getting the name to change to..");
                 	String nameOld = paletteRecord.getName(),
-                		   nameNew = nameEdit.getText().toString();
+                		   nameNew = NameFilter(nameEdit.getText().toString());
                 	
                 	Log.i("TeamHex", "The new name is '" + nameNew + "', from '" + nameOld + "'");
                 	if(nameNew != nameOld) {
@@ -106,6 +106,11 @@ public class PaletteEditActivity extends Activity {
 		getMenuInflater().inflate(R.menu.scheme_info, menu);
 		return true;
 	}
+
 	
+	// Replaces out any invalid characters that could mess the OS up
+	public String NameFilter(String _name) {
+		return _name.replace("[ &]", "_");
+	}
 
 }

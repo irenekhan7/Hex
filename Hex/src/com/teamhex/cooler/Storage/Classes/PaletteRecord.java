@@ -90,10 +90,9 @@ public class PaletteRecord implements Serializable {
 			colors.add(new ColorRecord(adders[i]));
 	}
 	
-	// Replaces out any invalid characters, which are:
-	// * ' ' -> '_'
+	// Replaces out any invalid characters that could mess the OS up
 	public String NameFilter(String _name) {
-		return _name.replace(" ", "_");
+		return _name.replace("[ &]", "_");
 	}
 
 	private String name;

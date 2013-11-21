@@ -16,7 +16,6 @@ import android.view.SurfaceView;
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder mHolder;
     private Camera mCamera;
-    private static final String TAG = "ACTIVITY";
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -72,7 +71,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (Throwable ignored) {
-            Log.e(TAG, "set preview error.", ignored);
+            Log.e("TeamHex", "set preview error.", ignored);
         }
     }
 
@@ -89,37 +88,23 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // If your preview can change or rotate, take care of those events here.
         // Make sure to stop the preview before resizing or reformatting it.
 
-        if (mHolder.getSurface() == null){
-          // preview surface does not exist
+    	// If the preview surface doesn't exist, we're done here
+        if (mHolder.getSurface() == null)
           return;
-        }
 
-        // stop preview before making changes
-        try {
-            mCamera.stopPreview();
-        } catch (Exception e){
-          // ignore: tried to stop a non-existent preview
-        }
-
-        // set preview size and make any resize, rotate or
-        // reformatting changes here
-        Log.i("TeamHex", "The preview has changed, we should update! :D :D :D :D :D :D :D");
+        // Make sure to stop the preview before making changes
+        try { mCamera.stopPreview(); } catch (Exception e){}
         
+        // Update the orientation (landscape / horizontal)
         setCameraDisplayOrientation((Activity) this.getContext(), 0, mCamera);
         
-        try {
-			mCamera.setPreviewDisplay(holder);
-		} catch (IOException e1) {
-			//Ignore
-		}
-        
-        // start preview with new settings
-        try {
+        // Set the preview display with the new orientation settings
+        try { 
+        	mCamera.setPreviewDisplay(holder);
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
-
         } catch (Exception e){
-            Log.d(TAG, "Error starting camera preview: " + e.getMessage());
+            Log.i("TeamHex", "Error starting camera preview: " + e.getMessage());
         }
     }
     
@@ -129,18 +114,18 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         android.hardware.Camera.CameraInfo info =
                 new android.hardware.Camera.CameraInfo();
         android.hardware.Camera.getCameraInfo(cameraId, info);
-        int rotation = activity.getWindowManager().getDefaultDisplay()
-                .getRotation();
-        int degrees = 0;
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation(),
+        	degrees = 0,
+        	result;
         switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break;
-            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_0:   degrees = 0;   break;
+            case Surface.ROTATION_90:  degrees = 90;  break;
             case Surface.ROTATION_180: degrees = 180; break;
             case Surface.ROTATION_270: degrees = 270; break;
         }
 
-        int result;
-        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+        // The front-facing camera compensates for the mirror
+        if(info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             result = (info.orientation + degrees) % 360;
             result = (360 - result) % 360;  // compensate the mirror
         } else {  // back-facing
