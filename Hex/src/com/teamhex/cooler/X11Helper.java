@@ -11,6 +11,7 @@ public class X11Helper {
 	// Important public function: given a string such as "#FFCC00", 
 	// get the equivalent color name from names
 	public static String getColorName(String hex) {
+		num_values = rgb_values.length;
 		// Make sure the hex is in the format of "FFCC00"
     	hex = hex.replaceAll("[^a-zA-Z0-9]", "").toUpperCase(Locale.ENGLISH);
 		Log.i("TeamHex", "Getting Color Name for #" + hex);
