@@ -77,6 +77,14 @@ public class DrawingView extends View {
     //Sets the selection type being used.
     public void setSelectionType(SelectionType type) {
     	selectionTYPE = type;
+    	
+    	if(type == SelectionType.ALL)
+    	{
+    		resetSelection();
+    		pixels = new int[b.getWidth() * b.getHeight()];
+    		b.getPixels(pixels, 0, b.getWidth(), 0, 0, b.getWidth(), b.getHeight());
+    		onSelectionListener.onSelection();
+    	}
     }
     
     //Get the pixels selected
@@ -99,8 +107,10 @@ public class DrawingView extends View {
 		if(b == null)
 			return;
 		
-		if(selectionTYPE == SelectionType.LASSO) {
 		canvas.drawBitmap(b, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), null);
+		
+		if(selectionTYPE == SelectionType.LASSO) {
+		
 		canvas.drawPath(drawPath, paint);
 		paint.setStrokeWidth(1);
 		 
@@ -153,6 +163,7 @@ public class DrawingView extends View {
 		  
 		  int y1, y2;
 		  for (int i = 0; i < n; i++)
+		
 		  {
 			  if (i != (n - 1))
 			  {
@@ -261,9 +272,6 @@ public class DrawingView extends View {
 		
 		else if(selectionTYPE == SelectionType.CROP)
 		{
-			//Draw image
-            canvas.drawBitmap(b, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), null);
-            
             //Traverse points
             for(int i=0; i<pointsList.size(); i++) 
             {

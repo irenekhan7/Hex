@@ -3,6 +3,7 @@ package com.teamhex.cooler;
 import java.util.ArrayList;
 
 import com.teamhex.cooler.ColorPaletteModifier.ColorVariable;
+import com.teamhex.cooler.DrawingView.SelectionType;
 import com.teamhex.cooler.Storage.Classes.ColorRecord;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 

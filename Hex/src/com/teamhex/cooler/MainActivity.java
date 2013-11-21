@@ -63,10 +63,8 @@ public class MainActivity extends Activity {
                     // get an image from the camera
                 	Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
                     mCamera.takePicture(null, null, mPicture);
-                    if(mBitmap != null)
-                    {
-                    	analyze();
-                    }
+                    	
+                    
                 }
             }
         );
@@ -262,6 +260,9 @@ public class MainActivity extends Activity {
             // Decode bitmap with inSampleSize set
             options.inJustDecodeBounds = false;
             mBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), options);
+            
+            //Analyze the picture
+            analyze();
         }
         
         /** Create a File for saving an image or video */
