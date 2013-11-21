@@ -56,8 +56,8 @@ public class ColorRecord implements Serializable {
 	}
 	
 	// Takes in an X11Helper and uses it to 'guess' the appropriate name
-	public void setX11Name(X11Helper helper) {
-		this.name = helper.getColorName(this.hex);
+	public void setX11Name() {
+		this.name = X11Helper.getColorName(this.hex);
 	}
 	
 	// Gets

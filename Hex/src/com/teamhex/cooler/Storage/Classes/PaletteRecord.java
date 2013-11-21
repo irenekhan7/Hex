@@ -62,9 +62,9 @@ public class PaletteRecord implements Serializable {
 	}
 	
 	// Takes in an X11Helper and uses it to 'guess' the ColorRecord names
-	public void setX11Names(X11Helper helper) {
+	public void setX11Names() {
 		for(int i = 0, len = colors.size(); i < len; ++i) {
-			colors.get(i).setX11Name(helper);
+			colors.get(i).setX11Name();
 		}
 	}
 

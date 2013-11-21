@@ -107,6 +107,7 @@ PaletteRecord palette;
 		    	palette.addColor(colors[i]);
 	    }
 	    	
+	    palette.setX11Names();
 	    Log.i("TeamHex", "Finixhed adding the colors to a new palette.");
 	   
 	    

@@ -304,7 +304,7 @@ public class HexStorageManager {
 		
 		for(int i = 0; i < record_names.size(); i++)
 		{
-			returner[i] = records.get(record_names.get(i));
+			returner[i] = records.get(record_names.get(record_names.size()-i-1));
 		}
 		
 		return returner;
