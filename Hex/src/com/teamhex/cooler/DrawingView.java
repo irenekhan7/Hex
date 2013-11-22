@@ -387,38 +387,44 @@ public class DrawingView extends View {
 	public boolean onTouchEvent(MotionEvent event) {
 		if(selectionTYPE == SelectionType.LASSO)
 		{
-			// If this is a touchLift, 
-			if(touchLift)
-				return true; //BUNDLE PIXELS & ANALYZE
+			// If this is a touchLift, simply return true to bundle pixels & analyze
+			if(touchLift) {
+				return true;
+			}
+			
+			// Get the X,Y location of the event, and bounds-check it to be within the box
 			float touchX = Math.max(0, Math.min(canvas.getWidth() - 1, event.getX())),
 				  touchY = Math.max(0, Math.min(canvas.getHeight() - 1, event.getY()));
 		 
-			 // Respond to down, move and up events
-			 switch(event.getAction()) {
-				 case MotionEvent.ACTION_DOWN:
+			 // Depending on what type of action this touch event is...
+			switch(event.getAction()) {
+				
+				// The finger is just now touching the screen; kill everything and start anew
+				case MotionEvent.ACTION_DOWN:
 					 
-					 resetSelection(); //Clear the old selection
+					resetSelection(); //Clear the old selection
 					 
-					 points.add(new Point((int)touchX, (int)touchY));
-					 drawPath.moveTo(touchX, touchY);
-					 
-				 break;
-				 case MotionEvent.ACTION_MOVE:
+					points.add(new Point((int)touchX, (int)touchY));
+					drawPath.moveTo(touchX, touchY);
+				break;
+				
+				// Typical movement, get a new point and put it there
+				case MotionEvent.ACTION_MOVE:
 					 points.add(new Point((int)touchX, (int)touchY));
 					 //drawPath.cubicTo((float)(points.get(points.size()-1).x)/2, points.get(points.size()-1).y, touchX, touchY);
-					 float x1 = points.get(points.size()-1).x;
-					 float y1 = points.get(points.size()-1).y;
-					 float x3 = touchX;
-					 float y3 = touchY;
-					 float x2 = (x1 + x3) / 2;
-					 float y2 = (y1 + y3) / 2;
+					 float x1 = points.get(points.size()-1).x,
+						   y1 = points.get(points.size()-1).y,
+						   x3 = touchX,
+						   y3 = touchY,
+					 	   x2 = (x1 + x3) / 2,
+					 	   y2 = (y1 + y3) / 2;
 						
 					 //drawPath.moveTo(x1, y1);
 					 drawPath.cubicTo(x1, y1, x2, y2, x3, y3);
-					 
-					 
-				 break;
-				 case MotionEvent.ACTION_UP:
+				break;
+				
+				// The finger is no longer touching the screen, still add a point but also wrap it up
+				case MotionEvent.ACTION_UP:
 					 points.add(new Point((int)touchX, (int)touchY));
 					 drawPath.quadTo(points.get(points.size()-1).x, points.get(points.size()-1).y, touchX, touchY);
 				
@@ -433,38 +439,44 @@ public class DrawingView extends View {
 					 drawPath.cubicTo(x1, y1, x2, y2, x3, y3);
 					 
 					 touchLift = true;
-					  canvas.drawPath(drawPath, paint);
-					 if(!touchLift)
-					  drawPath.reset();
+					 canvas.drawPath(drawPath, paint);
+					 if(!touchLift) {
+						 drawPath.reset();
+					 }
 				 break;
+				 
+				 // If it was none of the above, just do nothing
 				 default:
 					 return false;
-		 	}
+			 }
 		}
+		// Start crop (rectangle)
 		else if(selectionTYPE == SelectionType.CROP)
 		{
-			//START CROP
-			 if(touchLift)
-					return true; //BUNDLE PIXELS & ANALYZE
-				 float touchX = event.getX();
-				 float touchY = event.getY();
-				 //respond to down, move and up events
-				 switch (event.getAction()) {
-				 case MotionEvent.ACTION_DOWN:
-					 if(corners == 0)
-					 {
-						 resetSelection();
-					 }
-					 if(corners > 0)
-					  pointsList.add(new Point((int)touchX, (int)touchY));
-					 if (corners != 0)
-					 corners--;
-					 break;
-				 
-				
-			 	 default:
-			 		 return false;
+			// If this is a touchLift, simply return true to bundle pixels & analyze
+			if(touchLift) {
+				return true;
+			}
+			float touchX = Math.max(0, Math.min(canvas.getWidth() - 1, event.getX())),
+				  touchY = Math.max(0, Math.min(canvas.getHeight() - 1, event.getY()));
+			
+			// Respond to down, move and up events
+			switch(event.getAction()) {
+				// The finger is just now being pressed down
+				case MotionEvent.ACTION_DOWN:
+				 if(corners == 0)
+				 {
+					 resetSelection();
 				 }
+				 if(corners > 0)
+				  pointsList.add(new Point((int)touchX, (int)touchY));
+				 if (corners != 0)
+				 corners--;
+				break;
+				
+				default:
+				 return false;
+			}
 			//END CROP
 		}
 		//redraw
