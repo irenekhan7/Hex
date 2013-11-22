@@ -464,20 +464,21 @@ public class DrawingView extends View {
 			switch(event.getAction()) {
 				// The finger is just now being pressed down
 				case MotionEvent.ACTION_DOWN:
-				 if(corners == 0)
-				 {
-					 resetSelection();
-				 }
-				 if(corners > 0)
-				  pointsList.add(new Point((int)touchX, (int)touchY));
-				 if (corners != 0)
-				 corners--;
+					// If there are no corners (like from tool switching), reset the selection
+					if(corners == 0) {
+						resetSelection();
+					}
+					// If there actually are corners, add a new point
+					if(corners > 0)
+						pointsList.add(new Point((int)touchX, (int)touchY));
+					// Otherwise just reduce the number of corners by 1
+					if(corners != 0)
+						corners--;
 				break;
 				
 				default:
 				 return false;
 			}
-			//END CROP
 		}
 		//redraw
 		invalidate();
