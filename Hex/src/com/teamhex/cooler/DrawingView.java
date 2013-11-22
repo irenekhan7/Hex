@@ -387,58 +387,59 @@ public class DrawingView extends View {
 	public boolean onTouchEvent(MotionEvent event) {
 		if(selectionTYPE == SelectionType.LASSO)
 		{
-		 if(touchLift)
-			return true; //BUNDLE PIXELS & ANALYZE
-		 float touchX = Math.max(0, Math.min(canvas.getWidth(), event.getX()));
-		 float touchY = Math.max(0, Math.min(canvas.getHeight(), event.getY()));
+			// If this is a touchLift, 
+			if(touchLift)
+				return true; //BUNDLE PIXELS & ANALYZE
+			float touchX = Math.max(0, Math.min(canvas.getWidth() - 1, event.getX())),
+				  touchY = Math.max(0, Math.min(canvas.getHeight() - 1, event.getY()));
 		 
-		 // Respond to down, move and up events
-		 switch(event.getAction()) {
-		 case MotionEvent.ACTION_DOWN:
-			 
-			 resetSelection(); //Clear the old selection
-			 
-			 points.add(new Point((int)touchX, (int)touchY));
-			 drawPath.moveTo(touchX, touchY);
-			 
-		 break;
-		 case MotionEvent.ACTION_MOVE:
-			 points.add(new Point((int)touchX, (int)touchY));
-			 //drawPath.cubicTo((float)(points.get(points.size()-1).x)/2, points.get(points.size()-1).y, touchX, touchY);
-			 float x1 = points.get(points.size()-1).x;
-	 		 float y1 = points.get(points.size()-1).y;
-	 		 float x3 = touchX;
-	 		 float y3 = touchY;
-	 		 float x2 = (x1 + x3) / 2;
-	 		 float y2 = (y1 + y3) / 2;
-	 			
-	 		 //drawPath.moveTo(x1, y1);
-	 		 drawPath.cubicTo(x1, y1, x2, y2, x3, y3);
-			 
-			 
-		 break;
-	 	 case MotionEvent.ACTION_UP:
-	 		 points.add(new Point((int)touchX, (int)touchY));
-			 drawPath.quadTo(points.get(points.size()-1).x, points.get(points.size()-1).y, touchX, touchY);
-
-			 x3 = points.get(0).x;
-	 		 y3 = points.get(0).y;
-	 		 x1 = touchX;
-	 		 y1 = touchY;
-	 		 x2 = (x1 + x3) / 2;
-	 		 y2 = (y1 + y3) / 2;
-	 			
-	 		 //drawPath.moveTo(x1, y1);
-	 		 drawPath.cubicTo(x1, y1, x2, y2, x3, y3);
-	 		 
-	 		 touchLift = true;
-	 		  canvas.drawPath(drawPath, paint);
-	 		 if(!touchLift)
-	 		  drawPath.reset();
-	 	 break;
-	 	 default:
-	 		 return false;
-		 }
+			 // Respond to down, move and up events
+			 switch(event.getAction()) {
+				 case MotionEvent.ACTION_DOWN:
+					 
+					 resetSelection(); //Clear the old selection
+					 
+					 points.add(new Point((int)touchX, (int)touchY));
+					 drawPath.moveTo(touchX, touchY);
+					 
+				 break;
+				 case MotionEvent.ACTION_MOVE:
+					 points.add(new Point((int)touchX, (int)touchY));
+					 //drawPath.cubicTo((float)(points.get(points.size()-1).x)/2, points.get(points.size()-1).y, touchX, touchY);
+					 float x1 = points.get(points.size()-1).x;
+					 float y1 = points.get(points.size()-1).y;
+					 float x3 = touchX;
+					 float y3 = touchY;
+					 float x2 = (x1 + x3) / 2;
+					 float y2 = (y1 + y3) / 2;
+						
+					 //drawPath.moveTo(x1, y1);
+					 drawPath.cubicTo(x1, y1, x2, y2, x3, y3);
+					 
+					 
+				 break;
+				 case MotionEvent.ACTION_UP:
+					 points.add(new Point((int)touchX, (int)touchY));
+					 drawPath.quadTo(points.get(points.size()-1).x, points.get(points.size()-1).y, touchX, touchY);
+				
+					 x3 = points.get(0).x;
+					 y3 = points.get(0).y;
+					 x1 = touchX;
+					 y1 = touchY;
+					 x2 = (x1 + x3) / 2;
+					 y2 = (y1 + y3) / 2;
+						
+					 //drawPath.moveTo(x1, y1);
+					 drawPath.cubicTo(x1, y1, x2, y2, x3, y3);
+					 
+					 touchLift = true;
+					  canvas.drawPath(drawPath, paint);
+					 if(!touchLift)
+					  drawPath.reset();
+				 break;
+				 default:
+					 return false;
+		 	}
 		}
 		else if(selectionTYPE == SelectionType.CROP)
 		{
