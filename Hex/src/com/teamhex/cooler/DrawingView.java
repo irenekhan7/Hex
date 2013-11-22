@@ -1,4 +1,10 @@
 package com.teamhex.cooler;
+/* DrawingView
+ * 
+ * Contains logic for 
+ * 
+ * 
+ */
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,7 +127,8 @@ public class DrawingView extends View {
 		
 		canvas.drawPath(drawPath, paint);
 		paint.setStrokeWidth(1);
-		 
+		
+		// When the user stops touching, determine if it's valid
 		if(touchLift) {
 			Log.i("TeamHex", "About to run the ray casting algorithm.");
 			ArrayList<Point> polygonPixels = new ArrayList<Point>();
@@ -129,16 +136,17 @@ public class DrawingView extends View {
 			//Get total image pixels
 			//Get bounding box around points
 			//ArrayList<Point> boundingBox = new ArrayList<Point>();
-			int left   = points.get(0).x,
-				right  = left,
-			    top    = points.get(0).y,
-			    bottom = top,
-			    n      = points.size(),
+			// To do: should this be capped here?
+			int left   	   = points.get(0).x,
+				right  	   = left,
+			    top    	   = points.get(0).y,
+			    bottom 	   = top,
+			    num_points = points.size(),
 			    height,
 			    ax, ay;
 			
 			// Get top left and bottom right bounding box coordinates
-			for(int a = 0; a < n; a++) {
+			for(int a = 0; a < num_points; a++) {
 				ax = points.get(a).x;
 				ay = points.get(a).y;
 				if(ax > right)     
@@ -150,6 +158,11 @@ public class DrawingView extends View {
 				if(ay < top)  
 					top = ay;
 			}
+			
+			left   = Math.max(left, 0);
+			top    = Math.min(top, canvas.getHeight());
+			right  = Math.min(right, canvas.getWidth());
+			bottom = Math.max(bottom, 0);
 
 			height = bottom - top;
 		  
@@ -169,13 +182,13 @@ public class DrawingView extends View {
 		  }
 		  
 		  int y1, y2;
-		  for (int i = 0; i < n; i++) {
-			  if (i != (n - 1)) {
+		  for (int i = 0; i < num_points; i++) {
+			  if (i != (num_points - 1)) {
 				  y1 = points.get(i).y;
 				  y2 = points.get(i+1).y;
 			  }
 			  else {
-				  y1 = points.get(n - 1).y;
+				  y1 = points.get(num_points - 1).y;
 				  y2 = points.get(0).y;
 			  }
 			  
@@ -202,14 +215,14 @@ public class DrawingView extends View {
 				  int lineID = lines.get(j);
 				  Point p1, p2;
 				  
-				  if (lineID != (n - 1))
+				  if (lineID != (num_points - 1))
 				  {
 					  p1 = points.get(lineID);
 					  p2 = points.get(lineID+1);
 				  }
 				  else
 				  {
-					  p1 = points.get(n - 1);
+					  p1 = points.get(num_points - 1);
 					  p2 = points.get(0);
 				  }
 				  
