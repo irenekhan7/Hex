@@ -1,9 +1,16 @@
 package com.teamhex.cooler;
 /* DrawingView
  * 
- * Contains logic for 
+ * Contains logic for drawing a selection area onto the screen.
  * 
+ * There are three forms of selections:
+ * 	1. Lasso
+ *  2. Rectangle
+ *  3. Entire Image 
  * 
+ * 1. Lasso
+ * 	The lasso creates a list of points, stored in the Path drawPath
+ * 	
  */
 
 import java.util.ArrayList;
@@ -133,10 +140,9 @@ public class DrawingView extends View {
 			Log.i("TeamHex", "About to run the ray casting algorithm.");
 			ArrayList<Point> polygonPixels = new ArrayList<Point>();
 		  
-			//Get total image pixels
-			//Get bounding box around points
-			//ArrayList<Point> boundingBox = new ArrayList<Point>();
-			// To do: should this be capped here?
+			// Get total image pixels
+			// Get bounding box around points
+			// ArrayList<Point> boundingBox = new ArrayList<Point>();
 			int left   	   = points.get(0).x,
 				right  	   = left,
 			    top    	   = points.get(0).y,
@@ -147,6 +153,7 @@ public class DrawingView extends View {
 			
 			// Get top left and bottom right bounding box coordinates
 			for(int a = 0; a < num_points; a++) {
+				// To do: should the capping be done here? 
 				ax = points.get(a).x;
 				ay = points.get(a).y;
 				if(ax > right)     
@@ -159,6 +166,7 @@ public class DrawingView extends View {
 					top = ay;
 			}
 			
+			// Redundant bounds checking
 			left   = Math.max(left, 0);
 			top    = Math.min(top, canvas.getHeight());
 			right  = Math.min(right, canvas.getWidth());
@@ -311,7 +319,7 @@ public class DrawingView extends View {
             		 Log.i("TeamHex", "Added point two.");
             		}
             		
-            		//Draw square
+            		// Draw the square
                     Point o1 = pointsList.get(0);
                     Point o2 = pointsList.get(1);
                     canvas.drawLine(o1.x, o1.y, p1.x, p1.y, paint);
@@ -381,10 +389,11 @@ public class DrawingView extends View {
 		{
 		 if(touchLift)
 			return true; //BUNDLE PIXELS & ANALYZE
-		 float touchX = event.getX();
-		 float touchY = event.getY();
-		 //respond to down, move and up events
-		 switch (event.getAction()) {
+		 float touchX = Math.max(0, Math.min(canvas.getWidth(), event.getX()));
+		 float touchY = Math.max(0, Math.min(canvas.getHeight(), event.getY()));
+		 
+		 // Respond to down, move and up events
+		 switch(event.getAction()) {
 		 case MotionEvent.ACTION_DOWN:
 			 
 			 resetSelection(); //Clear the old selection
@@ -392,7 +401,7 @@ public class DrawingView extends View {
 			 points.add(new Point((int)touchX, (int)touchY));
 			 drawPath.moveTo(touchX, touchY);
 			 
-			 break;
+		 break;
 		 case MotionEvent.ACTION_MOVE:
 			 points.add(new Point((int)touchX, (int)touchY));
 			 //drawPath.cubicTo((float)(points.get(points.size()-1).x)/2, points.get(points.size()-1).y, touchX, touchY);
@@ -407,7 +416,7 @@ public class DrawingView extends View {
 	 		 drawPath.cubicTo(x1, y1, x2, y2, x3, y3);
 			 
 			 
-			 break;
+		 break;
 	 	 case MotionEvent.ACTION_UP:
 	 		 points.add(new Point((int)touchX, (int)touchY));
 			 drawPath.quadTo(points.get(points.size()-1).x, points.get(points.size()-1).y, touchX, touchY);
@@ -426,7 +435,7 @@ public class DrawingView extends View {
 	 		  canvas.drawPath(drawPath, paint);
 	 		 if(!touchLift)
 	 		  drawPath.reset();
-	 		 break;
+	 	 break;
 	 	 default:
 	 		 return false;
 		 }
