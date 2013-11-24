@@ -193,6 +193,10 @@ public class ColorPaletteGenerator {
 					means[i] = mean;
 					sets[i].clear();
 				}
+				if ((maxdist == prevdist) && (maxdist == 0))
+				{
+					return null;
+				}
 			}
 			while ((maxdist < prevdist) || (prevdist == 0));
 			
