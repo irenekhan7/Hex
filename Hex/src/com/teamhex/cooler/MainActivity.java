@@ -44,6 +44,9 @@ public class MainActivity extends Activity {
 	
 	FrameLayout preview;
 	
+	//Used to prevent analysis from being started twice
+	Boolean takingPhoto = false;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 		Log.i("TeamHex", "MainActivity now running onCreate");
@@ -60,9 +63,13 @@ public class MainActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Get an image from the camera
-                	Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
-                    mCamera.takePicture(null, null, mPicture);
+                	if(!takingPhoto)
+                	{
+	                    // Get an image from the camera
+	                	Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
+	                    mCamera.takePicture(null, null, mPicture);
+	                    takingPhoto = true;
+                	}
                 }
             }
         );
@@ -103,6 +110,7 @@ public class MainActivity extends Activity {
 		Intent d = new Intent(MainActivity.this, DrawImageActivity.class);
         d.putExtra("byteArray", bs.toByteArray()); // Could potentially be saved to the phone and passed as uri instead.
         startActivity(d);
+    	
     }
     
     @Override
@@ -115,6 +123,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();   
+        takingPhoto = false;
         mCamera = getCameraInstance();
         mPreview.setCamera(mCamera);
         // Only add the view to mPreview if the camera exists
