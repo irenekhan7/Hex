@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:imeOptions="actionDone"
-        android:singleLine="true" >
-
+        android:singleLine="true" 
+        android:digits="abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ ">
         <requestFocus />
     </EditText>
 
