@@ -168,8 +168,8 @@ public class DrawingView extends View {
 			
 			// Redundant bounds checking
 			left   = Math.max(left, 0);
-			top    = Math.min(top, canvas.getHeight());
-			right  = Math.min(right, canvas.getWidth());
+			top    = Math.min(top, canvas.getHeight() - 1);
+			right  = Math.min(right, canvas.getWidth() - 1);
 			bottom = Math.max(bottom, 0);
 
 			height = bottom - top;

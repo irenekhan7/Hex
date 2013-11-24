@@ -128,12 +128,14 @@ public class PaletteView extends View {
     public boolean isListItem = false;
     
    //Send a message to the parent activity that the view has been touched.
-    public void fireInteractEvent()
+    public Boolean fireInteractEvent()
     {
     	if(onInteractListener != null)
     	{
     		onInteractListener.onInteract(); 
+    		return true;
     	}
+    	return false;
     }
     
     private int mode = 0;
@@ -210,10 +212,13 @@ public class PaletteView extends View {
         	if(colors != null)
         	{
 	        	indexEditing = (int)(((float)e.getX() / (float)viewWidth) * colors.size());
-	        	info =  colors.get(indexEditing).getName() + "\n" + colors.get(indexEditing).getHex();
-	        	fireInteractEvent();
+	        	if(indexEditing < colors.size())
+	        	{
+		        	info =  colors.get(indexEditing).getName() + "\n" + colors.get(indexEditing).getHex();
+		        	return fireInteractEvent();
+	        	}
         	}
-            return true;
+            return false;
         }
     }
 
