@@ -174,11 +174,11 @@ public class DrawingView extends View {
 
 			height = bottom - top;
 		  
-			Log.i("TeamHex", "The [top, right, bottom, left] coordinates are: " + 
-				Integer.toString(top) +
-				Integer.toString(right) + 
-				Integer.toString(bottom) +
-				Integer.toString(left));
+			Log.i("TeamHex", "The [top, right, bottom, left] coordinates are: [" + 
+				Integer.toString(top) + "," +
+				Integer.toString(right) + "," + 
+				Integer.toString(bottom) + "," +
+				Integer.toString(left) + "]");
 		  
 		  // Map each line segment in the lasso contour to the horizontal rows that it
 		  // passes through. This saves us from performing collision checks on lines that
@@ -206,7 +206,7 @@ public class DrawingView extends View {
 				  y2 = temp;
 			  }
 			  
-			  for (int j = y1; j <= y2; j++) {
+			  for(int j = y1; j <= y2; j++) {
 				  lineMap[j-top].add(i);
 			  }
 		  }
@@ -215,7 +215,7 @@ public class DrawingView extends View {
 		  // bounding box. Each row will be split up into intervals. Because the lasso forms
 		  // a line loop by its nature, every even-numbered interval will be within the area
 		  // bounded by the lasso.
-		  for (int i = 0; i <= height; i++) {
+		  for(int i = 0; i <= height; i++) {
 			  ArrayList<Double> intersections = new ArrayList<Double>();
 			  ArrayList<Integer> lines = lineMap[i];
 			  
@@ -401,8 +401,9 @@ public class DrawingView extends View {
 				
 				// The finger is just now touching the screen; kill everything and start anew
 				case MotionEvent.ACTION_DOWN:
-					 
-					resetSelection(); //Clear the old selection
+					
+					// Clear the old selection
+					resetSelection(); 
 					 
 					points.add(new Point((int)touchX, (int)touchY));
 					drawPath.moveTo(touchX, touchY);
