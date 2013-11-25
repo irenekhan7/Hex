@@ -53,7 +53,7 @@ public class PaletteView extends View {
     ArrayList<ColorRecord> originalColors;
     public void enableEditing()
     {
-    	editing = true;
+    	isEditing = true;
     	
     	//Copies the colors to avoid editing the color palette directly. 
     	//May not be necessary, commented out for now
@@ -120,7 +120,7 @@ public class PaletteView extends View {
 
     }
     
-    private boolean editing = false; //Is this palette view in edit mode?
+    private boolean isEditing = false; //Is this palette view in edit mode?
     private int indexEditing = 0; //What is the index of the color that is being edited?
     
     public String info = "";
@@ -157,7 +157,7 @@ public class PaletteView extends View {
         // Let the GestureDetector interpret this event
         boolean result = mDetector.onTouchEvent(event);
         
-        if(editing)
+        if(isEditing)
     	{
 	    	if(event.getPointerCount() >= 2)
 	    	{
@@ -215,7 +215,7 @@ public class PaletteView extends View {
 	        	if(indexEditing < colors.size())
 	        	{
 		        	info =  colors.get(indexEditing).getName() + "\n" + colors.get(indexEditing).getHex();
-		        	return fireInteractEvent();
+		        	return fireInteractEvent() || isEditing;
 	        	}
         	}
             return false;
