@@ -163,6 +163,7 @@ public class ColorPaletteGenerator {
 				sets[i] = new ColorSet();
 			}
 			
+			int iterations = 0;
 			double prevdist = 0;
 			double maxdist = 0;
 			do
@@ -193,10 +194,11 @@ public class ColorPaletteGenerator {
 					means[i] = mean;
 					sets[i].clear();
 				}
-				if ((maxdist == prevdist) && (maxdist == 0))
+				if ((maxdist == prevdist) && (maxdist == 0) && (iterations > 0))
 				{
 					return null;
 				}
+				iterations++;
 			}
 			while ((maxdist < prevdist) || (prevdist == 0));
 			

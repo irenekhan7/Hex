@@ -151,7 +151,7 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 		@Override
 	    protected void onPostExecute(Object obj) 
 		{
-			if (palette != null)
+			if (palette != null)                               
 			{
 				previewPalette.setPalette(palette);
 		    	saveButton.setEnabled(true);
