@@ -4,21 +4,46 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 
-import com.teamhex.cooler.ColorPaletteModifier;
-
-public class ColorPaletteGenerator {
-
-	/********************************************************************************************
-	 * Begin Color Algorithm Code
-	 *******************************************************************************************/
-	
-	//Storage class that represents a set of one or more colors
+/**
+ * public class <b>ColorPaletteGenerator</b>
+ * <br><br><br>
+ * <b>Class Overview</b>
+ * <br><br>
+ * {@code ColorPaletteGenerator} contains static methods and classes for deriving representative 
+ * colors from an array of colors.
+ * <br><br>
+ * Representative colors are generated using the standard hard k-means clustering algorithm, such
+ * that each point belongs to the single closest cluster based on Euclidean distance. Clusters are
+ * then sorted by Z-ordering to obtain a more aesthetically pleasing palette. Because k-means 
+ * clustering only produces a local minimum, there is no guarantee that the same clusters will be
+ * returned for any two identical inputs. However, because the means are initially seeded using 
+ * the k-means++ algorithm, the results should be very similar.
+ * <br><br>
+ * Individual colors are stored in ARGB format as {@code int} values, such that bits 0-7 indicate
+ * the blue value, bits 8-15 represent the green value, bits 16-23 represent the red value, and
+ * bits 24-31 represent the alpha value. This representation is compatible with both 
+ * {@link android.graphics.Color} and {@link java.awt.Color}.
+ */
+public class ColorPaletteGenerator 
+{
+	/**
+	 * public static class <b>ColorSet</b>
+	 * <br><br><br>
+	 * <b>Class Overview</b>
+	 * <br><br>
+	 * {@code ColorSet} represents a set of one or more colors that defines a cluster.
+	 * <br><br>
+	 * Because only the mean value of a cluster is used for the k-means clustering algorithm,
+	 * {@code ColorSet} does not store the individual colors that it contains. Rather, it sums up
+	 * the individual ARGB values and divides by the number of colors in the set to obtain the 
+	 * mean value for the cluster.
+	 */
 	public static class ColorSet
 	{
 		public ColorSet() { clear(); }
 		public ColorSet(int i) { set(i); }
 		private ColorSet(double a, double r, double g, double b, int n) { _A = a; _R = r; _G = g; _B = b; _n = n; }
-
+		
 		public void set(int i) 
 		{ 
 			clear(); 
@@ -38,6 +63,7 @@ public class ColorPaletteGenerator {
 		{ 
 			return new ColorSet(_A/_n, _R/_n, _G/_n, _B/_n, _n); 
 		}
+		
 		public void clear() 
 		{ 
 			_A = 0; _R = 0; _G = 0; _B = 0; _n = 0; 
@@ -71,37 +97,48 @@ public class ColorPaletteGenerator {
 		private int _n;
 	};
 	
-	
-	//Helper comparator class that compares two integers based on their hue values.
+	/**
+	 * private static {@link Comparator}<{@link Integer}> <b>ColorComparator</b>
+	 * <br><br><br>
+	 * Compares two objects based on the natural ordering of their three-dimensional Z-order 
+	 * curves.
+	 */
 	private static Comparator<Integer> ColorComparator = new Comparator<Integer>()
 	{
+		public int dilate3(int i)
+		{
+			return (i&0x01)|((i&0x02)<<2)|((i&0x04)<<4)|((i&0x08)<<6)|((i&0x10)<<8)|((i&0x20)<<10)|((i&0x40)<<12)|((i&0x80)<<14);
+		}
+		public int zOrder(int i)
+		{
+			int r = ((i >> 16) & 0xFF);
+			int g = ((i >> 8) & 0xFF);
+			int b = i & 0xFF;
+			return dilate3(r) + (dilate3(g) << 1) + (dilate3(b) << 2);
+		}
+		
 	    @Override
 	    public int compare(Integer i1, Integer i2) 
 	    {
-	    	int hsv1 = ColorPaletteModifier.RGBtoHSV(i1);
-	    	int hsv2 = ColorPaletteModifier.RGBtoHSV(i2);
+	    	int z1 = zOrder(i1);
+	    	int z2 = zOrder(i2);
 	    	
-	    	double c1 = ColorPaletteModifier.getSaturation(hsv1) * ColorPaletteModifier.getValue(hsv2);
-	    	double c2 = ColorPaletteModifier.getSaturation(hsv2) * ColorPaletteModifier.getValue(hsv2);
-	        return (int)(c1 - c2);
+	        return z1 - z2;
 	    }
 	};
 	
-	/*public static int[] colorAlgorithm(int[] pixels, int k)
-	 *		Computes a color swatch of size <n> based on the input <bitmap> using k-means 
-	 *      clustering.
-	 * 
-	 * Parameters:
-	 * 		int[] pixels - the input used to generate the color swatch
-	 * 		int k		 - the number of colors to be included in the color swatch
-	 * 
-	 * Returns:
-	 * 		An int array of size <k> that contains the colors in the swatch. Because k-means
-	 * 		clustering returns a local (and not a global) minimum, there is no guarantee that
-	 * 		the same color swatch will be returned for any two identical inputs.
-	 * 
-	 * 		If the size of <pixels> is less than <k>, then it is impossible to generate <k>
-	 * 		color schemes from the input and null will be returned.
+	/**
+	 * public static {@code int[]} <b>colorAlgorithm</b>({@code int[] pixels}, {@code int k})
+	 * <br><br><br>
+	 * Computes a color palette of size {@code k} using k-means clustering.
+	 * <br><br>
+	 * @param pixels - an array of color values over which to generate the palette.
+	 * @param k - the number of colors to be included in the palette.
+	 * @return <li>An {@code int[]} array with {@code k} elements that represents the colors of 
+	 * the palette. Because k-means clustering returns a local (and not a global) minimum, there 
+	 * is no guarantee that the same color palette will be returned for any two identical inputs.
+	 * <li>If it is not possible to generate a palette with {@code k} elements, {@code null} is
+	 * returned instead.
 	 */
 	public static int[] colorAlgorithm(int[] pixels, int k)
 	{
@@ -151,19 +188,12 @@ public class ColorPaletteGenerator {
 				}
 			}
 			
-			
-			//Iterate through the data set. At each iteration, we pair each pixel with the
-			//closest mean based on squared Euclidean distance. The set of these pixels forms a
-			//Voronoi diagram in two dimensions. After we have paired each point with a mean, we
-			//then calculate the centroid of each set, which becomes the new mean. We then repeat
-			//this process until none of the pixels change their nearest mean between iterations.
 			ColorSet[] sets = new ColorSet[k];
 			for (int i = 0; i < k; i++)
 			{
 				sets[i] = new ColorSet();
 			}
 			
-			int iterations = 0;
 			double prevdist = 0;
 			double maxdist = 0;
 			do
@@ -194,19 +224,13 @@ public class ColorPaletteGenerator {
 					means[i] = mean;
 					sets[i].clear();
 				}
-				if ((maxdist == prevdist) && (maxdist == 0) && (iterations > 0))
+				if (maxdist == 0)
 				{
-					return null;
+					break;
 				}
-				iterations++;
 			}
 			while ((maxdist < prevdist) || (prevdist == 0));
 			
-			//Because the clusters are randomly generated, the colors may appear in any order.
-			//We first sort the colors by hue to make the color scheme appear more presentable
-			//to the user.
-			
-			//TODO: Make this conversion process from int > Integer > int a lot less messy
 			Integer[] colors = new Integer[k];
 			for (int i = 0; i < k; i++)
 			{
@@ -224,8 +248,4 @@ public class ColorPaletteGenerator {
 		
 		return null;
 	}
-	
-	/********************************************************************************************
-	 * End Color Algorithm Code
-	 *******************************************************************************************/
 }
