@@ -52,6 +52,8 @@ public class PaletteEditActivity extends Activity {
                 	String nameOld = paletteRecord.getName(),
                 		   nameNew = NameFilter(nameEdit.getText().toString());
                 	
+                	
+                	
                 	Log.i("TeamHex", "The new name is '" + nameNew + "', from '" + nameOld + "'");
                 	if(nameNew != nameOld) {
                 		Log.i("TeamHex", "Renaming!");
