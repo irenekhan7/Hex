@@ -27,7 +27,7 @@ public class ColorPaletteExporter
         int n = 3;                                          //Assume RGB model for now, could support others later
         
         int nameLength = name.length() + 1;                 //Includes the terminating '\0' char
-        int blockLength = 8 + (n * 4) + nameLength * 2;     //ASE uses wide characters (16 bytes each)
+        int blockLength = 8 + (n * 4) + nameLength * 2;     //ASE uses wide characters (2 bytes each)
 
         file.writeInt(blockLength);
         file.writeChar(nameLength);
