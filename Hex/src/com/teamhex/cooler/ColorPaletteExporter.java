@@ -9,14 +9,14 @@ public class ColorPaletteExporter
 {
     //ASE Color Block Format
     //=======================================================
-    //NAME:                SIZE            DESCRIPTION
-    //Start             (2 bytes)        Color block start (always 00 01)
-    //BlockLength        (4 bytes)        Length of block (not including BlockLength or Start)
-    //NameLength        (2 bytes)        Length of name in UTF-16 chars
-    //ColorName            (variable)        UTF-16 string containing the name of the color
-    //Format            (4 bytes)        Either "CMYK", "RGB " (note the space), "LAB ", or "Gray"
-    //ColorData            (n*4 bytes)        If CMYK, then n = 4. If RGB or LAB, n = 3. If Gray, n = 1.
-    //ColorType            (2 bytes)        0 = Global, 1 = Spot
+    //NAME:             SIZE            DESCRIPTION
+    //Start             (2 bytes)       Color block start (always 00 01)
+    //BlockLength       (4 bytes)       Length of block (not including BlockLength or Start)
+    //NameLength        (2 bytes)       Length of name in UTF-16 chars
+    //ColorName         (variable)      UTF-16 string containing the name of the color
+    //Format            (4 bytes)       Either "CMYK", "RGB " (note the space), "LAB ", or "Gray"
+    //ColorData         (n*4 bytes)     If CMYK, then n = 4. If RGB or LAB, n = 3. If Gray, n = 1.
+    //ColorType         (2 bytes)       0 = Global, 1 = Spot
     private static void writeASEColorBlock(DataOutputStream file, int color, String name) throws IOException
     {
         //Color entry start
@@ -24,7 +24,7 @@ public class ColorPaletteExporter
         file.write(0x01);
 
         //Block length/name length
-        int n = 3;                                            //Assume RGB model for now, could support others later
+        int n = 3;                                          //Assume RGB model for now, could support others later
         
         int nameLength = name.length() + 1;                 //Includes the terminating '\0' char
         int blockLength = 8 + (n * 4) + nameLength * 2;     //ASE uses wide characters (16 bytes each)
