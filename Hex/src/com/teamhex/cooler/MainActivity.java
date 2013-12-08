@@ -118,7 +118,7 @@ public class MainActivity extends Activity implements PreviewCallback{
     	int width = mParameters.getPreviewSize().width;
     	int height = mParameters.getPreviewSize().height;
     
-        YUVtoRGBUtility.decodeYUV420SP(pixels, data, width,  height); 
+    	ColorConverter.decodeYUV420SP(pixels, data, width,  height); 
         
         int[] newPixels; 
         
