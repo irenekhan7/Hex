@@ -64,7 +64,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Camera.Size s = p.getSupportedPreviewSizes().get(0);
         p.setPreviewSize( s.width, s.height );
 
-        p.setPictureFormat(PixelFormat.JPEG);
+        //p.setPictureFormat(PixelFormat.JPEG);
         p.set("flash-mode", "auto");
         mCamera.setParameters(p);
 

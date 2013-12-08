@@ -13,10 +13,13 @@ import com.teamhex.cooler.DrawImageActivity;
 import com.teamhex.cooler.CameraPreview;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PictureCallback;
+import android.hardware.Camera.PreviewCallback;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,7 +31,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements PreviewCallback{
 
 	private static final String TAG = "TeamHex";
 	public static final int MEDIA_TYPE_IMAGE = 1;
@@ -38,6 +41,7 @@ public class MainActivity extends Activity {
     	int sampleSize = 100;
 	
 	private Camera mCamera;
+	private Parameters mParameters;
 	private CameraPreview mPreview;
 	private Bitmap mBitmap = null;
 	int[] pixels = null;
@@ -67,13 +71,14 @@ public class MainActivity extends Activity {
                 	{
 	                    // Get an image from the camera
 	                	Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
-	                    mCamera.takePicture(null, null, mPicture);
-	                    takingPhoto = true;
+	                	mCamera.setOneShotPreviewCallback(MainActivity.this);
+	                    //mCamera.takePicture(null, null, mPicture);
+	                    //takingPhoto = true;
                 	}
                 }
             }
         );
-        
+
 
         // Event listener: Import button
         Button importButton = (Button) findViewById(R.id.button_import);
@@ -103,12 +108,53 @@ public class MainActivity extends Activity {
         );
     }
     
+    
+    //Pulls data from the camera preview and uses that instead of taking an image
+    @Override  
+    public void onPreviewFrame(byte[] data, Camera camera) {  
+    	mParameters = mCamera.getParameters();
+    	pixels = new int[mParameters.getPreviewSize().width * mParameters.getPreviewSize().height];
+    	
+    	int width = mParameters.getPreviewSize().width;
+    	int height = mParameters.getPreviewSize().height;
+    
+        YUVtoRGBUtility.decodeYUV420SP(pixels, data, width,  height); 
+        
+        int[] newPixels; 
+        
+        //If rotated 90 ccw, change pixels.
+        //TO-DO: Add support for 90 degrees clockwise
+        if(getResources().getConfiguration().orientation == 1)
+        {
+        	newPixels = new int[mParameters.getPreviewSize().width * mParameters.getPreviewSize().height];
+	        for (int y = 0; y < height; y++) {
+	            for (int x = 0; x < width; x++)
+	                newPixels[x * height + height - y - 1] = pixels[x + y * width];
+	        }
+	        
+	        //Fancy swap
+	        width = width + height;
+	        height = width - height;
+	        width = width - height;
+        }
+        else
+        {
+        	newPixels = pixels;
+        }
+        
+        mBitmap = Bitmap.createBitmap(newPixels, width,  height, Bitmap.Config.ARGB_8888);
+        analyze();
+        
+    }
+    
     private void analyze()
     {
+    	Log.i("TeamHex", "Launching analyze activity");
     	ByteArrayOutputStream bs = new ByteArrayOutputStream();
         mBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
 		Intent d = new Intent(MainActivity.this, DrawImageActivity.class);
         d.putExtra("byteArray", bs.toByteArray()); // Could potentially be saved to the phone and passed as uri instead.
+        
         startActivity(d);
     	
     }
@@ -131,6 +177,7 @@ public class MainActivity extends Activity {
         {
         	preview.addView(mPreview); // Add the preview back into the view
         }
+        mParameters = mCamera.getParameters();
     }
 
     // Release the camera for other applications
