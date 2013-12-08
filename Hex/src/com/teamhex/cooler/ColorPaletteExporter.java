@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import com.teamhex.cooler.Storage.Classes.ColorRecord;
+import com.teamhex.cooler.Storage.Classes.HexStorageManager;
+import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 public class ColorPaletteExporter 
 {
@@ -20,8 +25,7 @@ public class ColorPaletteExporter
     private static void writeASEColorBlock(DataOutputStream file, int color, String name) throws IOException
     {
         //Color entry start
-        file.write(0x00);
-        file.write(0x01);
+        file.writeChar(0x0001);
 
         //Block length/name length
         int n = 3;                                          //Assume RGB model for now, could support others later
@@ -34,8 +38,7 @@ public class ColorPaletteExporter
         
         //Color name
         file.writeChars(name);
-        file.write(0x00);
-        file.write(0x00);
+        file.writeChar(0x0000);
 
         //Color format (only RGB for now)
         byte[] format = {0x52, 0x47, 0x42, 0x20};           //"RGB "
@@ -56,24 +59,21 @@ public class ColorPaletteExporter
         }
         
         //Color type (only global = 0 for now)
-        file.write(0x00);
-        file.write(0x00);
+        file.writeChar(0x0000);
     }
     
-    public static File exportASE(int[] palette, String[] names, String filename) throws IOException
+    public static File exportPaletteASE(int[] palette, String[] names, String filename) throws IOException
     {
         DataOutputStream file = new DataOutputStream(new FileOutputStream(filename));
         
         //Signature (ASEF) and version data (v1.00.00, CS3)
         byte[] header = {0x41, 0x53, 0x45, 0x46, 0x00, 0x01, 0x00, 0x00};
-        
         file.write(header);
         
-        int paletteSize = palette.length;
-    
-        file.writeInt(paletteSize);      //ASE is big-endian. Fortunately, DataOutputStream is too.
+        int blockCount = palette.length;
+        file.writeInt(blockCount);      //ASE is big-endian. Fortunately, DataOutputStream is too.
         
-        for (int i = 0; i < paletteSize; i++)
+        for (int i = 0; i < blockCount; i++)
         {
             writeASEColorBlock(file, palette[i], names[i]);
         }
@@ -86,6 +86,59 @@ public class ColorPaletteExporter
             return output;
         }
         return null;
+    }
+    
+    public static void exportLibraryASE(HexStorageManager storage, String filename) throws IOException
+    {
+    	PaletteRecord[] palettes = storage.getPalettesArray();
+    	DataOutputStream file = new DataOutputStream(new FileOutputStream(filename));
+        
+        //Signature (ASEF) and version data (v1.00.00, CS3)
+        byte[] header = {0x41, 0x53, 0x45, 0x46, 0x00, 0x01, 0x00, 0x00};
+        file.write(header);
+        
+        int blockCount = 0;
+        int paletteCount = palettes.length;
+        for (int i = 0; i < paletteCount; i++)
+        {
+        	ArrayList<ColorRecord> colors = palettes[i].getColors();
+        	blockCount += colors.size();
+        }
+        
+        for (int i = 0; i < paletteCount; i++)
+        {
+        	String name = palettes[i].getName();
+        	ArrayList<ColorRecord> colors = palettes[i].getColors();
+        	
+        	//Color group start
+            file.writeChar(0xC001);
+            
+            //Group length/name length
+            int nameLength = name.length() + 1;             //Includes the terminating '\0' char
+            int groupLength = 2 + nameLength * 2;           //ASE uses wide characters (2 bytes each)
+            
+            file.writeInt(groupLength);
+            file.writeChar(nameLength);
+
+            //Group name
+            file.writeChars(name);
+            file.writeChar(0x0000);
+            
+            //Group blocks
+            for (int j = 0; j < colors.size(); i++)
+            {
+            	ColorRecord color = colors.get(j);
+                writeASEColorBlock(file, color.getValue(), color.getName());
+            }
+            
+            //Color group end
+            file.writeChar(0xC002);
+            file.writeInt(0x00000000);
+        }
+    
+        file.writeInt(blockCount);
+        
+        file.close();
     }
 }
 
