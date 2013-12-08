@@ -1,5 +1,6 @@
 package com.teamhex.cooler;
 
+import com.teamhex.cooler.Palette.ColorPaletteGenerator;
 import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
 import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;

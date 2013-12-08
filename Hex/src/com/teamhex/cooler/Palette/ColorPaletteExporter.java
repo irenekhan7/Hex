@@ -1,4 +1,4 @@
-package com.teamhex.cooler;
+package com.teamhex.cooler.Palette;
 
 import java.io.File;
 import java.io.FileOutputStream;
