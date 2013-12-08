@@ -90,8 +90,8 @@ public class ColorPaletteExporter
     
     public static void exportLibraryASE(HexStorageManager storage, String filename) throws IOException
     {
-    	PaletteRecord[] palettes = storage.getPalettesArray();
-    	DataOutputStream file = new DataOutputStream(new FileOutputStream(filename));
+        PaletteRecord[] palettes = storage.getPalettesArray();
+        DataOutputStream file = new DataOutputStream(new FileOutputStream(filename));
         
         //Signature (ASEF) and version data (v1.00.00, CS3)
         byte[] header = {0x41, 0x53, 0x45, 0x46, 0x00, 0x01, 0x00, 0x00};
@@ -101,16 +101,16 @@ public class ColorPaletteExporter
         int paletteCount = palettes.length;
         for (int i = 0; i < paletteCount; i++)
         {
-        	ArrayList<ColorRecord> colors = palettes[i].getColors();
-        	blockCount += colors.size();
+            ArrayList<ColorRecord> colors = palettes[i].getColors();
+            blockCount += colors.size();
         }
         
         for (int i = 0; i < paletteCount; i++)
         {
-        	String name = palettes[i].getName();
-        	ArrayList<ColorRecord> colors = palettes[i].getColors();
-        	
-        	//Color group start
+            String name = palettes[i].getName();
+            ArrayList<ColorRecord> colors = palettes[i].getColors();
+            
+            //Color group start
             file.writeChar(0xC001);
             
             //Group length/name length
@@ -127,7 +127,7 @@ public class ColorPaletteExporter
             //Group blocks
             for (int j = 0; j < colors.size(); i++)
             {
-            	ColorRecord color = colors.get(j);
+                ColorRecord color = colors.get(j);
                 writeASEColorBlock(file, color.getValue(), color.getName());
             }
             
