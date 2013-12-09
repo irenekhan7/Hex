@@ -70,8 +70,11 @@ public class MainActivity extends Activity implements PreviewCallback{
                 	if(!takingPhoto)
                 	{
 	                    // Get an image from the camera
-	                	Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
-	                	mCamera.setOneShotPreviewCallback(MainActivity.this);
+                		if(mCamera != null)
+                		{
+                			Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
+	                		mCamera.setOneShotPreviewCallback(MainActivity.this);
+                		}
 	                    //mCamera.takePicture(null, null, mPicture);
 	                    //takingPhoto = true;
                 	}
