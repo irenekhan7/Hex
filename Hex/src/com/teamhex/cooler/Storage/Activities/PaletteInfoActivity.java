@@ -180,7 +180,7 @@ public class PaletteInfoActivity extends Activity {
 		try {
 			if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 				File externalRoot = Environment.getExternalStorageDirectory();
-			    File temp = new File(externalRoot, p.getName());
+			    File temp = new File(externalRoot, p.getName() + ".ase");
 			
 				File file = ColorPaletteExporter.exportPaletteASE(colors, names, temp.getAbsolutePath().toString());
 				
