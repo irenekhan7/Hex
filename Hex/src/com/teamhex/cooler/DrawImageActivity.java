@@ -1,5 +1,10 @@
 package com.teamhex.cooler;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import com.teamhex.cooler.Palette.ColorPaletteGenerator;
 import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
 import com.teamhex.cooler.Storage.Classes.HexStorageManager;
@@ -7,8 +12,10 @@ import com.teamhex.cooler.Storage.Classes.PaletteRecord;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,13 +67,30 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 	    drawingView = (DrawingView) findViewById(R.id.drawing_view);
 	    drawingView.setOnSelectionListener(this);
 	    
-	    if (getIntent().hasExtra("byteArray")) {
+	    Intent i = getIntent();
+	    if (i.hasExtra("URI"))
+	    {
+	    	int width = i.getIntExtra("width", 0);
+	    	int height = i.getIntExtra("height", 0);
+	    	
+	    	if ((width != 0) && (height != 0))
+	    	{
+		    	Uri uri = Uri.parse(i.getStringExtra("URI"));
+		        loadBitmap(uri.getPath(), width, height);
+	    	}
+	    	else
+	    	{
+	    		//Error: width and/or height undefined
+	    	}
+	    }
+	    
+	    /*if (getIntent().hasExtra("byteArray")) {
 	
 	        b = BitmapFactory.decodeByteArray(
 	                getIntent().getByteArrayExtra("byteArray"), 0, getIntent()
 	                        .getByteArrayExtra("byteArray").length);
 	        drawingView.setBitmap(b);
-	    }
+	    }*/
 	    
 	    //Setup the preview palette
 	    previewPalette = (PaletteView)findViewById(R.id.preview_palette);
@@ -90,7 +114,69 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 	        }
 	    );
 	    processTask = new ProcessTask();
+	}
 	
+    public void clearCache()
+    {
+    	File cacheDir = getCacheDir();
+    	File[] fileList = cacheDir.listFiles();
+    	
+    	for (int i = 0; i < fileList.length; i++)
+    	{
+    		fileList[i].delete();
+    	}
+    }
+
+	private void loadBitmap(String filename, int width, int height)
+	{
+		File file = new File(filename);
+	    InputStream ios = null;
+	    
+	    byte[] data = new byte[(int)file.length()];
+	    try 
+	    {
+	        ios = new FileInputStream(file);
+	        if ( ios.read(data) == -1 ) 
+	        {
+	            //Error: EOF reached before "data" could be filled
+	        }        
+	    } 
+	    catch (Exception e) {}
+	    finally 
+	    { 
+	        try 
+	        {
+	            if (ios != null)
+	            {
+	                ios.close();
+	            }
+	        } 
+	        catch ( IOException e) {}
+	    }
+	    
+	    int[] pixels = new int[width * height];
+	    ColorConverter.decodeYUV420SP(pixels, data, width, height);
+	    
+	    Configuration configuration = getResources().getConfiguration();
+	    if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+	    {
+	        int[] newPixels = new int[width * height];
+	        for (int y = 0; y < height; y++) 
+	        {
+	            for (int x = 0; x < width; x++)
+	            {
+	                newPixels[x * height + height - y - 1] = pixels[x + y * width];
+	            }
+	        }
+	        
+	        b = Bitmap.createBitmap(newPixels, height, width, Bitmap.Config.ARGB_8888);
+	    }
+	    else
+	    {
+	    	b = Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888);
+	    }
+	    drawingView.setBitmap(b);
+	    clearCache();
 	}
 
 

@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -114,41 +115,41 @@ public class MainActivity extends Activity implements PreviewCallback{
     
     //Pulls data from the camera preview and uses that instead of taking an image
     @Override  
-    public void onPreviewFrame(byte[] data, Camera camera) {  
-    	mParameters = mCamera.getParameters();
-    	pixels = new int[mParameters.getPreviewSize().width * mParameters.getPreviewSize().height];
-    	
-    	int width = mParameters.getPreviewSize().width;
-    	int height = mParameters.getPreviewSize().height;
-    
-    	ColorConverter.decodeYUV420SP(pixels, data, width,  height); 
+    public void onPreviewFrame(byte[] data, Camera camera) 
+    {  
+    	camera.stopPreview();
+		
+		Parameters parameters = camera.getParameters();
+		
+    	int width = parameters.getPreviewSize().width;
+    	int height = parameters.getPreviewSize().height;
         
-        int[] newPixels; 
-        
-        //If rotated 90 ccw, change pixels.
-        //TO-DO: Add support for 90 degrees clockwise
-        if(getResources().getConfiguration().orientation == 1)
+        File cacheDir = getCacheDir();
+        try 
         {
-        	newPixels = new int[mParameters.getPreviewSize().width * mParameters.getPreviewSize().height];
-	        for (int y = 0; y < height; y++) {
-	            for (int x = 0; x < width; x++)
-	                newPixels[x * height + height - y - 1] = pixels[x + y * width];
-	        }
-	        
-	        //Fancy swap
-	        width = width + height;
-	        height = width - height;
-	        width = width - height;
-        }
-        else
+			File temp = File.createTempFile("temp_bitmap", ".tmp", cacheDir);
+			
+			FileOutputStream outputStream = new FileOutputStream(temp);
+			
+			outputStream.write(data);
+			outputStream.close();
+			
+			Uri uri = Uri.fromFile(temp);
+			
+			Intent i = new Intent(MainActivity.this, DrawImageActivity.class);
+			i.putExtra("URI", uri.toString());
+			i.putExtra("width",  width);
+			i.putExtra("height", height);
+			
+	    	startActivity(i);
+		} 
+        catch (IOException e)
         {
-        	newPixels = pixels;
-        }
-        
-        mBitmap = Bitmap.createBitmap(newPixels, width,  height, Bitmap.Config.ARGB_8888);
-        analyze();
-        
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
+    
     
     private void analyze()
     {
@@ -314,7 +315,7 @@ public class MainActivity extends Activity implements PreviewCallback{
             mBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath(), options);
             
             //Analyze the picture
-            analyze();
+            //analyze();
         }
         
         // Create a File for saving an image or video
