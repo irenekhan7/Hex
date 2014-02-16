@@ -108,7 +108,7 @@ public class PaletteLibraryActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             	PaletteView s = (PaletteView) v.findViewById(R.id.palette_view);
                 Intent i = new Intent(PaletteLibraryActivity.this, PaletteInfoActivity.class);
-                i.putExtra("palette", s.getColorScheme());
+                i.putExtra("palette", s.getPalette());
                 startActivityForResult(i, VIEW_PALETTE_INFO);
             }
         };

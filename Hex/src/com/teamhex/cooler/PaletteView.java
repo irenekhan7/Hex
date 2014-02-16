@@ -46,7 +46,7 @@ public class PaletteView extends View {
     }
     // Get & Set for ColorPalette
     public void setPalette(PaletteRecord setting) { palette = setting; colors = palette.getColors();invalidate();}
-    public PaletteRecord getColorScheme() { return palette; }
+    public PaletteRecord getPalette() { return palette; }
     
     
     

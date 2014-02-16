@@ -1,10 +1,15 @@
 package com.teamhex.cooler.Storage.Activities;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
@@ -18,6 +23,7 @@ import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Classes.ColorRecord;
 import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 import com.teamhex.cooler.Storage.Classes.PaletteRecord;
+import com.teamhex.cooler.Palette.ColorPaletteExporter;
 
 public class PaletteInfoActivity extends Activity {
 
@@ -28,7 +34,10 @@ public class PaletteInfoActivity extends Activity {
 	static final int EDIT_PALETTE_NAME = 14;
 	// 1. Instantiate an AlertDialog.Builder with its constructor
 	AlertDialog.Builder builder;
-
+	AlertDialog areYouSureDialog;
+	AlertDialog chooseShareDialog;
+	
+	String fileTypes[] = {"Text", "ASE (For Photoshop or Illustrator)"};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,8 @@ public class PaletteInfoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_palette_info);
 		
+		
+		//Setup "Are you sure you want to delete?" dialog
 		builder = new AlertDialog.Builder(this);
 		// 2. Chain together various setter methods to set the dialog characteristics
 		builder.setTitle("Are you sure?");
@@ -56,6 +67,25 @@ public class PaletteInfoActivity extends Activity {
 	               // User cancelled the dialog
 	           }
 	       });
+		
+		areYouSureDialog = builder.create();
+		builder = new AlertDialog.Builder(this);
+		builder.setTitle("Choose file type to share");
+		builder.setItems(fileTypes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            	if(which == 0)
+            	{
+            		shareTxt();
+            	}
+            	if(which == 1)
+            	{
+            		shareASE();
+            	}
+            }
+		});
+		
+		chooseShareDialog = builder.create();
+		
 		// Fetch the palette and name views
 		paletteView = (PaletteView) findViewById(R.id.palette_view);
 		nameView = (TextView) findViewById(R.id.paletteName);
@@ -94,13 +124,7 @@ public class PaletteInfoActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                	Log.i("TeamHex", "Starting to share.");
-                	
-                	Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                	sharingIntent.setType("text/plain");
-                	sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Color Scheme");
-                	sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, infoString);
-                	startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                	chooseShareDialog.show();
                 }
             }
         );
@@ -112,12 +136,70 @@ public class PaletteInfoActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                	AlertDialog dialog = builder.create();
-                	dialog.show();
+                	
+                	areYouSureDialog.show();
                 }
             }
         );
 	}
+	
+	public void shareTxt()
+	{
+		Log.i("TeamHex", "Sharing .txt file");
+    	
+    	Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+    	sharingIntent.setType("text/plain");
+    	sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Color Palette");
+    	sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, infoString);
+    	startActivity(Intent.createChooser(sharingIntent, "Share text file via"));
+	}
+	
+	public void shareASE()
+	{
+		
+		Log.i("TeamHex", "Sharing .ase file");
+    	
+		PaletteRecord p = paletteView.getPalette();
+		
+		
+		ArrayList<ColorRecord> colorRecords = p.getColors();
+		
+		int colorRecordsLength = colorRecords.size();
+		
+		String[] names = new String[colorRecordsLength];
+		int[] colors = new int[colorRecordsLength];
+		
+		
+		for(int i = 0; i < colorRecordsLength; i++)
+		{
+			names[i] = colorRecords.get(i).getName();
+			colors[i] = colorRecords.get(i).getValue();
+		}
+		
+		
+		try {
+			if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+				File externalRoot = Environment.getExternalStorageDirectory();
+			    File temp = new File(externalRoot, p.getName());
+			
+				File file = ColorPaletteExporter.exportPaletteASE(colors, names, temp.getAbsolutePath().toString());
+				
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+		    	sharingIntent.setType("application/illustrator");
+		    	sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(file));
+		    	sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, p.getName() + " ASE Color Palette");
+		    	sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+		    			"An ASE file is attached to this email for the color palette "+p.getName()+" .");
+		    	startActivity(Intent.createChooser(sharingIntent, "Share ASE file via"));
+			}
+	    	
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+    	
+	}
+	
 	public void setPaletteRecord(PaletteRecord setting)
 	{
 		Log.i("TeamHex", "Displaying the palette record " + setting.getName());
