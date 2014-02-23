@@ -52,6 +52,9 @@ public class DrawingView extends View {
 	//Instance variables
 	private SelectionType selectionTYPE;
 	private Path drawPath;
+
+	private float scaleFactor = 0.25f;
+    private Bitmap scaledBitmap = null;
 	private Bitmap canvasBitmap;
 	private boolean touchLift = false;
 	private ArrayList<Point> points = new ArrayList<Point>();
@@ -90,6 +93,11 @@ public class DrawingView extends View {
    
     public void setBitmap(Bitmap setting) {
     	b = setting;
+    	
+    	int width = b.getWidth();
+    	int height = b.getHeight();
+    	
+    	scaledBitmap = Bitmap.createScaledBitmap(b, (int)(width * scaleFactor), (int)(height * scaleFactor), false);
     }
     
     // Sets the selection type being used
@@ -100,8 +108,8 @@ public class DrawingView extends View {
     	if(type == SelectionType.ALL)
     	{
     		resetSelection();
-    		pixels = new int[b.getWidth() * b.getHeight()];
-    		b.getPixels(pixels, 0, b.getWidth(), 0, 0, b.getWidth(), b.getHeight());
+    		pixels = new int[scaledBitmap.getWidth() * scaledBitmap.getHeight()];
+    		b.getPixels(pixels, 0, scaledBitmap.getWidth(), 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight());
     		onSelectionListener.onSelection();
     		canvas.drawBitmap(b, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), null);
     	}
@@ -274,7 +282,7 @@ public class DrawingView extends View {
 		  {
 			int x = (int)((double)polygonPixels.get(a).x / canvas.getWidth() * b.getWidth());
 			int y = (int)((double)polygonPixels.get(a).y / canvas.getHeight() * b.getHeight());
-			pixels[a] = b.getPixel(x, y);  
+			pixels[a] = scaledBitmap.getPixel(x, y);  
 		  }
 		  
 		  //Allow the user to make another select
@@ -405,13 +413,13 @@ public class DrawingView extends View {
 					// Clear the old selection
 					resetSelection(); 
 					 
-					points.add(new Point((int)touchX, (int)touchY));
+					points.add(new Point((int)(touchX * scaleFactor), (int)(touchY * scaleFactor)));
 					drawPath.moveTo(touchX, touchY);
 				break;
 				
 				// Typical movement, get a new point and put it there
 				case MotionEvent.ACTION_MOVE:
-					 points.add(new Point((int)touchX, (int)touchY));
+					 points.add(new Point((int)(touchX * scaleFactor), (int)(touchY * scaleFactor)));
 					 //drawPath.cubicTo((float)(points.get(points.size()-1).x)/2, points.get(points.size()-1).y, touchX, touchY);
 					 float x1 = points.get(points.size()-1).x,
 						   y1 = points.get(points.size()-1).y,
@@ -421,13 +429,16 @@ public class DrawingView extends View {
 					 	   y2 = (y1 + y3) / 2;
 						
 					 //drawPath.moveTo(x1, y1);
-					 drawPath.cubicTo(x1, y1, x2, y2, x3, y3);
+					 drawPath.lineTo(touchX,touchY);
 				break;
 				
 				// The finger is no longer touching the screen, still add a point but also wrap it up
 				case MotionEvent.ACTION_UP:
-					 points.add(new Point((int)touchX, (int)touchY));
-					 drawPath.quadTo(points.get(points.size()-1).x, points.get(points.size()-1).y, touchX, touchY);
+					 points.add(new Point((int)(touchX * scaleFactor), (int)(touchY * scaleFactor)));
+					 drawPath.lineTo(touchX,touchY);
+					 drawPath.moveTo(touchX, touchY);
+					 drawPath.lineTo(points.get(0).x/scaleFactor, points.get(0).y/scaleFactor);
+					 /*quadTo(points.get(points.size()-1).x, points.get(points.size()-1).y, touchX, touchY);
 				
 					 x3 = points.get(0).x;
 					 y3 = points.get(0).y;
@@ -437,7 +448,7 @@ public class DrawingView extends View {
 					 y2 = (y1 + y3) / 2;
 						
 					 //drawPath.moveTo(x1, y1);
-					 drawPath.cubicTo(x1, y1, x2, y2, x3, y3);
+					 drawPath.cubicTo(x1, y1, x2, y2, x3, y3);*/
 					 
 					 touchLift = true;
 					 canvas.drawPath(drawPath, paint);
@@ -471,7 +482,7 @@ public class DrawingView extends View {
 					}
 					// If there actually are corners, add a new point
 					if(corners > 0)
-						pointsList.add(new Point((int)touchX, (int)touchY));
+						pointsList.add(new Point((int)(touchX * scaleFactor), (int)(touchY * scaleFactor)));
 					// Otherwise just reduce the number of corners by 1
 					if(corners != 0)
 						corners--;
