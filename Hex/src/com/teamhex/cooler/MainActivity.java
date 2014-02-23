@@ -91,9 +91,11 @@ public class MainActivity extends Activity implements PreviewCallback{
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                	Log.i("TeamHex", "BEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\n");
                 	Intent i = new Intent(Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 		startActivityForResult(i, ACTIVITY_SELECT_IMAGE); 
+                	Log.i("TeamHex", "AFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\n");
                 }
             }
         );
@@ -245,6 +247,7 @@ public class MainActivity extends Activity implements PreviewCallback{
 					analyze();
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
+					Log.i("TeamHex", "IMAGE NOT FOUND");
 					e.printStackTrace();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
