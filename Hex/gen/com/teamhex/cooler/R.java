@@ -66,10 +66,11 @@ containing a value of this type.
         public static final int circleonly=0x7f020000;
         public static final int hexcolor=0x7f020001;
         public static final int hexcolor_old=0x7f020002;
+        public static final int hexcolor_old_2=0x7f020003;
         /**  Retrieved via Resources.getDrawable() and friends. 
          */
-        public static final int semi_black=0x7f020004;
-        public static final int violet=0x7f020003;
+        public static final int semi_black=0x7f020005;
+        public static final int violet=0x7f020004;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f0a0002;
