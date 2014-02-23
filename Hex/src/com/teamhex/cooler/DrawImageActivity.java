@@ -158,7 +158,7 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 	    ColorConverter.decodeYUV420SP(pixels, data, width, height);
 	    
 	    Configuration configuration = getResources().getConfiguration();
-	    if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+	    if (configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
 	    {
 	        int[] newPixels = new int[width * height];
 	        for (int y = 0; y < height; y++) 

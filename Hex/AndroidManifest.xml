@@ -58,7 +58,7 @@
              name of the class within your package that implements this
              activity.
         -->
-        <activity android:name="com.teamhex.cooler.MainActivity" >
+        <activity android:name="com.teamhex.cooler.MainActivity" android:screenOrientation="portrait" >
 
             <!--
                  An IntentFilter tells the system when it should use your
@@ -90,11 +90,13 @@
         <activity
             android:name="com.teamhex.cooler.Storage.Activities.PaletteEditActivity"
             android:label="@string/title_activity_palette_edit"
-            android:theme="@style/HexTheme.NoTitleBar"  >
+            android:theme="@style/HexTheme.NoTitleBar"
+              >
         </activity>
         <activity
             android:name="com.teamhex.cooler.DrawImageActivity"
-             android:noHistory="true" >
+             android:noHistory="true" 
+             android:screenOrientation="portrait">
         </activity>
         
     </application>
