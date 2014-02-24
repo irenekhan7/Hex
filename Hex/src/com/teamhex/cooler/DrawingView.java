@@ -341,16 +341,16 @@ public class DrawingView extends View {
                     int topLeftY;
                     
                     if(o1.x > o2.x)
-                    	topLeftX = o2.x;
+                    	topLeftX = o2.x * scaleFactor;
                     else
-                    	topLeftX = o1.x;
+                    	topLeftX = o1.x * scaleFactor;
                     if(o1.y > o2.y)
-                    	topLeftY = o2.y;
+                    	topLeftY = o2.y * scaleFactor;
                     else
-                    	topLeftY = o1.y;
+                    	topLeftY = o1.y * scaleFactor;
                     
-                    int width = Math.abs(o2.x - o1.x);
-                    int height = Math.abs(o2.y - o1.y);
+                    int width = Math.abs(o2.x - o1.x) * scaleFactor;
+                    int height = Math.abs(o2.y - o1.y) * scaleFactor;
                     
                     Log.i("TeamHex", "Bitmap width: " + b.getWidth());
                     Log.i("TeamHex", "Top left X: " + (int)((double)topLeftX / canvas.getWidth() * b.getWidth()));
@@ -367,7 +367,7 @@ public class DrawingView extends View {
                     
                     
                     pixels = new int[width * height];
-                    b.getPixels(pixels, 0, bWidth, bTopLeftX, bTopLeftY, bWidth, bHeight);
+                    scaledBitmap.getPixels(pixels, 0, bWidth, bTopLeftX, bTopLeftY, bWidth, bHeight);
                     
 	                //Allow the user to make another select
 	          		touchLift = false;
@@ -482,7 +482,7 @@ public class DrawingView extends View {
 					}
 					// If there actually are corners, add a new point
 					if(corners > 0)
-						pointsList.add(new Point((int)(touchX * scaleFactor), (int)(touchY * scaleFactor)));
+						pointsList.add(new Point((int)touchX, (int)touchY));
 					// Otherwise just reduce the number of corners by 1
 					if(corners != 0)
 						corners--;
