@@ -341,16 +341,16 @@ public class DrawingView extends View {
                     int topLeftY;
                     
                     if(o1.x > o2.x)
-                    	topLeftX = o2.x * scaleFactor;
+                    	topLeftX = (int)(o2.x * scaleFactor);
                     else
-                    	topLeftX = o1.x * scaleFactor;
+                    	topLeftX = (int)(o1.x * scaleFactor);
                     if(o1.y > o2.y)
-                    	topLeftY = o2.y * scaleFactor;
+                    	topLeftY = (int)(o2.y * scaleFactor);
                     else
-                    	topLeftY = o1.y * scaleFactor;
+                    	topLeftY = (int)(o1.y * scaleFactor);
                     
-                    int width = Math.abs(o2.x - o1.x) * scaleFactor;
-                    int height = Math.abs(o2.y - o1.y) * scaleFactor;
+                    int width = (int)(Math.abs(o2.x - o1.x) * scaleFactor);
+                    int height = (int)(Math.abs(o2.y - o1.y) * scaleFactor);
                     
                     Log.i("TeamHex", "Bitmap width: " + b.getWidth());
                     Log.i("TeamHex", "Top left X: " + (int)((double)topLeftX / canvas.getWidth() * b.getWidth()));
