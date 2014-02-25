@@ -1,30 +1,20 @@
 package com.teamhex.cooler;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.teamhex.cooler.DrawImageActivity;
 import com.teamhex.cooler.CameraPreview;
 import com.teamhex.cooler.R;
 import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
-import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.PreviewCallback;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -35,7 +25,6 @@ import android.widget.FrameLayout;
 
 public class MainActivity extends Activity implements PreviewCallback{
 
-	private static final String TAG = "TeamHex";
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int ACTIVITY_SELECT_IMAGE = 3;
@@ -43,9 +32,7 @@ public class MainActivity extends Activity implements PreviewCallback{
     	int sampleSize = 100;
 	
 	private Camera mCamera;
-	private Parameters mParameters;
 	private CameraPreview mPreview;
-	private Bitmap mBitmap = null;
 	int[] pixels = null;
 	
 	FrameLayout preview;
@@ -93,7 +80,7 @@ public class MainActivity extends Activity implements PreviewCallback{
                 public void onClick(View v) {
                 	Log.i("TeamHex", "BEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\n");
                 	Intent i = new Intent(Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 		startActivityForResult(i, ACTIVITY_SELECT_IMAGE); 
                 	Log.i("TeamHex", "AFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\n");
                 }
@@ -141,7 +128,7 @@ public class MainActivity extends Activity implements PreviewCallback{
 			Uri uri = Uri.fromFile(temp);
 			
 			Intent i = new Intent(MainActivity.this, DrawImageActivity.class);
-			i.putExtra("URI", uri.toString());
+			i.putExtra("fileURI", uri.toString());
 			i.putExtra("width",  width);
 			i.putExtra("height", height);
 			
@@ -156,7 +143,7 @@ public class MainActivity extends Activity implements PreviewCallback{
     }
     
     
-    private void analyze()
+    /*private void analyze()
     {
     	Log.i("TeamHex", "Launching analyze activity");
     	ByteArrayOutputStream bs = new ByteArrayOutputStream();
@@ -166,7 +153,7 @@ public class MainActivity extends Activity implements PreviewCallback{
         
         startActivity(d);
     	
-    }
+    }*/
     
     @Override
     protected void onPause() {
@@ -186,7 +173,7 @@ public class MainActivity extends Activity implements PreviewCallback{
         {
         	preview.addView(mPreview); // Add the preview back into the view
         }
-        mParameters = mCamera.getParameters();
+        mCamera.getParameters();
         setCameraDisplayOrientation(this,Camera.CameraInfo.CAMERA_FACING_BACK, mCamera);
     }
 
@@ -230,7 +217,7 @@ public class MainActivity extends Activity implements PreviewCallback{
     	
     	if(data.hasExtra("subBitmap")) {
     		Log.i("TeamHex", "Found a subBitmap from activity result. Apparently that makes me a squirrel.");
-            mBitmap = BitmapFactory.decodeByteArray(
+            BitmapFactory.decodeByteArray(
                     data.getByteArrayExtra("subBitmap"), 0, data
                             .getByteArrayExtra("subBitmap").length); 
         }
@@ -242,21 +229,13 @@ public class MainActivity extends Activity implements PreviewCallback{
 	    {
 	        if(resultCode == RESULT_OK){  
 	            Uri selectedImage = data.getData();
-	            try {
-					mBitmap = getThumbnail(selectedImage);
-					analyze();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					Log.i("TeamHex", "IMAGE NOT FOUND");
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
 	            
+	            Intent i = new Intent(MainActivity.this, DrawImageActivity.class);
+				i.putExtra("contentURI", selectedImage.toString());
+		    	startActivity(i);
 	        }
 	    }
-    	if(requestCode == ACTIVITY_SELECTED_REGION)
+    	else if(requestCode == ACTIVITY_SELECTED_REGION)
     	{
 	    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
 	    	
@@ -275,16 +254,42 @@ public class MainActivity extends Activity implements PreviewCallback{
 	    }
 	    else if(resultCode == RESULT_OK)
 		{
-		    pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
+		    /*pixels = new int[mBitmap.getWidth() * mBitmap.getHeight()];
 		    mBitmap.getPixels(pixels, 0, mBitmap.getWidth(), 0, 0, mBitmap.getWidth(), mBitmap.getHeight());
-		    Log.i("TeamHex", "Pixels received with RESULT_OK");
+		    Log.i("TeamHex", "Pixels received with RESULT_OK");*/
 		}    	
 
 	    
     }
+    
+    //SOURCE: http://developer.android.com/reference/android/hardware/Camera.html#setDisplayOrientation%28int%29
+    public static void setCameraDisplayOrientation(Activity activity,
+            int cameraId, android.hardware.Camera camera) {
+        android.hardware.Camera.CameraInfo info =
+                new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(cameraId, info);
+        int rotation = activity.getWindowManager().getDefaultDisplay()
+                .getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_180: degrees = 180; break;
+            case Surface.ROTATION_270: degrees = 270; break;
+        }
+
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(result);
+    }
     	
     // Handle media storage once picture is captured
-    private PictureCallback mPicture = new PictureCallback() 
+    /*private PictureCallback mPicture = new PictureCallback() 
     {
  
         @Override
@@ -374,12 +379,15 @@ public class MainActivity extends Activity implements PreviewCallback{
         onlyBoundsOptions.inPreferredConfig  = Bitmap.Config.ARGB_8888; // (optional)
         
         // Decode the URI's input stream into the options factory
-        BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+        Bitmap asdf = BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
         input.close();
         
         // If the sizes are invalid, it failed - return null
         if(onlyBoundsOptions.outWidth < 0 || onlyBoundsOptions.outHeight < 0)
+        {
+        	System.out.println("Null returned - " + onlyBoundsOptions.outWidth + " " + onlyBoundsOptions.outHeight);
             return null;
+        }
         
         // Now that sizing is known, create a factory for the full bitmap
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
@@ -393,35 +401,15 @@ public class MainActivity extends Activity implements PreviewCallback{
         Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
         input.close();
         
+        if (bitmap == null)
+        {
+        	System.out.println("Null returned 2");
+        }
+        
         return bitmap;
     }
     
-    //SOURCE: http://developer.android.com/reference/android/hardware/Camera.html#setDisplayOrientation%28int%29
     
-    public static void setCameraDisplayOrientation(Activity activity,
-            int cameraId, android.hardware.Camera camera) {
-        android.hardware.Camera.CameraInfo info =
-                new android.hardware.Camera.CameraInfo();
-        android.hardware.Camera.getCameraInfo(cameraId, info);
-        int rotation = activity.getWindowManager().getDefaultDisplay()
-                .getRotation();
-        int degrees = 0;
-        switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break;
-            case Surface.ROTATION_90: degrees = 90; break;
-            case Surface.ROTATION_180: degrees = 180; break;
-            case Surface.ROTATION_270: degrees = 270; break;
-        }
-
-        int result;
-        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            result = (info.orientation + degrees) % 360;
-            result = (360 - result) % 360;  // compensate the mirror
-        } else {  // back-facing
-            result = (info.orientation - degrees + 360) % 360;
-        }
-        camera.setDisplayOrientation(result);
-    }
     
     // Returns the sample size given a BitmapFactory options, width, and height
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -443,5 +431,5 @@ public class MainActivity extends Activity implements PreviewCallback{
 	    }
 	
 	    return inSampleSize;
-    }
+    }*/
 }

@@ -2,6 +2,7 @@ package com.teamhex.cooler;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -68,14 +69,14 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 	    drawingView.setOnSelectionListener(this);
 	    
 	    Intent i = getIntent();
-	    if (i.hasExtra("URI"))
+	    if (i.hasExtra("fileURI"))
 	    {
 	    	int width = i.getIntExtra("width", 0);
 	    	int height = i.getIntExtra("height", 0);
 	    	
 	    	if ((width != 0) && (height != 0))
 	    	{
-		    	Uri uri = Uri.parse(i.getStringExtra("URI"));
+		    	Uri uri = Uri.parse(i.getStringExtra("fileURI"));
 		        loadBitmap(uri.getPath(), width, height);
 	    	}
 	    	else
@@ -83,14 +84,11 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 	    		//Error: width and/or height undefined
 	    	}
 	    }
-	    
-	    /*if (getIntent().hasExtra("byteArray")) {
-	
-	        b = BitmapFactory.decodeByteArray(
-	                getIntent().getByteArrayExtra("byteArray"), 0, getIntent()
-	                        .getByteArrayExtra("byteArray").length);
-	        drawingView.setBitmap(b);
-	    }*/
+	    else if (i.hasExtra("contentURI"))
+	    {
+	    	Uri uri = Uri.parse(i.getStringExtra("contentURI"));
+	    	loadBitmap(uri);
+	    }
 	    
 	    //Setup the preview palette
 	    previewPalette = (PaletteView)findViewById(R.id.preview_palette);
@@ -126,11 +124,34 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
     		fileList[i].delete();
     	}
     }
+    
+    private void loadBitmap(Uri contentURI)
+    {
+        try 
+        {
+        	InputStream input = this.getContentResolver().openInputStream(contentURI);
+	        Bitmap bitmap = BitmapFactory.decodeStream(input, null, null);
+	        input.close();
+	        
+	        b = bitmap;
+		    drawingView.setBitmap(b);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+    }
 
 	private void loadBitmap(String filename, int width, int height)
 	{
+		System.out.println(filename);
 		File file = new File(filename);
 	    InputStream ios = null;
+	    
+	    System.out.println("file = "  + file);
 	    
 	    byte[] data = new byte[(int)file.length()];
 	    try 
