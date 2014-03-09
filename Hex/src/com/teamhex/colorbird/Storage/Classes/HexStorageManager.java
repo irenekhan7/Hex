@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import android.content.Context;
-import android.util.Log;
+//import android.util.Log;
 
 public class HexStorageManager {
 	// Constructor
@@ -21,8 +21,8 @@ public class HexStorageManager {
 	// Sample usage: 
 	// 		new HexStorageManager(getApplication());
 	public HexStorageManager() {
-		Log.w("TeamHex", "A StorageManager is being created without a file name or context!");
-		Log.w("TeamHex", "Sample usage: new Storagemanager(getApplication());");
+		//Log.w("TeamHex", "A StorageManager is being created without a file name or context!");
+		//Log.w("TeamHex", "Sample usage: new Storagemanager(getApplication());");
 	}
 	public HexStorageManager(Context _context) { this(_context, "RecordsIndex"); }
 	public HexStorageManager(Context _context, String _filename) {
@@ -30,7 +30,7 @@ public class HexStorageManager {
 		context = _context;
 		fileIndexName = _filename;
 		
-		Log.i("TeamHex", "1. Creating StorageManager using file index " + _filename);
+		//Log.i("TeamHex", "1. Creating StorageManager using file index " + _filename);
 
 		// Records are stored in a hash table, by name
 		records = new HashMap<String, PaletteRecord>();
@@ -41,50 +41,50 @@ public class HexStorageManager {
 		// data > data > com.teamhex.colorbird > files
 		
 		// 1. Check if the file exists, and make it if it doesn't
-		Log.i("TeamHex", "   Checking if file " + _filename + " exists...");
+		//Log.i("TeamHex", "   Checking if file " + _filename + " exists...");
 		if(!fileExists(_filename)) {
 			try {
-				Log.i("TeamHex", "      File " + _filename + " does not yet exist, attempting to create...");
+				//Log.i("TeamHex", "      File " + _filename + " does not yet exist, attempting to create...");
 				OutputStreamWriter osw = getFileWriter(_filename);
 				osw.write("");
 				osw.close();
-				Log.i("TeamHex", "      File " + _filename + " successfully created.");
+				//Log.i("TeamHex", "      File " + _filename + " successfully created.");
 			}
 			catch (IOException e1) {
-				Log.e("TeamHex", "      File " + _filename + " could not be created!");
+				//Log.e("TeamHex", "      File " + _filename + " could not be created!");
 				return;
 			}
 		}
 		else {
-			Log.i("TeamHex", "      File " + _filename + " successfully found.");
+			//Log.i("TeamHex", "      File " + _filename + " successfully found.");
 		}
-		Log.i("TeamHex", "   File checks on file " + _filename + " complete.");
+		//Log.i("TeamHex", "   File checks on file " + _filename + " complete.");
 		
 		// 2. Get a reader to the index file
-		Log.i("TeamHex", "2. Creating a reader to the index file");
+		//Log.i("TeamHex", "2. Creating a reader to the index file");
 		BufferedReader br;
 		try {
 			br = getFileReader(_filename);
 		}
 		catch (FileNotFoundException e1) {
-			Log.i("TeamHex", e1.toString());
-			Log.e("TeamHex", "Index file " + _filename + " could not be read: " + e1.toString());
+			//Log.i("TeamHex", e1.toString());
+			//Log.e("TeamHex", "Index file " + _filename + " could not be read: " + e1.toString());
 			return;
 		}
 		
 		
 		// 3. Read the list of names from the index file
 		try {
-			Log.i("TeamHex", "3. Loading list of record names.");
+			//Log.i("TeamHex", "3. Loading list of record names.");
 			String buffer;
 			while((buffer = br.readLine()) != null) {
-				Log.i("TeamHex", "   Found record name: " + buffer);
+				//Log.i("TeamHex", "   Found record name: " + buffer);
 				record_names.add(buffer);
 			}
-			Log.i("TeamHex", "   Finished finding record names.");
+			//Log.i("TeamHex", "   Finished finding record names.");
 		}
 		catch(IOException e1) {
-			Log.e("TeamHex", "Error reading list of names from index file (" + _filename + "): " + e1.toString());
+			//Log.e("TeamHex", "Error reading list of names from index file (" + _filename + "): " + e1.toString());
 			return;
 		}
 		
@@ -99,7 +99,7 @@ public class HexStorageManager {
 			RecordAdd(empty); */
 		}
 		
-		Log.i("TeamHex", "Finished making a StorageManager using file index " + _filename);
+		//Log.i("TeamHex", "Finished making a StorageManager using file index " + _filename);
 	}
 	
 	// Loads the file for the given record 
@@ -115,7 +115,7 @@ public class HexStorageManager {
 			num_loaded += 1;
 		}
 		catch (IOException e1) {
-			Log.e("TeamHex", "Record file " + name + " could not be read: " + e1.toString());
+			//Log.e("TeamHex", "Record file " + name + " could not be read: " + e1.toString());
 			return;
 		}
 		
@@ -131,9 +131,9 @@ public class HexStorageManager {
 	public void RecordLoadNum(int num) {
 		int i = num_loaded,
 			max = Math.min(record_names.size(), num_loaded + num);
-		Log.i("TeamHex", "Attempting to load the next " + Integer.toString(num) + " record" + (num == 1 ? "" : "s") + " (out of " + max + ")");
+		//Log.i("TeamHex", "Attempting to load the next " + Integer.toString(num) + " record" + (num == 1 ? "" : "s") + " (out of " + max + ")");
 		while(i < max) {
-			Log.i("TeamHex", "   Record load " + Integer.toString(i) + ": " + record_names.get(i));
+			//Log.i("TeamHex", "   Record load " + Integer.toString(i) + ": " + record_names.get(i));
 			RecordLoad(record_names.get(i));
 			++i;
 		}
@@ -143,7 +143,7 @@ public class HexStorageManager {
 	// Adds a record to the listing
 	public void RecordAdd(PaletteRecord record) { RecordAdd(record, record.getName()); }
 	public void RecordAdd(PaletteRecord record, String name) {
-		Log.i("TeamHex", "Adding a new record under name " + name);
+		//Log.i("TeamHex", "Adding a new record under name " + name);
 		
 		//Ensures the user cannot save a file with the same name as another file
 		//The user could potentially crash the program using this if they have massive amounts of time, and are jerks.
@@ -165,14 +165,14 @@ public class HexStorageManager {
 	public void RecordSave(String name) {
 		// Make sure that record name exists
 		if(!records.containsKey(name)) {
-			Log.w("TeamHex", "Attempting to save a record of name " + name + " that doesn't exist.");
+			//Log.w("TeamHex", "Attempting to save a record of name " + name + " that doesn't exist.");
 			return;
 		}
 		RecordSave(records.get(name), name);
 	}
 	public void RecordSave(PaletteRecord record) { RecordSave(record, record.getName()); }
 	public void RecordSave(PaletteRecord record, String name) {
-		Log.i("TeamHex", "Saving record under name " + name);
+		//Log.i("TeamHex", "Saving record under name " + name);
 		// Attempt to save the PaletteRecord into the file
 		try {
 			OutputStreamWriter osw = getFileWriter(name + ".txt");
@@ -180,7 +180,7 @@ public class HexStorageManager {
 			osw.close();
 		}
 		catch (IOException e1) {
-			Log.e("TeamHex", "Record file " + name + " could not be saved: " + e1.toString());
+			//Log.e("TeamHex", "Record file " + name + " could not be saved: " + e1.toString());
 		}
 	}
 	
@@ -188,10 +188,10 @@ public class HexStorageManager {
 	public void RecordRename(String nameOld, String nameNew) { RecordRename(records.get(nameOld), nameOld, nameNew); }
 	public void RecordRename(PaletteRecord record, String nameNew) { RecordRename(record, record.getName(), nameNew); }
 	public void RecordRename(PaletteRecord record, String nameOld, String nameNew) {
-		Log.i("TeamHex", "Renaming " + nameOld + " to " + nameNew);
+		//Log.i("TeamHex", "Renaming " + nameOld + " to " + nameNew);
 		
 		if(!records.containsKey(nameOld)) {
-			Log.i("TeamHex", "nameOld " + nameOld + " not found. Is there a problem with spaces?");
+			//Log.i("TeamHex", "nameOld " + nameOld + " not found. Is there a problem with spaces?");
 			return;
 		}
 		
@@ -200,7 +200,7 @@ public class HexStorageManager {
 		record_names.remove(record_names.indexOf(nameOld));
 		
 		// Delete the record's old file
-		Log.i("TeamHex", "Trying to delete " + nameOld + ".txt");
+		//Log.i("TeamHex", "Trying to delete " + nameOld + ".txt");
 		fileDelete(nameOld + ".txt");
 		
 		// Set the record's internal name
@@ -217,13 +217,13 @@ public class HexStorageManager {
 	public void RecordDelete(String name) { RecordDelete(records.get(name), name); }
 	public void RecordDelete(PaletteRecord record) { RecordDelete(record, record.getName()); }
 	public void RecordDelete(PaletteRecord record, String name) {
-		Log.i("TeamHex", "Deleting record " + name + ".");
+		//Log.i("TeamHex", "Deleting record " + name + ".");
 		// Remove references to the record and its name
 		records.remove(name);
 		record_names.remove(record_names.indexOf(name));
 		
 		// Delete the record's old file
-		Log.i("TeamHex", "Trying to delete " + name + ".txt");
+		//Log.i("TeamHex", "Trying to delete " + name + ".txt");
 		fileDelete(name + ".txt");
 		
 		// Reflect the changes in the file index
@@ -277,19 +277,19 @@ public class HexStorageManager {
     // remakeFileIndex
     // Outputs the names of each PaletteRecord
     public void remakeFileIndex() {
-    	Log.i("TeamHex", "Rebuilding the file index under name " + fileIndexName);
+    	//Log.i("TeamHex", "Rebuilding the file index under name " + fileIndexName);
     	// Attempt to remake the file index
     	try {
 			OutputStreamWriter osw = getFileWriter(fileIndexName);
 			for(int i = 0, len = record_names.size(); i < len; ++i) {
-				Log.i("TeamHex", "   ...writing name " + record_names.get(i));
+				//Log.i("TeamHex", "   ...writing name " + record_names.get(i));
 				osw.write(record_names.get(i) + "\n");
 			}
 			osw.close();
 		}
     	// If it fails, who knows?
     	catch(IOException e) {
-    		Log.w("TeamHex", "Failed to rebuild file index under name " + fileIndexName);
+    		//Log.w("TeamHex", "Failed to rebuild file index under name " + fileIndexName);
 			e.printStackTrace();
 		}
     }

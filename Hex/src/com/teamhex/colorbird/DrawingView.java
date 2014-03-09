@@ -26,7 +26,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
+//import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -145,7 +145,7 @@ public class DrawingView extends View {
 		
 		// When the user stops touching, determine if it's valid
 		if(touchLift) {
-			Log.i("TeamHex", "About to run the ray casting algorithm.");
+			//Log.i("TeamHex", "About to run the ray casting algorithm.");
 			ArrayList<Point> polygonPixels = new ArrayList<Point>();
 		  
 			// Get total image pixels
@@ -182,11 +182,11 @@ public class DrawingView extends View {
 
 			height = bottom - top;
 		  
-			Log.i("TeamHex", "The [top, right, bottom, left] coordinates are: [" + 
+			/*Log.i("TeamHex", "The [top, right, bottom, left] coordinates are: [" + 
 				Integer.toString(top) + "," +
 				Integer.toString(right) + "," + 
 				Integer.toString(bottom) + "," +
-				Integer.toString(left) + "]");
+				Integer.toString(left) + "]");*/
 		  
 		  // Map each line segment in the lasso contour to the horizontal rows that it
 		  // passes through. This saves us from performing collision checks on lines that
@@ -319,12 +319,12 @@ public class DrawingView extends View {
             		if(pointsList.contains(p1) == false)
             		{
             		 pointsList.add(p1);
-            		 Log.i("TeamHex", "Added point one.");
+            		 //Log.i("TeamHex", "Added point one.");
             		}
             		if(pointsList.contains(p2) == false)
             		{
             		 pointsList.add(p2);
-            		 Log.i("TeamHex", "Added point two.");
+            		 //Log.i("TeamHex", "Added point two.");
             		}
             		
             		// Draw the square
@@ -352,13 +352,13 @@ public class DrawingView extends View {
                     int width = (int)(Math.abs(o2.x - o1.x) * scaleFactor);
                     int height = (int)(Math.abs(o2.y - o1.y) * scaleFactor);
                     
-                    Log.i("TeamHex", "Bitmap width: " + b.getWidth());
+                   /* Log.i("TeamHex", "Bitmap width: " + b.getWidth());
                     Log.i("TeamHex", "Top left X: " + (int)((double)topLeftX / canvas.getWidth() * b.getWidth()));
                     Log.i("TeamHex", "Top right Y: " + (int)((double)topLeftY / canvas.getHeight() * b.getHeight()));
                     Log.i("TeamHex", "Width: " + ((int) ((double)width / canvas.getWidth() * b.getWidth())));
                     Log.i("TeamHex", "Height: " + ((int) ((double)height / canvas.getHeight() * b.getHeight())));
                     Log.i("TeamHex", "Width only: " + width);
-                    Log.i("TeamHex", "Height only: " + height);
+                    Log.i("TeamHex", "Height only: " + height);*/
                     
                     int bTopLeftX = (int)((double)topLeftX / canvas.getWidth()  * b.getWidth()),
                     	bTopLeftY = (int)((double)topLeftY / canvas.getHeight() * b.getHeight()),

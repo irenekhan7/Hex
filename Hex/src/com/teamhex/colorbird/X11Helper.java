@@ -1,7 +1,7 @@
 package com.teamhex.colorbird;
 
 import java.util.Locale;
-import android.util.Log;
+//import android.util.Log;
 
 public class X11Helper {
 	public X11Helper() {
@@ -14,7 +14,7 @@ public class X11Helper {
 		num_values = rgb_values.length;
 		// Make sure the hex is in the format of "FFCC00"
     	hex = hex.replaceAll("[^a-zA-Z0-9]", "").toUpperCase(Locale.ENGLISH);
-		Log.i("TeamHex", "Getting Color Name for #" + hex);
+		//Log.i("TeamHex", "Getting Color Name for #" + hex);
 		
 		// Start the search, assuming the first is the best
 		Integer[] input_rgb = getColorRGB(hex);
@@ -26,7 +26,7 @@ public class X11Helper {
 		for(i = 1; i < num_values; ++i) {
 			val_check = getColorDistance(rgb_values[i], input_rgb);
 			if(val_check < val_best) {
-				Log.i("TeamHex", "Distance between " + hex + " and " + names[i] + " is " + Integer.toString(val_check));
+				//Log.i("TeamHex", "Distance between " + hex + " and " + names[i] + " is " + Integer.toString(val_check));
 				loc_best = i;
 				val_best = val_check;
 			}

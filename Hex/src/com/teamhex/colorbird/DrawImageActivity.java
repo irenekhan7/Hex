@@ -20,7 +20,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -105,9 +105,9 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 	            @Override
 	            public void onClick(View v) {
 	            	if(previewPalette != null) {
-		    		    Log.i("TeamHex", "About to save the palette.");
+		    		    //Log.i("TeamHex", "About to save the palette.");
 		    		    savePalette();
-		    		    Log.i("TeamHex", "The save was completed.");
+		    		    //Log.i("TeamHex", "The save was completed.");
 	            	}
 	            }
 	        }
@@ -204,7 +204,7 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 
 	private void createPalette()
 	{
-		Log.i("TeamHex", "Using the ColorPaletteGenerator.colorAlgorithm to get the [] colors.");
+		//Log.i("TeamHex", "Using the ColorPaletteGenerator.colorAlgorithm to get the [] colors.");
 		int pixels[] = drawingView.getSelectedPixels();
 	    int[] colors = ColorPaletteGenerator.colorAlgorithm(pixels, 5);
 	    
@@ -220,7 +220,7 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 		    palette.setX11Names();
 	    }
 	    	
-	    Log.i("TeamHex", "Finixhed adding the colors to a new palette.");
+	    //Log.i("TeamHex", "Finixhed adding the colors to a new palette.");
 	   
 	    
 	}
@@ -230,13 +230,13 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 		if (palette != null)
 		{
 			// Create the initial storage manager
-			Log.i("TeamHex", "Creating a StorageManager to save the palette");
+			//Log.i("TeamHex", "Creating a StorageManager to save the palette");
 			HexStorageManager storage = new HexStorageManager(getApplicationContext());
 			
 			// Save the palette record
 			storage.RecordAdd(palette);
 	
-			Log.i("TeamHex", "The Palette has been saved.");
+			//Log.i("TeamHex", "The Palette has been saved.");
 			
 			// Now that it's saved, go to the library activity
 	    	Intent intent_new = new Intent(DrawImageActivity.this, PaletteLibraryActivity.class);
@@ -245,7 +245,7 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 		}
 		else
 		{
-			Log.i("TeamHex", "savePalette() failed: The palette was null.");
+			//Log.i("TeamHex", "savePalette() failed: The palette was null.");
 		}
 	}
 	

@@ -19,9 +19,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.teamhex.colorbird.X11Helper;
-
-import android.util.Log;
+//import android.util.Log;
 
 public class PaletteRecord implements Serializable {
 	// Serial ID to stop ADT from complaining
@@ -49,7 +47,7 @@ public class PaletteRecord implements Serializable {
 		String temp;
 		String[] split;
 		while ((temp = br.readLine()) != null) {
-			Log.i("TeamHex", "      Read line: " + temp);
+			//Log.i("TeamHex", "      Read line: " + temp);
 			split = temp.split("\\s+");
 			// Add a new ColorRecord: name , hex , percentage
 			colors.add(new ColorRecord(split[0], split[1], Float

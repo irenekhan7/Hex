@@ -9,10 +9,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
+//import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +40,7 @@ public class PaletteInfoActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.i("TeamHex", "Creating a Palette Info viewer");
+		//Log.i("TeamHex", "Creating a Palette Info viewer");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_palette_info);
 		
@@ -53,7 +52,7 @@ public class PaletteInfoActivity extends Activity {
 
 		builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	        	   Log.i("TeamHex", "Starting to delete.");
+	        	   //Log.i("TeamHex", "Starting to delete.");
 	               	//MentionAllChanges();
 	               	Intent resultIntent = new Intent();
 	               	resultIntent.putExtra("name", myPaletteRecord.getName());
@@ -108,7 +107,7 @@ public class PaletteInfoActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                	Log.i("TeamHex", "Starting the Edit Palette activity.");
+                	//Log.i("TeamHex", "Starting the Edit Palette activity.");
                 	
                 	Intent i = new Intent(PaletteInfoActivity.this, PaletteEditActivity.class);
                     i.putExtra("palette", myPaletteRecord);
@@ -145,7 +144,7 @@ public class PaletteInfoActivity extends Activity {
 	
 	public void shareTxt()
 	{
-		Log.i("TeamHex", "Sharing .txt file");
+		//Log.i("TeamHex", "Sharing .txt file");
     	
     	Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
     	sharingIntent.setType("text/plain");
@@ -157,7 +156,7 @@ public class PaletteInfoActivity extends Activity {
 	public void shareASE()
 	{
 		
-		Log.i("TeamHex", "Sharing .ase file");
+		//Log.i("TeamHex", "Sharing .ase file");
     	
 		PaletteRecord p = paletteView.getPalette();
 		
@@ -202,7 +201,7 @@ public class PaletteInfoActivity extends Activity {
 	
 	public void setPaletteRecord(PaletteRecord setting)
 	{
-		Log.i("TeamHex", "Displaying the palette record " + setting.getName());
+		//Log.i("TeamHex", "Displaying the palette record " + setting.getName());
 		myPaletteRecord = setting;
 		paletteView.setPalette(myPaletteRecord);
 		
@@ -240,14 +239,14 @@ public class PaletteInfoActivity extends Activity {
     	//Potentially the user could hit the back button to cancel, and no data would be returned.
     	if(data != null)
     	{
-	    	Log.i("TeamHex", "An Edit Palette activity has returned.");
+	    	//Log.i("TeamHex", "An Edit Palette activity has returned.");
 	    	String nameNew = data.getStringExtra("nameNew");
 	    	
 	    	 // Load that stuff from memory
 	        HexStorageManager mHexStorageManager = new HexStorageManager(getApplication());
 	        mHexStorageManager.RecordLoad(nameNew);
 	        
-	        Log.i("TEAMHEX:", nameNew);
+	        //Log.i("TEAMHEX:", nameNew);
 	        
 	        // Set the loaded palette as the current one
 	        setPaletteRecord(mHexStorageManager.RecordGet(nameNew));

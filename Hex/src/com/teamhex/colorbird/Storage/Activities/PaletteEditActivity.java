@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
+//import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,22 +48,22 @@ public class PaletteEditActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                 	// Get the user's name input from a standard Android getText()
-                	Log.i("TeamHex", "Getting the name to change to..");
+                	//Log.i("TeamHex", "Getting the name to change to..");
                 	String nameOld = paletteRecord.getName(),
                 		   nameNew = NameFilter(nameEdit.getText().toString());
                 	
                 	
                 	
-                	Log.i("TeamHex", "The new name is '" + nameNew + "', from '" + nameOld + "'");
+                	//Log.i("TeamHex", "The new name is '" + nameNew + "', from '" + nameOld + "'");
                 	if(nameNew != nameOld) {
-                		Log.i("TeamHex", "Renaming!");
+                		//Log.i("TeamHex", "Renaming!");
                 		mHexStorageManager.RecordRename(paletteRecord.getName(), nameNew);
                 	}
                 	
-                	Log.i("TeamHex", "Getting new colors from paletteView");
+                	//Log.i("TeamHex", "Getting new colors from paletteView");
                 	ArrayList<ColorRecord> colors = paletteView.getColors();
-                	for(int i = 0, len = colors.size(); i < len; ++i)
-                		Log.i("TeamHex", "   " + Integer.toString(i) + ": " + colors.get(i).getSaveString());
+                	/*for(int i = 0, len = colors.size(); i < len; ++i)
+                		Log.i("TeamHex", "   " + Integer.toString(i) + ": " + colors.get(i).getSaveString());*/
                 	
                 	PaletteRecord record = mHexStorageManager.RecordGet(nameNew);
                 	record.setColors(colors);

@@ -8,7 +8,7 @@ import com.teamhex.colorbird.R.layout;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
+//import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +23,7 @@ public class PaletteRecordAdapter extends ArrayAdapter<PaletteRecord> {
 								int _resourceID,
 								PaletteRecord[] _palettes) {
 		super(_context, _resourceID, _palettes);
-		Log.i("TeamHex", "   Super constructor is done.");
+		//Log.i("TeamHex", "   Super constructor is done.");
 		this.context = _context;
 	}
 	

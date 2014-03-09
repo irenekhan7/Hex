@@ -17,9 +17,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
+//import android.util.Log;
 import android.view.Menu;
-import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -43,7 +42,7 @@ public class MainActivity extends Activity implements PreviewCallback{
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-		Log.i("TeamHex", "MainActivity now running onCreate");
+		//Log.i("TeamHex", "MainActivity now running onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
@@ -62,7 +61,7 @@ public class MainActivity extends Activity implements PreviewCallback{
 	                    // Get an image from the camera
                 		if(mCamera != null)
                 		{
-                			Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
+                			//Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
 	                		mCamera.setOneShotPreviewCallback(MainActivity.this);
                 		}
 	                    //mCamera.takePicture(null, null, mPicture);
@@ -79,11 +78,11 @@ public class MainActivity extends Activity implements PreviewCallback{
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                	Log.i("TeamHex", "BEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\n");
+                	//Log.i("TeamHex", "BEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\nBEFORE IMPORT CLICKED\n");
                 	Intent i = new Intent(Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 		startActivityForResult(i, ACTIVITY_SELECT_IMAGE); 
-                	Log.i("TeamHex", "AFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\n");
+                	//Log.i("TeamHex", "AFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\nAFTER IMPORT CLICKED\n");
                 }
             }
         );
@@ -95,7 +94,7 @@ public class MainActivity extends Activity implements PreviewCallback{
                 @Override
                 public void onClick(View v) {
                     //Open library 
-                	Log.i("TeamHex", "Opening the library activity");
+                	//Log.i("TeamHex", "Opening the library activity");
                 	Intent i = new Intent(MainActivity.this, PaletteLibraryActivity.class);
                     startActivity(i);
                 }
@@ -217,13 +216,13 @@ public class MainActivity extends Activity implements PreviewCallback{
     	}
     	
     	if(data.hasExtra("subBitmap")) {
-    		Log.i("TeamHex", "Found a subBitmap from activity result. Apparently that makes me a squirrel.");
+    		//Log.i("TeamHex", "Found a subBitmap from activity result. Apparently that makes me a squirrel.");
             BitmapFactory.decodeByteArray(
                     data.getByteArrayExtra("subBitmap"), 0, data
                             .getByteArrayExtra("subBitmap").length); 
         }
     	else { 
-    		Log.i("TeamHex", "Did not found a subBitmap from activity result. Apparently that makes me not a squirrel.");
+    		//Log.i("TeamHex", "Did not found a subBitmap from activity result. Apparently that makes me not a squirrel.");
     	}
     	
     	if(requestCode == ACTIVITY_SELECT_IMAGE)
@@ -238,17 +237,17 @@ public class MainActivity extends Activity implements PreviewCallback{
 	    }
     	else if(requestCode == ACTIVITY_SELECTED_REGION)
     	{
-	    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
+	    	//Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
 	    	
 	    	pixels = data.getIntArrayExtra("com.teamhex.colorbird.polygonPixels");
 	    	
 	    	if(resultCode == 1000)
 	    	{
-	    		Log.i("TeamHex", "Successful result (1000)");
+	    		//Log.i("TeamHex", "Successful result (1000)");
 	    	 }
 	    	else 
 	    	{ 
-				 Log.i("TeamHex", "Unsuccessful result (" + Integer.toString(resultCode) + ")");
+				 //Log.i("TeamHex", "Unsuccessful result (" + Integer.toString(resultCode) + ")");
 				 System.exit(1);
 	    	}  
 		    

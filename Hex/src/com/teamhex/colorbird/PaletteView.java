@@ -2,7 +2,6 @@ package com.teamhex.colorbird;
 
 import java.util.ArrayList;
 
-import com.teamhex.colorbird.DrawingView.SelectionType;
 import com.teamhex.colorbird.Palette.ColorPaletteModifier;
 import com.teamhex.colorbird.Palette.ColorPaletteModifier.ColorVariable;
 import com.teamhex.colorbird.Storage.Classes.ColorRecord;
