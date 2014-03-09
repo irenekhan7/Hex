@@ -31,7 +31,9 @@
      to come from a domain that you own or have control over.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.teamhex.colorbird" >
+    package="com.teamhex.colorbird"
+    android:versionCode="1"
+    android:versionName="0.9">
 
     <!--
          This package contains an application...  The 'label' is the name
