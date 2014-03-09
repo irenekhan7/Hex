@@ -94,8 +94,9 @@
               >
         </activity>
         <activity
-            android:name="com.teamhex.colorbird.DrawImageActivity"
+            android:name="com.teamhex.colorbird.DrawImageActivity" 
              android:noHistory="true" 
+             android:screenOrientation="portrait"
            >
         </activity>
         
