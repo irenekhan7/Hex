@@ -83,7 +83,7 @@
         <activity android:name="com.teamhex.colorbird.Storage.Activities.PaletteSaveActivity" >
         </activity>
         <activity
-            android:name="com.teamhex.colorbird.Storage.Activities.PaletteInfoActivityity"
+            android:name="com.teamhex.colorbird.Storage.Activities.PaletteInfoActivity"
             android:label="@string/title_activity_scheme_info" 
              android:theme="@style/HexTheme.NoTitleBar" >
         </activity>
