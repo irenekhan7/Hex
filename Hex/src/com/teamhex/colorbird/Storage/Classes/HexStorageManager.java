@@ -151,7 +151,7 @@ public class HexStorageManager {
 		String originalName = name;
 		int i = 2; 
 		while(record_names.contains(name)){
-			name = originalName + "_("+i+')';
+			name = originalName + " ("+i+')';
 			i++; //Here, Ian was wrong.
 		}
 		
