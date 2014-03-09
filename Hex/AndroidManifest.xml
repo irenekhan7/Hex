@@ -31,7 +31,7 @@
      to come from a domain that you own or have control over.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.teamhex.cooler" >
+    package="com.teamhex.colorbird" >
 
     <!--
          This package contains an application...  The 'label' is the name
@@ -58,7 +58,7 @@
              name of the class within your package that implements this
              activity.
         -->
-        <activity android:name="com.teamhex.cooler.MainActivity" android:screenOrientation="portrait" >
+        <activity android:name="com.teamhex.colorbird.MainActivity" android:screenOrientation="portrait" >
 
             <!--
                  An IntentFilter tells the system when it should use your
@@ -78,25 +78,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity" >
+        <activity android:name="com.teamhex.colorbird.Storage.Activities.PaletteLibraryActivity" >
         </activity>
-        <activity android:name="com.teamhex.cooler.Storage.Activities.PaletteSaveActivity" >
+        <activity android:name="com.teamhex.colorbird.Storage.Activities.PaletteSaveActivity" >
         </activity>
         <activity
-            android:name="com.teamhex.cooler.Storage.Activities.PaletteInfoActivity"
+            android:name="com.teamhex.colorbird.Storage.Activities.PaletteInfoActivityity"
             android:label="@string/title_activity_scheme_info" 
              android:theme="@style/HexTheme.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.teamhex.cooler.Storage.Activities.PaletteEditActivity"
+            android:name="com.teamhex.colorbird.Storage.Activities.PaletteEditActivity"
             android:label="@string/title_activity_palette_edit"
             android:theme="@style/HexTheme.NoTitleBar"
               >
         </activity>
         <activity
-            android:name="com.teamhex.cooler.DrawImageActivity"
+            android:name="com.teamhex.colorbird.DrawImageActivity"
              android:noHistory="true" 
-             android:screenOrientation="portrait">
+           >
         </activity>
         
     </application>

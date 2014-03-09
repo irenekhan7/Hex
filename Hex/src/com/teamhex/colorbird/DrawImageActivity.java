@@ -1,4 +1,4 @@
-package com.teamhex.cooler;
+package com.teamhex.colorbird;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,10 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.teamhex.cooler.Palette.ColorPaletteGenerator;
-import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
-import com.teamhex.cooler.Storage.Classes.HexStorageManager;
-import com.teamhex.cooler.Storage.Classes.PaletteRecord;
+import com.teamhex.colorbird.R;
+import com.teamhex.colorbird.Palette.ColorPaletteGenerator;
+import com.teamhex.colorbird.Storage.Activities.PaletteLibraryActivity;
+import com.teamhex.colorbird.Storage.Classes.HexStorageManager;
+import com.teamhex.colorbird.Storage.Classes.PaletteRecord;
 
 import android.app.Activity;
 import android.content.Intent;

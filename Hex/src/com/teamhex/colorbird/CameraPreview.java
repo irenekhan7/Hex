@@ -1,7 +1,8 @@
-package com.teamhex.cooler;
+package com.teamhex.colorbird;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
@@ -97,7 +98,19 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try { mCamera.stopPreview(); } catch (Exception e){}
         
         // Update the orientation (landscape / horizontal)
-        setCameraDisplayOrientation((Activity) this.getContext(), 0, mCamera);
+
+        	Camera.Parameters p = mCamera.getParameters();
+        	if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            {   
+                p.set("orientation", "portrait");
+                p.set("rotation",90);
+            }
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            {                               
+                p.set("orientation", "landscape");          
+                p.set("rotation", 90);
+            }
+
         
         // Set the preview display with the new orientation settings
         try { 

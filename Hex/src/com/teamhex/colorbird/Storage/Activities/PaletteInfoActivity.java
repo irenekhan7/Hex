@@ -1,4 +1,4 @@
-package com.teamhex.cooler.Storage.Activities;
+package com.teamhex.colorbird.Storage.Activities;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,12 +18,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.teamhex.cooler.PaletteView;
-import com.teamhex.cooler.R;
-import com.teamhex.cooler.Storage.Classes.ColorRecord;
-import com.teamhex.cooler.Storage.Classes.HexStorageManager;
-import com.teamhex.cooler.Storage.Classes.PaletteRecord;
-import com.teamhex.cooler.Palette.ColorPaletteExporter;
+import com.teamhex.colorbird.PaletteView;
+import com.teamhex.colorbird.R;
+import com.teamhex.colorbird.Palette.ColorPaletteExporter;
+import com.teamhex.colorbird.Storage.Classes.ColorRecord;
+import com.teamhex.colorbird.Storage.Classes.HexStorageManager;
+import com.teamhex.colorbird.Storage.Classes.PaletteRecord;
 
 public class PaletteInfoActivity extends Activity {
 

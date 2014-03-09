@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package com.teamhex.cooler.Storage.Activities;
+package com.teamhex.colorbird.Storage.Activities;
 
-import com.teamhex.cooler.PaletteView;
-//import com.teamhex.cooler.Menu;
-//import com.teamhex.cooler.Override;
-import com.teamhex.cooler.R;
-//import com.teamhex.cooler.SuppressLint;
+import com.teamhex.colorbird.PaletteView;
+//import com.teamhex.colorbird.Menu;
+//import com.teamhex.colorbird.Override;
+import com.teamhex.colorbird.R;
+import com.teamhex.colorbird.Storage.Classes.HexStorageManager;
+import com.teamhex.colorbird.Storage.Classes.PaletteRecordAdapter;
+//import com.teamhex.colorbird.SuppressLint;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,8 +33,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.teamhex.cooler.Storage.Classes.PaletteRecordAdapter;
-import com.teamhex.cooler.Storage.Classes.HexStorageManager;
 
 /**
  * This class provides a basic demonstration of how to write an Android

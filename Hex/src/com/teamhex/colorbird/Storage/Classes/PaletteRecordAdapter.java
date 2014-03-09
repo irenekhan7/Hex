@@ -1,9 +1,9 @@
-package com.teamhex.cooler.Storage.Classes;
+package com.teamhex.colorbird.Storage.Classes;
 
-import com.teamhex.cooler.PaletteView;
-import com.teamhex.cooler.R;
-import com.teamhex.cooler.R.id;
-import com.teamhex.cooler.R.layout;
+import com.teamhex.colorbird.PaletteView;
+import com.teamhex.colorbird.R;
+import com.teamhex.colorbird.R.id;
+import com.teamhex.colorbird.R.layout;
 
 import android.app.Activity;
 import android.content.Context;

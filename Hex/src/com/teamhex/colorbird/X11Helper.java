@@ -1,4 +1,4 @@
-package com.teamhex.cooler;
+package com.teamhex.colorbird;
 
 import java.util.Locale;
 import android.util.Log;

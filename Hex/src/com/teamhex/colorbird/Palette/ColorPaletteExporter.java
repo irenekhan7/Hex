@@ -1,4 +1,4 @@
-package com.teamhex.cooler.Palette;
+package com.teamhex.colorbird.Palette;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -6,9 +6,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.teamhex.cooler.Storage.Classes.ColorRecord;
-import com.teamhex.cooler.Storage.Classes.HexStorageManager;
-import com.teamhex.cooler.Storage.Classes.PaletteRecord;
+import com.teamhex.colorbird.Storage.Classes.ColorRecord;
+import com.teamhex.colorbird.Storage.Classes.HexStorageManager;
+import com.teamhex.colorbird.Storage.Classes.PaletteRecord;
 
 public class ColorPaletteExporter 
 {

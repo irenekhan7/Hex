@@ -1,8 +1,8 @@
-package com.teamhex.cooler.Storage.Classes;
+package com.teamhex.colorbird.Storage.Classes;
 
 import java.io.Serializable;
 
-import com.teamhex.cooler.X11Helper;
+import com.teamhex.colorbird.X11Helper;
 
 import android.graphics.Color;
 

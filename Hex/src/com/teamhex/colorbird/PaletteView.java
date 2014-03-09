@@ -1,12 +1,12 @@
-package com.teamhex.cooler;
+package com.teamhex.colorbird;
 
 import java.util.ArrayList;
 
-import com.teamhex.cooler.DrawingView.SelectionType;
-import com.teamhex.cooler.Palette.ColorPaletteModifier;
-import com.teamhex.cooler.Palette.ColorPaletteModifier.ColorVariable;
-import com.teamhex.cooler.Storage.Classes.ColorRecord;
-import com.teamhex.cooler.Storage.Classes.PaletteRecord;
+import com.teamhex.colorbird.DrawingView.SelectionType;
+import com.teamhex.colorbird.Palette.ColorPaletteModifier;
+import com.teamhex.colorbird.Palette.ColorPaletteModifier.ColorVariable;
+import com.teamhex.colorbird.Storage.Classes.ColorRecord;
+import com.teamhex.colorbird.Storage.Classes.PaletteRecord;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -1,6 +1,6 @@
-package com.teamhex.cooler.Palette;
+package com.teamhex.colorbird.Palette;
 
-import com.teamhex.cooler.ColorConverter;
+import com.teamhex.colorbird.ColorConverter;
 
 /**
  * public class <b>ColorPaletteModifier</b>

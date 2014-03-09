@@ -1,4 +1,4 @@
-package com.teamhex.cooler;
+package com.teamhex.colorbird;
 /* DrawingView
  * 
  * Contains logic for drawing a selection area onto the screen.
@@ -292,7 +292,7 @@ public class DrawingView extends View {
 		  onSelectionListener.onSelection();
 		  
 		  //Intent i1 = getIntent();
-          //i1.putExtra("com.teamhex.cooler.polygonPixels", pixels);
+          //i1.putExtra("com.teamhex.colorbird.polygonPixels", pixels);
           //setResult(1000, i1);
           //finish();
 		  
@@ -375,7 +375,7 @@ public class DrawingView extends View {
 	          		//Process the selection
 	          		onSelectionListener.onSelection();
 	          		
-                    //i1.putExtra("com.teamhex.cooler.polygonPixels", pixels);
+                    //i1.putExtra("com.teamhex.colorbird.polygonPixels", pixels);
                     
               }
             }

@@ -7,7 +7,7 @@
     android:paddingBottom="10dp"
     android:paddingTop="10dp" >
 
-    <com.teamhex.cooler.PaletteView
+    <com.teamhex.colorbird.Palette.PaletteViewiew
         android:id="@+id/palette_view"
         android:layout_width="wrap_content"
         android:layout_height="120dp"

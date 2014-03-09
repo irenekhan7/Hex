@@ -1,4 +1,4 @@
-package com.teamhex.cooler.Storage.Classes;
+package com.teamhex.colorbird.Storage.Classes;
 
 /* PaletteRecord class
  * 
@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.teamhex.cooler.X11Helper;
+import com.teamhex.colorbird.X11Helper;
 
 import android.util.Log;
 

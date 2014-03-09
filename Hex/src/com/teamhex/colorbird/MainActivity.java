@@ -1,12 +1,13 @@
-package com.teamhex.cooler;
+package com.teamhex.colorbird;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import com.teamhex.cooler.DrawImageActivity;
-import com.teamhex.cooler.CameraPreview;
-import com.teamhex.cooler.R;
-import com.teamhex.cooler.Storage.Activities.PaletteLibraryActivity;
+
+import com.teamhex.colorbird.CameraPreview;
+import com.teamhex.colorbird.DrawImageActivity;
+import com.teamhex.colorbird.R;
+import com.teamhex.colorbird.Storage.Activities.PaletteLibraryActivity;
 
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -174,7 +175,7 @@ public class MainActivity extends Activity implements PreviewCallback{
         	preview.addView(mPreview); // Add the preview back into the view
         }
         mCamera.getParameters();
-        setCameraDisplayOrientation(this,Camera.CameraInfo.CAMERA_FACING_BACK, mCamera);
+        //setCameraDisplayOrientation(this,Camera.CameraInfo.CAMERA_FACING_BACK, mCamera);
     }
 
     // Release the camera for other applications
@@ -239,7 +240,7 @@ public class MainActivity extends Activity implements PreviewCallback{
     	{
 	    	Log.i("TeamHex", "Analyze button clicked; running colorAlgorithm on mBitmap");
 	    	
-	    	pixels = data.getIntArrayExtra("com.teamhex.cooler.polygonPixels");
+	    	pixels = data.getIntArrayExtra("com.teamhex.colorbird.polygonPixels");
 	    	
 	    	if(resultCode == 1000)
 	    	{
@@ -263,7 +264,7 @@ public class MainActivity extends Activity implements PreviewCallback{
     }
     
     //SOURCE: http://developer.android.com/reference/android/hardware/Camera.html#setDisplayOrientation%28int%29
-    public static void setCameraDisplayOrientation(Activity activity,
+  /*  public static void setCameraDisplayOrientation(Activity activity,
             int cameraId, android.hardware.Camera camera) {
         android.hardware.Camera.CameraInfo info =
                 new android.hardware.Camera.CameraInfo();
@@ -286,7 +287,7 @@ public class MainActivity extends Activity implements PreviewCallback{
             result = (info.orientation - degrees + 360) % 360;
         }
         camera.setDisplayOrientation(result);
-    }
+    }*/
     	
     // Handle media storage once picture is captured
     /*private PictureCallback mPicture = new PictureCallback() 

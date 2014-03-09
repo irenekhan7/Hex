@@ -1,4 +1,4 @@
-package com.teamhex.cooler.Storage.Classes;
+package com.teamhex.colorbird.Storage.Classes;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,7 +38,7 @@ public class HexStorageManager {
 		
 		// Immediately attempt to load the record names from the file
 		// Keep in mind these are viewable in the File Explorer
-		// data > data > com.teamhex.cooler > files
+		// data > data > com.teamhex.colorbird > files
 		
 		// 1. Check if the file exists, and make it if it doesn't
 		Log.i("TeamHex", "   Checking if file " + _filename + " exists...");

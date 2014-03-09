@@ -1,8 +1,8 @@
-package com.teamhex.cooler;
+package com.teamhex.colorbird;
 
-import com.teamhex.cooler.R;
-import com.teamhex.cooler.Storage.Classes.PaletteRecord;
-import com.teamhex.cooler.PaletteView;
+import com.teamhex.colorbird.PaletteView;
+import com.teamhex.colorbird.R;
+import com.teamhex.colorbird.Storage.Classes.PaletteRecord;
 
 import android.app.Activity;
 import android.content.Context;

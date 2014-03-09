@@ -1,4 +1,4 @@
-package com.teamhex.cooler.Storage.Activities;
+package com.teamhex.colorbird.Storage.Activities;
 
 import java.util.ArrayList;
 
@@ -14,11 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.teamhex.cooler.PaletteView;
-import com.teamhex.cooler.R;
-import com.teamhex.cooler.Storage.Classes.ColorRecord;
-import com.teamhex.cooler.Storage.Classes.HexStorageManager;
-import com.teamhex.cooler.Storage.Classes.PaletteRecord;
+import com.teamhex.colorbird.PaletteView;
+import com.teamhex.colorbird.R;
+import com.teamhex.colorbird.Storage.Classes.ColorRecord;
+import com.teamhex.colorbird.Storage.Classes.HexStorageManager;
+import com.teamhex.colorbird.Storage.Classes.PaletteRecord;
 
 public class PaletteEditActivity extends Activity {
 

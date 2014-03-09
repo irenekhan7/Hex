@@ -1,4 +1,4 @@
-package com.teamhex.cooler.Palette;
+package com.teamhex.colorbird.Palette;
 
 import java.util.Arrays;
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package com.teamhex.cooler;
+package com.teamhex.colorbird;
 
 public class ColorConverter 
 {
