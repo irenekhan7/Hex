@@ -174,6 +174,7 @@ public class MainActivity extends Activity implements PreviewCallback{
         	preview.addView(mPreview); // Add the preview back into the view
         }
         mCamera.getParameters();
+        mCamera.setDisplayOrientation(90);
         //setCameraDisplayOrientation(this,Camera.CameraInfo.CAMERA_FACING_BACK, mCamera);
     }
 
@@ -263,7 +264,7 @@ public class MainActivity extends Activity implements PreviewCallback{
     }
     
     //SOURCE: http://developer.android.com/reference/android/hardware/Camera.html#setDisplayOrientation%28int%29
-  /*  public static void setCameraDisplayOrientation(Activity activity,
+    /*public static void setCameraDisplayOrientation(Activity activity,
             int cameraId, android.hardware.Camera camera) {
         android.hardware.Camera.CameraInfo info =
                 new android.hardware.Camera.CameraInfo();
