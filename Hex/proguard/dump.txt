@@ -51570,7 +51570,7 @@ Constant Pool (count = 347):
   + Integer [2131361800]
   + Integer [2131361801]
   + Integer [2131361802]
-  + String [Untitled_Palette]
+  + String [Untitled Palette]
   + String [contentURI]
   + String [file = ]
   + String [fileURI]
@@ -51814,7 +51814,7 @@ Constant Pool (count = 347):
   + Utf8 [Lcom/teamhex/colorbird/e;]
   + Utf8 [Ljava/io/PrintStream;]
   + Utf8 [StackMapTable]
-  + Utf8 [Untitled_Palette]
+  + Utf8 [Untitled Palette]
   + Utf8 [[B]
   + Utf8 [[I]
   + Utf8 [[Ljava/io/File;]
@@ -52449,7 +52449,7 @@ Methods (count = 10):
       [30] getfield #61
         + Fieldref [com/teamhex/colorbird/DrawImageActivity.e Lcom/teamhex/colorbird/Storage/a/c;]
       [33] ldc #9
-        + String [Untitled_Palette]
+        + String [Untitled Palette]
       [35] invokevirtual #103
         + Methodref [com/teamhex/colorbird/Storage/a/c.a (Ljava/lang/String;)V]
       [38] iconst_0
@@ -62852,9 +62852,9 @@ Constant Pool (count = 231):
   + String []
   + String [
 ]
+  + String [ (]
   + String [.txt]
   + String [RecordsIndex]
-  + String [_(]
   + Class [[Lcom/teamhex/colorbird/Storage/a/c;]
   + Class [android/content/Context]
   + Class [com/teamhex/colorbird/Storage/a/b]
@@ -62986,6 +62986,7 @@ Constant Pool (count = 231):
   + Utf8 []
   + Utf8 [
 ]
+  + Utf8 [ (]
   + Utf8 [()I]
   + Utf8 [()Ljava/lang/String;]
   + Utf8 [()V]
@@ -63033,7 +63034,6 @@ Constant Pool (count = 231):
   + Utf8 [RecordsIndex]
   + Utf8 [StackMapTable]
   + Utf8 [[Lcom/teamhex/colorbird/Storage/a/c;]
-  + Utf8 [_(]
   + Utf8 [a]
   + Utf8 [add]
   + Utf8 [android/content/Context]
@@ -63118,7 +63118,7 @@ Methods (count = 21):
     + Code attribute instructions (code length = 8, locals = 2, stack = 3):
       [0] aload_0 v0
       [1] aload_1 v1
-      [2] ldc #4
+      [2] ldc #5
         + String [RecordsIndex]
       [4] invokespecial #33
         + Methodref [com/teamhex/colorbird/Storage/a/b.<init> (Landroid/content/Context;Ljava/lang/String;)V]
@@ -63141,7 +63141,7 @@ Methods (count = 21):
         + Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
       [12] invokespecial #63
         + Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [15] ldc #3
+      [15] ldc #4
         + String [.txt]
       [17] invokevirtual #66
         + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
@@ -63256,7 +63256,7 @@ Methods (count = 21):
         + Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
       [9] invokespecial #63
         + Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [12] ldc #3
+      [12] ldc #4
         + String [.txt]
       [14] invokevirtual #66
         + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
@@ -63274,7 +63274,7 @@ Methods (count = 21):
         + Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
       [33] invokespecial #63
         + Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [36] ldc #3
+      [36] ldc #4
         + String [.txt]
       [38] invokevirtual #66
         + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
@@ -63420,8 +63420,8 @@ Methods (count = 21):
         + Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
       [16] invokespecial #63
         + Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [19] ldc #5
-        + String [_(]
+      [19] ldc #3
+        + String [ (]
       [21] invokevirtual #66
         + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
       [24] iload v4
@@ -63499,7 +63499,7 @@ Methods (count = 21):
         + Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
       [9] invokespecial #63
         + Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [12] ldc #3
+      [12] ldc #4
         + String [.txt]
       [14] invokevirtual #66
         + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
@@ -63589,7 +63589,7 @@ Methods (count = 21):
         + Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
       [50] invokespecial #63
         + Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [53] ldc #3
+      [53] ldc #4
         + String [.txt]
       [55] invokevirtual #66
         + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]
@@ -63667,7 +63667,7 @@ Methods (count = 21):
         + Methodref [java/lang/String.valueOf (Ljava/lang/Object;)Ljava/lang/String;]
       [36] invokespecial #63
         + Methodref [java/lang/StringBuilder.<init> (Ljava/lang/String;)V]
-      [39] ldc #3
+      [39] ldc #4
         + String [.txt]
       [41] invokevirtual #66
         + Methodref [java/lang/StringBuilder.append (Ljava/lang/String;)Ljava/lang/StringBuilder;]

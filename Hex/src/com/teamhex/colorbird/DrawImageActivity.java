@@ -13,13 +13,17 @@ import com.teamhex.colorbird.Storage.Classes.HexStorageManager;
 import com.teamhex.colorbird.Storage.Classes.PaletteRecord;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.WindowManager;
 //import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -126,12 +130,39 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
     	}
     }
     
-    private void loadBitmap(Uri contentURI)
+    @SuppressWarnings("deprecation")
+	private void loadBitmap(Uri contentURI)
     {
         try 
         {
         	InputStream input = this.getContentResolver().openInputStream(contentURI);
-	        Bitmap bitmap = BitmapFactory.decodeStream(input, null, null);
+
+        	BitmapFactory.Options options = new BitmapFactory.Options();
+        	options.inJustDecodeBounds = true;
+        	
+        	BitmapFactory.decodeStream(input, null, options);
+        	
+        	Display d = ((WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        	
+        	options.inJustDecodeBounds = false;
+        	int version = android.os.Build.VERSION.SDK_INT;
+        	if (version < android.os.Build.VERSION_CODES.HONEYCOMB_MR2)
+        	{
+        		int width = d.getWidth()/2;
+            	int height = d.getHeight()/2;
+            	options.inSampleSize = Math.max(options.outWidth/width, options.outHeight/height);
+            	
+        	} 
+        	else
+        	{
+        		Point size = new Point();
+        		d.getSize(size);
+        		int width = size.x/2;
+            	int height = size.y/2;
+            	options.inSampleSize = Math.max(options.outWidth/width, options.outHeight/height);
+            }
+        	
+	        Bitmap bitmap = BitmapFactory.decodeStream(input, null, options);
 	        input.close();
 	        
 	        b = bitmap;
