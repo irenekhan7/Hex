@@ -12,6 +12,7 @@ import com.teamhex.colorbird.Storage.Activities.PaletteLibraryActivity;
 import com.teamhex.colorbird.Storage.Classes.HexStorageManager;
 import com.teamhex.colorbird.Storage.Classes.PaletteRecord;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -130,7 +131,8 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
     	}
     }
     
-    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
 	private void loadBitmap(Uri contentURI)
     {
         try 
@@ -146,11 +148,15 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
         	
         	options.inJustDecodeBounds = false;
         	int version = android.os.Build.VERSION.SDK_INT;
+        	
+        	/*
+        	int inSampleSize = 1;
+        	
         	if (version < android.os.Build.VERSION_CODES.HONEYCOMB_MR2)
         	{
         		int width = d.getWidth()/2;
             	int height = d.getHeight()/2;
-            	options.inSampleSize = Math.max(options.outWidth/width, options.outHeight/height);
+            	inSampleSize = Math.max(options.outWidth/width, options.outHeight/height);
             	
         	} 
         	else
@@ -159,10 +165,14 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
         		d.getSize(size);
         		int width = size.x/2;
             	int height = size.y/2;
-            	options.inSampleSize = Math.max(options.outWidth/width, options.outHeight/height);
-            }
+            	inSampleSize = Math.max(options.outWidth/width, options.outHeight/height);
+            }*/
         	
-	        Bitmap bitmap = BitmapFactory.decodeStream(input, null, options);
+        	options = new BitmapFactory.Options();
+        	input = this.getContentResolver().openInputStream(contentURI);
+        	options.inSampleSize = 4;//inSampleSize;
+        
+	        Bitmap bitmap = BitmapFactory.decodeStream(input,null, options);
 	        input.close();
 	        
 	        b = bitmap;
