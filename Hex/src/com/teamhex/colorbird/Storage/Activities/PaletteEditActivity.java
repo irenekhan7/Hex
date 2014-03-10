@@ -53,11 +53,11 @@ public class PaletteEditActivity extends Activity {
                 		   nameNew = NameFilter(nameEdit.getText().toString());
                 	
                 	
-                	
+                	String name = nameOld;
                 	//Log.i("TeamHex", "The new name is '" + nameNew + "', from '" + nameOld + "'");
                 	if(nameNew != nameOld) {
                 		//Log.i("TeamHex", "Renaming!");
-                		mHexStorageManager.RecordRename(paletteRecord.getName(), nameNew);
+                		name = mHexStorageManager.RecordRename(paletteRecord.getName(), nameNew);
                 	}
                 	
                 	//Log.i("TeamHex", "Getting new colors from paletteView");
@@ -65,14 +65,14 @@ public class PaletteEditActivity extends Activity {
                 	/*for(int i = 0, len = colors.size(); i < len; ++i)
                 		Log.i("TeamHex", "   " + Integer.toString(i) + ": " + colors.get(i).getSaveString());*/
                 	
-                	PaletteRecord record = mHexStorageManager.RecordGet(nameNew);
+                	PaletteRecord record = mHexStorageManager.RecordGet(name);
                 	record.setColors(colors);
                 	record.setX11Names();
                 	mHexStorageManager.RecordSave(record);
                 	
                 	Intent returnIntent = new Intent();
                 	setResult(1, returnIntent);
-                	returnIntent.putExtra("nameNew", nameNew);
+                	returnIntent.putExtra("nameNew", name);
                 	finish();
                 }
             }

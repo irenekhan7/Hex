@@ -148,6 +148,16 @@ public class HexStorageManager {
 		//Ensures the user cannot save a file with the same name as another file
 		//The user could potentially crash the program using this if they have massive amounts of time, and are jerks.
 
+		name = GetNewName(name);
+		
+		records.put(name, record);
+		record_names.add(name);
+		RecordSave(record, name);
+		remakeFileIndex();
+	}
+	
+	public String GetNewName(String name)
+	{
 		String originalName = name;
 		int i = 2; 
 		while(record_names.contains(name)){
@@ -155,10 +165,7 @@ public class HexStorageManager {
 			i++; //Here, Ian was wrong.
 		}
 		
-		records.put(name, record);
-		record_names.add(name);
-		RecordSave(record, name);
-		remakeFileIndex();
+		return name;
 	}
 	
 	// Saves the file for the given record
@@ -185,14 +192,14 @@ public class HexStorageManager {
 	}
 	
 	// Saves a record under a new name
-	public void RecordRename(String nameOld, String nameNew) { RecordRename(records.get(nameOld), nameOld, nameNew); }
-	public void RecordRename(PaletteRecord record, String nameNew) { RecordRename(record, record.getName(), nameNew); }
-	public void RecordRename(PaletteRecord record, String nameOld, String nameNew) {
+	public String RecordRename(String nameOld, String nameNew) { return RecordRename(records.get(nameOld), nameOld, nameNew); }
+	public String RecordRename(PaletteRecord record, String nameNew) { return RecordRename(record, record.getName(), nameNew); }
+	public String RecordRename(PaletteRecord record, String nameOld, String nameNew) {
 		//Log.i("TeamHex", "Renaming " + nameOld + " to " + nameNew);
 		
 		if(!records.containsKey(nameOld)) {
 			//Log.i("TeamHex", "nameOld " + nameOld + " not found. Is there a problem with spaces?");
-			return;
+			return nameOld;
 		}
 		
 		// Remove references to the record and its name
@@ -203,6 +210,7 @@ public class HexStorageManager {
 		//Log.i("TeamHex", "Trying to delete " + nameOld + ".txt");
 		fileDelete(nameOld + ".txt");
 		
+		nameNew = GetNewName(nameNew);
 		// Set the record's internal name
 		record.setName(nameNew);
 		
@@ -211,6 +219,8 @@ public class HexStorageManager {
 		
 		// Reflect the changes in the file index
 		remakeFileIndex();
+		
+		return nameNew;
 	}
 
 	// Deletes a record and removes it from the index
