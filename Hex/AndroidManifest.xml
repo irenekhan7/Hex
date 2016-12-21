@@ -45,6 +45,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -61,8 +62,8 @@
              activity.
         -->
         <activity android:name="com.teamhex.colorbird.MainActivity"
-             android:screenOrientation="portrait"
-             android:configChanges="keyboardHidden|orientation|screenSize" >
+
+             android:configChanges="keyboardHidden|screenSize" >
 
             <!--
                  An IntentFilter tells the system when it should use your

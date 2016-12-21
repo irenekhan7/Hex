@@ -1,27 +1,26 @@
 package com.teamhex.colorbird;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import com.teamhex.colorbird.CameraPreview;
-import com.teamhex.colorbird.DrawImageActivity;
-import com.teamhex.colorbird.R;
-import com.teamhex.colorbird.Storage.Activities.PaletteLibraryActivity;
-
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PreviewCallback;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Activity;
-import android.content.Intent;
-//import android.util.Log;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+
+import com.teamhex.colorbird.Storage.Activities.PaletteLibraryActivity;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+//import android.util.Log;
 
 public class MainActivity extends Activity implements PreviewCallback{
 
@@ -34,11 +33,13 @@ public class MainActivity extends Activity implements PreviewCallback{
 	private Camera mCamera;
 	private CameraPreview mPreview;
 	int[] pixels = null;
-	
+
 	FrameLayout preview;
 	
 	//Used to prevent analysis from being started twice
 	Boolean takingPhoto = false;
+
+    Boolean capturedImg = false;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class MainActivity extends Activity implements PreviewCallback{
         setContentView(R.layout.activity_main);
         
         // Create preview and set as content of activity
-        mPreview = new CameraPreview(this, mCamera);
+        mPreview = new CameraPreview(this, mCamera, this);
         preview = (FrameLayout) findViewById(R.id.camera_preview);
 
         // Event listener: Capture button
@@ -61,8 +62,14 @@ public class MainActivity extends Activity implements PreviewCallback{
 	                    // Get an image from the camera
                 		if(mCamera != null)
                 		{
-                			//Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
-	                		mCamera.setOneShotPreviewCallback(MainActivity.this);
+                            try {
+                                Log.i("TeamHex", "Capture button clicked; storing the picture as a bitmap");
+                                //mCamera.reconnect();
+                                //mCamera.setOneShotPreviewCallback(MainActivity.this);
+                                capturedImg = true;
+                                Log.v("SNAIL", "after capture clicked");
+                            } catch(Exception e) {
+                                Log.v("SNAIL", "picture not captured", e); }
                 		}
 	                    //mCamera.takePicture(null, null, mPicture);
 	                    //takingPhoto = true;
@@ -105,41 +112,42 @@ public class MainActivity extends Activity implements PreviewCallback{
     
     
     //Pulls data from the camera preview and uses that instead of taking an image
-    @Override  
-    public void onPreviewFrame(byte[] data, Camera camera) 
-    {  
-    	camera.stopPreview();
-		
-		Parameters parameters = camera.getParameters();
-		
-    	int width = parameters.getPreviewSize().width;
-    	int height = parameters.getPreviewSize().height;
-        
-        File cacheDir = getCacheDir();
-        try 
-        {
-			File temp = File.createTempFile("temp_bitmap", ".tmp", cacheDir);
-			
-			FileOutputStream outputStream = new FileOutputStream(temp);
-			
-			outputStream.write(data);
-			outputStream.close();
-			
-			Uri uri = Uri.fromFile(temp);
-			
-			Intent i = new Intent(MainActivity.this, DrawImageActivity.class);
-			i.putExtra("fileURI", uri.toString());
-			i.putExtra("width",  width);
-			i.putExtra("height", height);
-			
-	    	startActivity(i);
-		} 
-        catch (IOException e)
-        {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    @Override
+    public void onPreviewFrame(byte[] data, Camera camera)
+    {
+        //Log.v("SNAIL", "herehere");
+        if(capturedImg) {
+            Log.v("SNAIL", "captured image");
+            camera.stopPreview();
 
+            Parameters parameters = camera.getParameters();
+
+            int width = parameters.getPreviewSize().width;
+            int height = parameters.getPreviewSize().height;
+
+            File cacheDir = getCacheDir();
+            try {
+                File temp = File.createTempFile("temp_bitmap", ".tmp", cacheDir);
+
+                FileOutputStream outputStream = new FileOutputStream(temp);
+
+                outputStream.write(data);
+                outputStream.close();
+
+                Uri uri = Uri.fromFile(temp);
+
+                Intent i = new Intent(MainActivity.this, DrawImageActivity.class);
+                i.putExtra("fileURI", uri.toString());
+                i.putExtra("width", width);
+                i.putExtra("height", height);
+
+                startActivity(i);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            capturedImg = false;
+        }
     }
     
     
@@ -167,6 +175,8 @@ public class MainActivity extends Activity implements PreviewCallback{
         super.onResume();   
         takingPhoto = false;
         mCamera = getCameraInstance();
+        if(mCamera == null)
+            Log.d("SNAIL", "Camera null!");
         mPreview.setCamera(mCamera);
         // Only add the view to mPreview if the camera exists
         if(mCamera != null)
@@ -194,14 +204,17 @@ public class MainActivity extends Activity implements PreviewCallback{
         // getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
+
     public static Camera getCameraInstance(){
         // Attempt to get a Camera instance
         try {
-            return Camera.open(); 
+            return Camera.open();
         }
         // Camera is not available (in use or does not exist)
         catch (Exception e){
+            Log.e("SNAIL", "WHY SNAIL WHY", e);
+            Log.d("SNAIL", "STACK TRACE");
+            e.printStackTrace();
         	return null;
         }
     }
@@ -215,7 +228,7 @@ public class MainActivity extends Activity implements PreviewCallback{
     	{
     		return;
     	}
-    	
+
     	if(data.hasExtra("subBitmap")) {
     		//Log.i("TeamHex", "Found a subBitmap from activity result. Apparently that makes me a squirrel.");
             BitmapFactory.decodeByteArray(
@@ -290,7 +303,7 @@ public class MainActivity extends Activity implements PreviewCallback{
     }*/
     	
     // Handle media storage once picture is captured
-    /*private PictureCallback mPicture = new PictureCallback() 
+    /*private PictureCallback mPicture = new PictureCallback()
     {
  
         @Override
@@ -330,7 +343,7 @@ public class MainActivity extends Activity implements PreviewCallback{
             //Analyze the picture
             //analyze();
         }
-        
+
         // Create a File for saving an image or video
         private File getOutputMediaFile(int type) {
         	// Check if an SD card is mounted
