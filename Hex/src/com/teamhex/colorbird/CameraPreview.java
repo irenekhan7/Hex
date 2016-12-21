@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Camera;
-import android.hardware.Camera.Parameters;
 import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
@@ -21,6 +20,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Context c;
     private Activity mainAct;
     private Camera.PreviewCallback mCallback;
+    private List<Camera.Size> mSupportedPreviewSizes;
+    private Camera.Size mPreviewSize;
+
     @SuppressWarnings("deprecation")
 	public CameraPreview(Context context, Camera camera, Camera.PreviewCallback callback) {
         super(context);
@@ -63,54 +65,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         Log.v("SNAIL", "creating surface");
         //Surface.setOrientation(Display.DEFAULT_DISPLAY,Surface.ROTATION_90);
-        Parameters p = mCamera.getParameters();
+        Camera.Parameters p = mCamera.getParameters();
+        mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+        for(Camera.Size str: mSupportedPreviewSizes)
+            Log.e("SNAIL", str.width + "/" + str.height);
         setCameraDisplayOrientation(mainAct, 0, mCamera);
 
-        Camera.Size bestPreviewSize = determineBestPreviewSize(p);
-        Camera.Size bestPictureSize = determineBestPictureSize(p);
-
-        Log.v("CAMPREV_WIDTH", Integer.toString(determineBestPreviewSize(p).width));
-        Log.v("CAMPREV_HEIGHT", Integer.toString(determineBestPreviewSize(p).height));
-        Log.v("CAMPIC_WIDTH", Integer.toString(determineBestPictureSize(p).width));
-        Log.v("CAMPIC_HEIGHT", Integer.toString(determineBestPictureSize(p).height));
-
-        p.setPreviewSize(bestPreviewSize.width, bestPreviewSize.height);
-        p.setPictureSize(bestPictureSize.width, bestPictureSize.height);
-        //Log.v("CAMPREV_WIDTH", Integer.toString(p.getPreviewSize().width));
-        //Log.v("CAMPREV_HEIGHT", Integer.toString(p.getPreviewSize().height));
-
-
-        //Camera.Size s = p.getSupportedPreviewSizes().get(1);
-        //p.setPreviewSize( s.width, s.height );
-
-        //p.setPictureSize(p.getSupportedPictureSizes().get(0).width, p.getSupportedPictureSizes().get(0).height);
-        //Log.v("CAMPIC_WIDTH", Integer.toString(p.getSupportedPictureSizes().get(0).width));
-        //Log.v("CAMPIC_HEIGHT", Integer.toString(p.getSupportedPictureSizes().get(0).height));
-        //p.setPictureSize(4160, 3120);
-        //p.setPictureSize(512, 384);
-        //p.setPictureSize(1920, 1080);
-        //p.set("orientation", "portrait");
-
-        // set other parameters ..
-        //mCamera.getParameters().setRotation(90);
-        p.set("orientation", "landscape");
-        p.setRotation(0);
-
-        //p.setPictureFormat(PixelFormat.JPEG);
-        //p.set("flash-mode", "auto");
-        try {
-            mCamera.setParameters(p);
-        } catch (Throwable whysnailswhy) {
-            Log.v("SNAIL", "set parameters error", whysnailswhy);
-        }
-
-        try {
-            mCamera.setPreviewDisplay(holder);
-            mCamera.startPreview();
-        } catch (Throwable ignored) {
-            Log.e("TeamHex", "set preview error.", ignored);
-        }
-        //Log.v("SNAIL", "no set preview error");
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
@@ -134,6 +94,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // Make sure to stop the preview before making changes
         try { mCamera.stopPreview(); } catch (Exception e){ Log.v("SNAIL", "surface change preview stop failed");}
 
+
         // Update the orientation (landscape / horizontal)
 
         	Camera.Parameters p = mCamera.getParameters();
@@ -155,12 +116,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         // Set the preview display with the new orientation settings
         try {
+            p.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
             mCamera.setParameters(p);
-        	//mCamera.setPreviewDisplay(holder);
             mCamera.setPreviewCallback(mCallback);
             mCamera.setPreviewDisplay(mHolder);
-            //mCamera.setPreviewCallback(null);
-            //mCamera.setPreviewCallback((Camera.PreviewCallback) mainAct);
             mCamera.startPreview();
         } catch (Exception e){
             Log.i("TeamHex", "Error starting camera preview: " + e.getMessage());
@@ -196,33 +155,63 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         camera.setDisplayOrientation(result);
     }
 
-    public static Camera.Size determineBestPreviewSize(Camera.Parameters parameters) {
-        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-        return determineBestSize(sizes);
+    //override onMeasure and use getOptimalPreviewSize to address SurfaceView stretch issue
+    //Reference: http://stackoverflow.com/questions/19577299/android-camera-preview-stretched?rq=1
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+
+        mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+
+        if (mSupportedPreviewSizes != null) {
+            mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
+        }
+
+        float ratio;
+        if(mPreviewSize.height >= mPreviewSize.width)
+            ratio = (float) mPreviewSize.height / (float) mPreviewSize.width;
+        else
+            ratio = (float) mPreviewSize.width / (float) mPreviewSize.height;
+
+        // One of these methods should be used, second method squishes preview slightly
+        setMeasuredDimension(width, (int) (width * ratio));
+//        setMeasuredDimension((int) (width * ratio), height);
     }
 
-    public static Camera.Size determineBestPictureSize(Camera.Parameters parameters) {
-        List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
-        return determineBestSize(sizes);
-    }
+    private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
+        final double ASPECT_TOLERANCE = 0.1;
+        double targetRatio = (double) h / w;
 
-    protected static Camera.Size determineBestSize(List<Camera.Size> sizes) {
-        Camera.Size bestSize = null;
-        long used = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        long availableMemory = Runtime.getRuntime().maxMemory() - used;
-        for (Camera.Size currentSize : sizes) {
-            int newArea = currentSize.width * currentSize.height;
-            long neededMemory = newArea * 4 * 4; // newArea * 4 Bytes/pixel * 4 needed copies of the bitmap (for safety :) )
-            boolean isDesiredRatio = (currentSize.width / 4) == (currentSize.height / 3);
-            boolean isBetterSize = (bestSize == null || currentSize.width > bestSize.width);
-            boolean isSafe = neededMemory < availableMemory;
-            if (isDesiredRatio && isBetterSize && isSafe) {
-                bestSize = currentSize;
+        if (sizes == null)
+            return null;
+
+        Camera.Size optimalSize = null;
+        double minDiff = Double.MAX_VALUE;
+
+        int targetHeight = h;
+
+        for (Camera.Size size : sizes) {
+            double ratio = (double) size.height / size.width;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE)
+                continue;
+
+            if (Math.abs(size.height - targetHeight) < minDiff) {
+                optimalSize = size;
+                minDiff = Math.abs(size.height - targetHeight);
             }
         }
-        if (bestSize == null) {
-            return sizes.get(0);
+
+        if (optimalSize == null) {
+            minDiff = Double.MAX_VALUE;
+            for (Camera.Size size : sizes) {
+                if (Math.abs(size.height - targetHeight) < minDiff) {
+                    optimalSize = size;
+                    minDiff = Math.abs(size.height - targetHeight);
+                }
+            }
         }
-        return bestSize;
+
+        return optimalSize;
     }
 }
