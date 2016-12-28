@@ -2,10 +2,11 @@ package com.teamhex.colorbird;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.hardware.Camera;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,13 +23,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Camera.PreviewCallback mCallback;
     private List<Camera.Size> mSupportedPreviewSizes;
     private Camera.Size mPreviewSize;
+    public static boolean PORTRAIT_MODE = true;
+    public static boolean reverseRotation = false;
+    public static int mOrientation;
+    private OrientationEventListener myOrientationEventListener;
 
     @SuppressWarnings("deprecation")
 	public CameraPreview(Context context, Camera camera, Camera.PreviewCallback callback) {
         super(context);
         mCamera = camera;
         c = context;
-        mainAct = (Activity)context;
+        mainAct = (Activity) context;
         mCallback = callback;
 
         // Install a SurfaceHolder.Callback so we get notified when the
@@ -36,9 +41,25 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder = getHolder();
         mHolder.addCallback(this);
         // Deprecated setting, but required on Android versions prior to 3.0
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
-        	mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
+            mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+        myOrientationEventListener = new OrientationEventListener(mainAct,
+                SensorManager.SENSOR_DELAY_NORMAL) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+                mOrientation = orientation;
+                PORTRAIT_MODE = ((orientation < 100) || (orientation > 280));
+                Log.v("Orient", orientation + " PORTRAIT_MODE = " + PORTRAIT_MODE);
+
+                Log.v("Listener", " can detect orientation: " + myOrientationEventListener.canDetectOrientation() + " ");
+                myOrientationEventListener.enable();
+            }
+        };
     }
+
+
+
 
     public void setCamera(Camera camera)
     {
@@ -98,21 +119,26 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // Update the orientation (landscape / horizontal)
 
         	Camera.Parameters p = mCamera.getParameters();
+
+            Log.v("SNAIL", "Orientation sensor detects an orientation of" + Integer.toString(mOrientation));
+            setCameraDisplayOrientation(mainAct, 0, mCamera);
+/*
         	if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
             {
-                p.set("orientation", "landscape");
-                p.set("rotation",0);
+                p.set("orientation", "portrait");
+                p.set("rotation",90);
                 Log.v("SNAIL", "portrait rotation 90");
-               // mCamera.setDisplayOrientation(90);
+                setCameraDisplayOrientation(mainAct, 0, mCamera);
+               //mCamera.setDisplayOrientation(90);
             }
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             {
                 p.set("orientation", "landscape");
-                p.set("rotation", 180);
+                p.set("rotation", 90);
                 Log.v("SNAIL", "landscape rotation 90");
-               // mCamera.setDisplayOrientation(90);
+               //mCamera.setDisplayOrientation(90);
             }
-
+*/
 
         // Set the preview display with the new orientation settings
         try {
@@ -129,6 +155,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     //Modified from Android documentation: http://developer.android.com/reference/android/hardware/Camera.html#setDisplayOrientation(int)
     public static void setCameraDisplayOrientation(Activity activity, int cameraId, android.hardware.Camera camera) {
+        Log.v("SNAIL", "setting camera display orientation");
         android.hardware.Camera.CameraInfo info =
                 new android.hardware.Camera.CameraInfo();
         android.hardware.Camera.getCameraInfo(cameraId, info);
@@ -144,15 +171,37 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         // The front-facing camera compensates for the mirror
         if(info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+
+            Log.v("SNAIL", "FACING FRONT");
             result = (info.orientation + degrees) % 360;
             result = (360 - result) % 360;  // compensate the mirror
         } else {  // back-facing
+            Log.v("SNAIL", "FACING BACK");
             result = (info.orientation - degrees + 360) % 360;
+
+            //sensor orientation is 0 for nexus's, so let's see
+                Log.v("SNAIL", "Result is " + result + " and mOrientation is " + mOrientation);
+
+            Camera.Parameters params = camera.getParameters();
+            // If sensor orientation and display orientation are inconsistent, update (for reverse
+            // landscape issues with Nexus devices)
+            if (Math.abs(result - mOrientation) != 90)
+            {
+                Log.v("SNAIL", "a vile and strange camera sensor");
+                //result = mOrientation;
+                reverseRotation = true;
+                params.setRotation(mOrientation);
+                camera.setParameters(params);
+                camera.setDisplayOrientation(mOrientation);
+            }
+            else
+            {
+                params.setRotation(result);
+                camera.setParameters(params);
+                camera.setDisplayOrientation(result);
+            }
         }
-        Camera.Parameters params = camera.getParameters();
-        params.setRotation(result);
-        camera.setParameters(params);
-        camera.setDisplayOrientation(result);
+        //Log.v("SNAIL", "Rotation and Display Orientation is " + Integer.toString(result));
     }
 
     //override onMeasure and use getOptimalPreviewSize to address SurfaceView stretch issue

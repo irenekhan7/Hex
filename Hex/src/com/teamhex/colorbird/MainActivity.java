@@ -2,7 +2,9 @@ package com.teamhex.colorbird;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PreviewCallback;
@@ -125,6 +127,21 @@ public class MainActivity extends Activity implements PreviewCallback{
             int width = parameters.getPreviewSize().width;
             int height = parameters.getPreviewSize().height;
 
+            //Rotate byte img if captured by a vile nexus with reverse landscape sensor orientation
+            /*
+            if(data != null)
+            {
+                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                bmp = rotateImage(270, bmp);
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                data = stream.toByteArray();
+            }
+*/
+
+
             File cacheDir = getCacheDir();
             try {
                 File temp = File.createTempFile("temp_bitmap", ".tmp", cacheDir);
@@ -140,7 +157,7 @@ public class MainActivity extends Activity implements PreviewCallback{
                 i.putExtra("fileURI", uri.toString());
                 i.putExtra("width", width);
                 i.putExtra("height", height);
-
+                i.putExtra("reverseRotation", mPreview.reverseRotation);
                 startActivity(i);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -275,7 +292,13 @@ public class MainActivity extends Activity implements PreviewCallback{
 
 	    
     }
-    
+
+    public Bitmap rotateImage(int angle, Bitmap bitmapSrc) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(bitmapSrc, 0, 0,
+                bitmapSrc.getWidth(), bitmapSrc.getHeight(), matrix, true);
+    }
     //SOURCE: http://developer.android.com/reference/android/hardware/Camera.html#setDisplayOrientation%28int%29
     /*public static void setCameraDisplayOrientation(Activity activity,
             int cameraId, android.hardware.Camera camera) {

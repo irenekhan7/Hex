@@ -1,17 +1,5 @@
 package com.teamhex.colorbird;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
-import com.teamhex.colorbird.R;
-import com.teamhex.colorbird.Palette.ColorPaletteGenerator;
-import com.teamhex.colorbird.Storage.Activities.PaletteLibraryActivity;
-import com.teamhex.colorbird.Storage.Classes.HexStorageManager;
-import com.teamhex.colorbird.Storage.Classes.PaletteRecord;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -19,18 +7,30 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Display;
-import android.view.WindowManager;
-//import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import com.teamhex.colorbird.Palette.ColorPaletteGenerator;
+import com.teamhex.colorbird.Storage.Activities.PaletteLibraryActivity;
+import com.teamhex.colorbird.Storage.Classes.HexStorageManager;
+import com.teamhex.colorbird.Storage.Classes.PaletteRecord;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+//import android.util.Log;
 
 public class DrawImageActivity extends Activity implements DrawingView.OnSelectionListener 
 {
@@ -39,7 +39,7 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 	
 	DrawingView drawingView;
 	PaletteView previewPalette;
-	
+	boolean reverseRotation = false;
 	Button saveButton;
 	
 	PaletteRecord palette = null;
@@ -79,6 +79,7 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 	    {
 	    	int width = i.getIntExtra("width", 0);
 	    	int height = i.getIntExtra("height", 0);
+			reverseRotation = i.getBooleanExtra("reverseRotation", false);
 	    	
 	    	if ((width != 0) && (height != 0))
 	    	{
@@ -187,6 +188,13 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
         
     }
 
+	public Bitmap rotateImage(int angle, Bitmap bitmapSrc) {
+		Matrix matrix = new Matrix();
+		matrix.postRotate(angle);
+		return Bitmap.createBitmap(bitmapSrc, 0, 0,
+				bitmapSrc.getWidth(), bitmapSrc.getHeight(), matrix, true);
+	}
+
 	private void loadBitmap(String filename, int width, int height)
 	{
 		System.out.println(filename);
@@ -233,11 +241,16 @@ public class DrawImageActivity extends Activity implements DrawingView.OnSelecti
 	        }
 	        
 	        b = Bitmap.createBitmap(newPixels, height, width, Bitmap.Config.ARGB_8888);
+
+			//vile nexus reverse landscape sensor orientation check
+			if(reverseRotation)
+				b = rotateImage(270, b);
 	    }
 	    else
 	    {
 	    	b = Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888);
 	    }
+
 	    drawingView.setBitmap(b);
 	    clearCache();
 	}

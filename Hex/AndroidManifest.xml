@@ -100,9 +100,7 @@
         </activity>
         <activity
             android:name="com.teamhex.colorbird.DrawImageActivity" 
-             android:noHistory="true" 
-             android:screenOrientation="portrait"
-             android:configChanges="keyboardHidden|orientation|screenSize"
+             android:noHistory="true"
            >
         </activity>
         
